@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
-import axios from '../../shared/backend'
+
+import axios from 'axios'
 
 
 const authStart = () => {
@@ -8,10 +9,10 @@ const authStart = () => {
     }
 }
 
-export const authSuccess = ( idToken, userId ) => {
+export const authSuccess = ( token, userId ) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
-        idToken: idToken, 
+        token: token, 
         userId: userId
     }
 }
@@ -28,7 +29,7 @@ export const logout = () => {
     localStorage.removeItem('expiryDate')
     localStorage.removeItem('userId')
     localStorage.removeItem('email')
-
+    localStorage.removeItem('type')
     return {
         type: actionTypes.AUTH_LOGOUT
     }
@@ -48,27 +49,33 @@ export const auth = ( authData, isSignup ) => {
     return dispatch => {
         dispatch(authStart())
         let method =  isSignup ? 'signup' : 'signin'
-        let url = `auth/${method}`
+        let url = `http://localhost:3000/auth/${method}`
         axios.post(url, authData)
                 .then( res => {
-                    console.log(res);
                     if ( res && res.data ) {
                         const expiryDate = new Date(new Date().getTime() + 60 * 60 * 1000)
                         localStorage.setItem('token', res.data.token)
                         localStorage.setItem('expiryDate', expiryDate)
                         localStorage.setItem('userId', res.data._id)
                         localStorage.setItem('email', res.data.email)
+                        localStorage.setItem('type', res.data.type)
                         dispatch(authSuccess( res.data.token, res.data._id))
-                        dispatch(checkAuthTimeout(expiryDate))   
+                        dispatch(checkAuthTimeout( 60 * 60 ))   
                     } else {
-                        dispatch(authFail({ error: { message: "masla" } })) 
+                        dispatch(authFail({ message : "Something went wrong" })) 
                     }
                 })
                 .catch( err => {
-                    console.log(err);
-                    // console.log(err.response.data);
-                    // dispatch(authFail(err.response.data.error)) 
-                    dispatch(authFail(err)) 
+                    if (err.response && err.response.data) {
+                        // client received an error response (5xx, 4xx)
+                        dispatch(authFail(err.response.data))
+                      } else if (err.request && err.request.data) {
+                        // client never received a response, or request never left
+                        dispatch(authFail(err.request.data))
+                      } else {
+                        // anything else
+                        dispatch(authFail({ message : "Something went wrong" })) 
+                      }
 
                 })
         

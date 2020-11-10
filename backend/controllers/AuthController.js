@@ -16,9 +16,11 @@ module.exports = {
         if(!passwordCheck) throw Error('Incorrect password!')
         // Generating JWT for user
         const returnData =  User.toAuthJSON()
-        return res.status(201).json(returnData);
+        return res.status(200).json(returnData);
     } catch (error) {
-        return res.status( error.status || 500 ).json({ 
+        console.log("error: ", error);
+        // return res.send(error)
+        return res.status( error?.status || 500 ).json({ 
             message: error.message ? error.message : 'Something went wrong'
         });
     }
@@ -49,6 +51,7 @@ module.exports = {
         if (errors) throw Error('Error when storing User in database')
         return res.status(201).json(returnData);
     } catch (error) {
+        console.log("error: ", error);
         return res.status( error.status || 500 ).json({ 
             message: error.message ? error.message : 'Something went wrong'
         });
