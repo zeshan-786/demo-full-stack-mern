@@ -27,8 +27,10 @@ const Clients = (props) => {
 
   let data = null;
   if (props.clients) {
-    // data = <DataTable rows={props.clients} pageSize={props.clients.length}/>;
-    data = <DataTable />;
+    data = <DataTable rows={props.clients.map( elm => {
+        return { ...elm, id: elm._id }
+    })} pageSize={props.clients.length}/>;
+    // data = <DataTable />;
   }
 
   if (props.loading) {
@@ -61,6 +63,7 @@ const mapStateToProps = (state) => {
   return {
     loading: state.client.loading,
     error: state.client.error,
+    clients: state.client.clients,
     isAuthenticated: state.auth.token !== null,
   };
 };
