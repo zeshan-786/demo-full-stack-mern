@@ -2,7 +2,7 @@ const { DoctorModel, ClinicModel } = require('../models/UserModel')
 /**
  * DoctorController.js
  *
- * @description :: Server-side logic for managing Doctors.
+ * @description :: Server-side logic for managing Doctors
  */
 module.exports = {
 
@@ -14,8 +14,7 @@ module.exports = {
       let filter = req.query.where
       clinic = req.user.__userType !== 'Admin' ? req.user._id : null
       filter = clinic ? {clinic: clinic} : filter
-    
-      const doctors = DoctorModel.find(filter, req.query.fields, req.query.sort).select('-salt -hash')
+      const doctors = await DoctorModel.find(filter, req.query.fields, req.query.sort).select('-salt -hash')
       return res.json(doctors)
     } catch (error) {
       return res.status(500).json({

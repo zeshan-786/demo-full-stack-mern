@@ -21,26 +21,27 @@ const useStyles = makeStyles((theme) => ({
 
 const columns = [
     { field: 'id', headerName: 'ID' },
-    { field: 'name', headerName: 'Full Name' },
-    { field: 'email', headerName: 'Email',  },
+    { field: 'name', headerName: 'Name' },
     { field: 'dob', headerName: 'Date of Birth' },
-    { field: 'age', headerName: 'Age' },
-    { field: 'pets', headerName: 'Pets' },
+    { field: 'breed', headerName: 'Breed' },
+    { field: 'type', headerName: 'Type' },
+    { field: 'owner', headerName: 'Owner' },
+    { field: 'appointments', headerName: 'Appointments' },
     { field: 'createdAt', headerName: 'Created' },
     { field: 'updatedAt', headerName: 'Updated' },
   ];
 
-const Clients = (props) => {
+const Pets = (props) => {
   const classes = useStyles();
   useEffect(() => {
-    props.loadClients();
+    props.loadPets();
   }, []);
 
   let data = null;
-  if (props.clients) {
-    data = <DataTable rows={props.clients.map( elm => {
-        return { ...elm, id: elm._id, pets: elm.pets.flatMap( pet => pet.name).join(', ') }
-    })} columns={columns} pageSize={props.clients.length}/>
+  if (props.pets) {
+    data = <DataTable rows={props.pets.map( elm => {
+        return { ...elm, id: elm._id, appointments: elm.appointments.join(', ') }
+    })} columns={columns} pageSize={props.pets.length}/>
   }
 
   if (props.loading) {
@@ -66,14 +67,14 @@ const Clients = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadClients: () => dispatch(actions.fetchClients()),
+    loadPets: () => dispatch(actions.fetchPets()),
   };
 };
 const mapStateToProps = (state) => {
   return {
-    loading: state.client.loading,
-    error: state.client.error,
-    clients: state.client.clients,
+    loading: state.pet.loading,
+    error: state.pet.error,
+    pets: state.pet.pets,
     isAuthenticated: state.auth.token !== null,
   };
 };
@@ -81,4 +82,4 @@ const mapStateToProps = (state) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps // or put null here if you do not have actions to dispatch
-)(Clients)
+)(Pets)

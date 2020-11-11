@@ -30,6 +30,10 @@ const petRoutes = require('./routes/Pet')
 const clinicRoutes = require('./routes/Clinic')
 const doctorRoutes = require('./routes/Doctor')
 
+const adminRoutes = require('./routes/Admin')
+
+const appointmentRoutes = require('./routes/Appointment')
+
 app.use('/auth', authRoutes )
 app.use('/client', clientRoutes )
 app.use('/pet', petRoutes )
@@ -37,7 +41,11 @@ app.use('/pet', petRoutes )
 app.use('/clinic', clinicRoutes )
 app.use('/doctor', doctorRoutes )
 
-app.get('/', verifyToken, HasRole(['Admin', 'Doctor']), (req, res) => {
+app.use('/admin', adminRoutes )
+app.use('/appointment', appointmentRoutes )
+
+
+app.get('/', verifyToken, HasRole(['Admin']), (req, res) => {
     res.send('Hello World!')
 })
 

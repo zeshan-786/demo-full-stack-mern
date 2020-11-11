@@ -8,7 +8,7 @@ const initialState = {
 }
 
 const fetchClientsStart = ( state, action ) => {
-    return updateObject( state, { error: null, loading: true } )
+    return updateObject( state, { error: null, loading: true, clients: null } )
 }
 
 const fetchClientsSuccess = ( state, action ) => {
@@ -22,7 +22,7 @@ const fetchClientsSuccess = ( state, action ) => {
 const fetchClientsFail = ( state, action ) => {
     return updateObject( state, {
         error: action.error, 
-        loading: false 
+        loading: false,
     })
 }
 
@@ -30,7 +30,7 @@ const reducer = ( state=initialState, action ) => {
     switch (action.type) {
         case actionTypes.FETCH_CLIENTS_START: return fetchClientsStart( state, action )
         case actionTypes.FETCH_CLIENTS_SUCCESS: return fetchClientsSuccess( state, action )
-        case actionTypes.FETCH_CLIENTS_SUCCESS: return fetchClientsFail( state, action )
+        case actionTypes.FETCH_CLIENTS_FAIL: return fetchClientsFail( state, action )
         default:
           return state
     }

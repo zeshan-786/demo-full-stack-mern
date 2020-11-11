@@ -37,7 +37,7 @@ next();
 /*
  * GET
  */
-router.get('/', verifyToken, HasRole(['Admin', 'Client']), (req, res) => {
+router.get('/', verifyToken, HasRole(['Admin']), (req, res) => {
   ClientController.list(req, res);
 });
 

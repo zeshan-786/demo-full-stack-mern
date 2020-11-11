@@ -25,22 +25,21 @@ const columns = [
     { field: 'email', headerName: 'Email',  },
     { field: 'dob', headerName: 'Date of Birth' },
     { field: 'age', headerName: 'Age' },
-    { field: 'pets', headerName: 'Pets' },
     { field: 'createdAt', headerName: 'Created' },
     { field: 'updatedAt', headerName: 'Updated' },
   ];
 
-const Clients = (props) => {
+const Admins = (props) => {
   const classes = useStyles();
   useEffect(() => {
-    props.loadClients();
+    props.loadAdmins();
   }, []);
 
   let data = null;
-  if (props.clients) {
-    data = <DataTable rows={props.clients.map( elm => {
-        return { ...elm, id: elm._id, pets: elm.pets.flatMap( pet => pet.name).join(', ') }
-    })} columns={columns} pageSize={props.clients.length}/>
+  if (props.admins) {
+    data = <DataTable rows={props.admins.map( elm => {
+        return { ...elm, id: elm._id }
+    })} columns={columns} pageSize={props.admins.length}/>
   }
 
   if (props.loading) {
@@ -66,14 +65,14 @@ const Clients = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadClients: () => dispatch(actions.fetchClients()),
+    loadAdmins: () => dispatch(actions.fetchAdmins()),
   };
 };
 const mapStateToProps = (state) => {
   return {
-    loading: state.client.loading,
-    error: state.client.error,
-    clients: state.client.clients,
+    loading: state.admin.loading,
+    error: state.admin.error,
+    admins: state.admin.admins,
     isAuthenticated: state.auth.token !== null,
   };
 };
@@ -81,4 +80,4 @@ const mapStateToProps = (state) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps // or put null here if you do not have actions to dispatch
-)(Clients)
+)(Admins)

@@ -24,23 +24,22 @@ const columns = [
     { field: 'name', headerName: 'Full Name' },
     { field: 'email', headerName: 'Email',  },
     { field: 'dob', headerName: 'Date of Birth' },
-    { field: 'age', headerName: 'Age' },
-    { field: 'pets', headerName: 'Pets' },
+    { field: 'doctors', headerName: 'Doctors' },
     { field: 'createdAt', headerName: 'Created' },
     { field: 'updatedAt', headerName: 'Updated' },
   ];
 
-const Clients = (props) => {
+const Clinics = (props) => {
   const classes = useStyles();
   useEffect(() => {
-    props.loadClients();
+    props.loadClinics();
   }, []);
 
   let data = null;
-  if (props.clients) {
-    data = <DataTable rows={props.clients.map( elm => {
-        return { ...elm, id: elm._id, pets: elm.pets.flatMap( pet => pet.name).join(', ') }
-    })} columns={columns} pageSize={props.clients.length}/>
+  if (props.clinics) {
+    data = <DataTable rows={props.clinics.map( elm => {
+        return { ...elm, id: elm._id, doctors: elm.doctors.join(', ')  }
+    })} columns={columns} pageSize={props.clients?.length }/>
   }
 
   if (props.loading) {
@@ -66,14 +65,14 @@ const Clients = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadClients: () => dispatch(actions.fetchClients()),
+    loadClinics: () => dispatch(actions.fetchClinics()),
   };
 };
 const mapStateToProps = (state) => {
   return {
-    loading: state.client.loading,
-    error: state.client.error,
-    clients: state.client.clients,
+    loading: state.clinic.loading,
+    error: state.clinic.error,
+    clinics: state.clinic.clinics,
     isAuthenticated: state.auth.token !== null,
   };
 };
@@ -81,4 +80,4 @@ const mapStateToProps = (state) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps // or put null here if you do not have actions to dispatch
-)(Clients)
+)(Clinics)

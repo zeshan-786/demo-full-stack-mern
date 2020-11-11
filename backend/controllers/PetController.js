@@ -54,7 +54,7 @@ module.exports = {
    */
   create: async (req, res) => {
     const owner = req.body.owner || req.user.__userType !== 'Admin' ? req.user._id : null
-    let Pet = new PetModel({
+    const Pet = new PetModel({
 			name : req.body.name,
 			dob : req.body.dob,
 			breed : req.body.breed,
@@ -63,8 +63,8 @@ module.exports = {
       owner: owner
     });
 
-    let pet = await Pet.save()
-    ClientModel.findOneAndUpdate({ _id: owner }, { $push: { pets: [pet._id] } })
+    await Pet.save()
+    ClientModel.findOneAndUpdate({ _id: owner }, { $push: { pets: [Pet._id] } })
       .then( client => {
         console.log("Client Updated: ", client);
       })

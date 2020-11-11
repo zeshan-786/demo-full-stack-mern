@@ -7,15 +7,15 @@ module.exports = {
             // Gather the jwt access token from the request header
             const authHeader = req.headers['authorization']
             const token = authHeader && authHeader.split(' ')[1]
-            if (!token) throw Error("Token missing!")
+            if (!token) throw Error()
             // Verifying token
             const user = jwt.verify(token, process.env.JWT_SECRET)
-            if(!user || !user._id || !user.type) throw Error("Invalid token")
+            if(!user || !user._id || !user.type) throw Error()
             const User = getInstance(user.type)
-            if(!User) throw Error("No such user type")
+            if(!User) throw Error()
             // Getting user from database
             const actualUser = await User.findById(user._id).select('_id name email').lean()
-            if(!actualUser) throw Error("No user found")
+            if(!actualUser) throw Error()
             // pass on request further
             req.user = actualUser
             next()

@@ -3,8 +3,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
@@ -12,14 +10,13 @@ import Container from "@material-ui/core/Container";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 
-import Spinner from "../UI/Spinner/Spinner";
-import { Redirect } from "react-router";
-
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
+import SaveIcon from '@material-ui/icons/Save';
+import Spinner from "../../components/UI/Spinner/Spinner";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -56,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUp = (props) => {
+const AddUser = (props) => {
   const classes = useStyles();
   const [email, setEmail] = useState({ value: "" });
   const [password, setpassword] = useState({ value: "" });
@@ -179,10 +176,6 @@ const SignUp = (props) => {
   if (props.error) {
     errorMessage = <p className={classes.error}>{props.error.message}</p>;
   }
-  let authRedirect = null;
-  if (props.isAuthenticated) {
-    authRedirect = <Redirect to={props.authRedirectPath} />;
-  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -191,9 +184,8 @@ const SignUp = (props) => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Add User
         </Typography>
-        {authRedirect}
         {errorMessage}
         <form className={classes.form} noValidate>
           {form}
@@ -203,16 +195,10 @@ const SignUp = (props) => {
             color="primary"
             className={classes.submit}
             onClick={handleSubmit}
+            startIcon={<SaveIcon />}
           >
-            Sign up
+            Add User
           </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
     </Container>
@@ -221,20 +207,17 @@ const SignUp = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (data) => dispatch(actions.auth(data, true)),
-    onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath("/")),
+    onAuth: (data) => dispatch(actions.auth(data, true))
   };
 };
 const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
-    error: state.auth.error,
-    isAuthenticated: state.auth.token !== null,
-    authRedirectPath: state.auth.authRedirectPath,
+    error: state.auth.error
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps // or put null here if you do not have actions to dispatch
-)(SignUp);
+)(AddUser);

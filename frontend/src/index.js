@@ -10,10 +10,21 @@ import  ReduxThunk from 'redux-thunk'
 
 import authReducer from './store/reducers/auth'
 import clientReducer from './store/reducers/client'
+import petReducer from './store/reducers/pet'
+import doctorReducer from './store/reducers/doctor'
+import clinicReducer from './store/reducers/clinic'
+
+import adminReducer from './store/reducers/admin'
+import appointmentReducer from './store/reducers/appointment'
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  client: clientReducer
+  client: clientReducer,
+  doctor: doctorReducer,
+  clinic: clinicReducer,
+  pet: petReducer,
+  appointment: appointmentReducer,
+  admin: adminReducer
 })
 
 const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;

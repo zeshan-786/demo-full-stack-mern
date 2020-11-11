@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const AppointmentController = require('../controllers/AppointmentController.js');
+const AdminController = require('../controllers/AdminController');
+
+const { signup } = require('../controllers/AuthController');
 
 const { verifyToken, HasRole } = require('../middlewares/Auth')
 
@@ -36,35 +38,35 @@ next();
  * GET
  */
 router.get('/', verifyToken, HasRole(['Admin']), (req, res) => {
-  AppointmentController.list(req, res);
+  AdminController.list(req, res);
 });
 
 /*
  * GET
  */
-router.get('/:id', verifyToken, (req, res) => {
-  AppointmentController.show(req, res);
+router.get('/me', verifyToken, HasRole(['Admin']), (req, res) => {
+  AdminController.show(req, res);
 });
 
 /*
  * POST
  */
-router.post('/',  verifyToken, HasRole(['Admin', 'Clinic']), (req, res) => {
-  AppointmentController.create(req, res);
+router.post('/', verifyToken, HasRole(['Admin']), (req, res) => {
+  signup(req, res);
 });
 
 /*
  * PUT
  */
-router.put('/:id', verifyToken, HasRole(['Admin', 'Clinic']), (req, res) => {
-  AppointmentController.update(req, res);
+router.put('/', verifyToken, HasRole(['Admin']), (req, res) => {
+  AdminController.update(req, res);
 });
 
 /*
  * DELETE
  */
-router.delete('/:id', verifyToken, HasRole(['Admin', 'Clinic']), (req, res) => {
-  AppointmentController.remove(req, res);
+router.delete('/', verifyToken, HasRole(['Admin']), (req, res) => {
+  AdminController.remove(req, res);
 });
 
 module.exports = router;

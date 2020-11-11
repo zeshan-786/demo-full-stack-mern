@@ -21,26 +21,24 @@ const useStyles = makeStyles((theme) => ({
 
 const columns = [
     { field: 'id', headerName: 'ID' },
-    { field: 'name', headerName: 'Full Name' },
-    { field: 'email', headerName: 'Email',  },
-    { field: 'dob', headerName: 'Date of Birth' },
-    { field: 'age', headerName: 'Age' },
-    { field: 'pets', headerName: 'Pets' },
+    { field: 'appointmentTime', headerName: 'Appointment Time' },
+    { field: 'doctor', headerName: 'Doctor',  },
+    { field: 'pet', headerName: 'Patient' },
     { field: 'createdAt', headerName: 'Created' },
     { field: 'updatedAt', headerName: 'Updated' },
   ];
 
-const Clients = (props) => {
+const Appointments = (props) => {
   const classes = useStyles();
   useEffect(() => {
-    props.loadClients();
+    props.loadAppointments();
   }, []);
 
   let data = null;
-  if (props.clients) {
-    data = <DataTable rows={props.clients.map( elm => {
-        return { ...elm, id: elm._id, pets: elm.pets.flatMap( pet => pet.name).join(', ') }
-    })} columns={columns} pageSize={props.clients.length}/>
+  if (props.appointments) {
+    data = <DataTable rows={props.appointments.map( elm => {
+        return { ...elm, id: elm._id, pet: elm.pet && elm.pet.name, doctor: elm.doctor && elm.doctor.name }
+    })} columns={columns} pageSize={props.appointments.length}/>
   }
 
   if (props.loading) {
@@ -66,14 +64,14 @@ const Clients = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadClients: () => dispatch(actions.fetchClients()),
+    loadAppointments: () => dispatch(actions.fetchAppointments()),
   };
 };
 const mapStateToProps = (state) => {
   return {
-    loading: state.client.loading,
-    error: state.client.error,
-    clients: state.client.clients,
+    loading: state.appointment.loading,
+    error: state.appointment.error,
+    appointments: state.appointment.appointments,
     isAuthenticated: state.auth.token !== null,
   };
 };
@@ -81,4 +79,4 @@ const mapStateToProps = (state) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps // or put null here if you do not have actions to dispatch
-)(Clients)
+)(Appointments)

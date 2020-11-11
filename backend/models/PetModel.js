@@ -14,6 +14,6 @@ const fields = {
    }
 }
 
-let PetSchema = new Schema(fields);
+let PetSchema = new Schema(fields, { timestamps: true });
 
 module.exports = mongoose.model('Pet', PetSchema);

@@ -67,8 +67,14 @@ const ClinicSchema = new mongoose.Schema({
 	website: String
 })
 
+const AdminSchema = new mongoose.Schema({
+	setting: String
+})
+
+
 const ClientModel = User.discriminator('Client', ClientSchema)
 const DoctorModel = User.discriminator('Doctor', DoctorSchema)
 const ClinicModel = User.discriminator('Clinic', ClinicSchema)
+const AdminModel = User.discriminator('Admin', AdminSchema )
   
-module.exports = { ClientModel, DoctorModel, ClinicModel }
+module.exports = { ClientModel, DoctorModel, ClinicModel, AdminModel }

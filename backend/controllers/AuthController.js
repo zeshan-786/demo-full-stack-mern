@@ -48,7 +48,7 @@ module.exports = {
         const returnData =  User.toAuthJSON()
         // storing user in database
         const { errors } = await User.save()
-        if (errors) throw Error('Error when storing User in database')
+        if (errors) throw Error('Error while storing User in database')
         return res.status(201).json(returnData);
     } catch (error) {
         console.log("error: ", error);

@@ -8,7 +8,7 @@ import * as actions from "./store/actions/index";
 import asyncComponent from "./hoc/asyncComponent/asyncComponent";
 
 const Home = asyncComponent(() => {
-  return import("./containers/Dashboard/dashboard");
+  return import("./containers/Dashboard/Dashboard");
 });
 const Logout = asyncComponent(() => {
   return import("./components/Auth/Logout/Logout");
@@ -21,10 +21,14 @@ const Signup = asyncComponent(() => {
   return import("./components/Auth/signup");
 });
 
+const AddUser = asyncComponent(() => {
+  return import("./containers/Admins/add");
+});
+
 const App = (props) => {
   useEffect(() => {
     props.onTryAutoLogin();
-  },[]);
+  }, []);
   let routes = (
     <Switch>
       <Route path="/signup" component={Signup} />
@@ -35,7 +39,10 @@ const App = (props) => {
   if (props.isAuthenticated) {
     routes = (
       <Switch>
-        <Route path="/home" component={Home} />
+        {localStorage.getItem("type") === "Admin" ? (
+          <Route path="/addUser" component={AddUser} />
+        ) : null}
+        <Route path="/dashboard" component={Home} />
         <Route path="/logout" component={Logout} />
         <Route path="/" exact component={Home} />
         <Redirect to="/" />

@@ -15,12 +15,18 @@ import Paper from "@material-ui/core/Paper";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 import {
   mainListItems,
   secondaryListItems,
 } from "../../components/ListItem/ListItem";
 import Clients from "../Clients/Clients";
+import Clinics from "../Clinics/Clinics";
+import Doctors from "../Doctors/Doctors";
+import Pets from "../Pets/Pets";
+import Admins from "../Admins/Admins";
+import Appointments from "../Appointments/Appointments";
 
 const drawerWidth = 240;
 
@@ -86,6 +92,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     height: "100vh",
+    minHeight: 1200,
     overflow: "auto",
   },
   container: {
@@ -99,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   fixedHeight: {
-    height: 240,
+    height: 400,
   },
 }));
 
@@ -119,10 +126,7 @@ const Dashboard = (props) => {
       <CssBaseline />
       <AppBar
         position="absolute"
-        className={clsx(
-          classes.appBar,
-          open && classes.appBarShift
-        )}
+        className={clsx(classes.appBar, open && classes.appBarShift)}
       >
         <Toolbar className={classes.toolbar}>
           <IconButton
@@ -144,8 +148,14 @@ const Dashboard = (props) => {
             noWrap
             className={classes.title}
           >
-            Dashboard
+            {localStorage.getItem("type")} Dashboard
           </Typography>
+          <IconButton
+            color="inherit"
+            onClick={() => console.log("Profile Button Clicked")}
+          >
+            <AccountCircleIcon />
+          </IconButton>
           <IconButton
             color="inherit"
             onClick={() => props.history.push("logout")}
@@ -157,10 +167,7 @@ const Dashboard = (props) => {
       <Drawer
         variant="permanent"
         classes={{
-          paper: clsx(
-            classes.drawerPaper,
-            !open && classes.drawerPaperClose
-          ),
+          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
         }}
         open={open}
       >
@@ -178,26 +185,44 @@ const Dashboard = (props) => {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
+            <Grid item xs={12} md={6} lg={6}>
               <Paper className={fixedHeightPaper}>
-                {/* <Chart /> */}
-                {/* <h1>Element here</h1> */}
-                <Clients/>
+                <h1>Clients</h1>
+                <Clients />
               </Paper>
             </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
+
+            <Grid item xs={12} md={6} lg={6}>
               <Paper className={fixedHeightPaper}>
-                {/* <Deposits /> */}
-                <h1>Element here</h1>
+                <h1>Pets</h1>
+                <Pets />
               </Paper>
             </Grid>
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                {/* <Orders /> */}
-                <h1>Element here</h1>
+
+            <Grid item xs={12} md={6} lg={6}>
+              <Paper className={fixedHeightPaper}>
+                <h1>Clinics</h1>
+                <Clinics />
+              </Paper>
+            </Grid>
+
+            <Grid item xs={12} md={6} lg={6}>
+              <Paper className={fixedHeightPaper}>
+                <h1>Doctors</h1>
+                <Doctors />
+              </Paper>
+            </Grid>
+
+            <Grid item xs={12} md={6} lg={6}>
+              <Paper className={fixedHeightPaper}>
+                <h1>Admins</h1>
+                <Admins />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={6} lg={6}>
+              <Paper className={fixedHeightPaper}>
+                <h1>Appointments</h1>
+                <Appointments />
               </Paper>
             </Grid>
           </Grid>
@@ -207,4 +232,4 @@ const Dashboard = (props) => {
   );
 };
 
-export default Dashboard
+export default Dashboard;
