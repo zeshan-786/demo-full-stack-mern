@@ -9,24 +9,31 @@ import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
+import { Route, Switch, Redirect } from "react-router-dom";
+
 import {
   mainListItems,
   secondaryListItems,
 } from "../../components/ListItem/ListItem";
-import Clients from "../Clients/Clients";
-import Clinics from "../Clinics/Clinics";
-import Doctors from "../Doctors/Doctors";
-import Pets from "../Pets/Pets";
-import Admins from "../Admins/Admins";
-import Appointments from "../Appointments/Appointments";
+
+import asyncComponent from "../../hoc/asyncComponent/asyncComponent";
+
+const AdminDashboard = asyncComponent(() => {
+  return import("../Admins/AdminDashboard");
+});
+
+const ClientDashboard = asyncComponent(() => {
+  return import("../Clients/ClientDashboard");
+});
+
+const AddUser = asyncComponent(() => {
+  return import("../Admins/addUser");
+});
 
 const drawerWidth = 240;
 
@@ -89,28 +96,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: "100vh",
-    minHeight: 1200,
-    overflow: "auto",
-  },
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  },
-  paper: {
-    padding: theme.spacing(2),
-    display: "flex",
-    overflow: "auto",
-    flexDirection: "column",
-  },
-  fixedHeight: {
-    height: 400,
-  },
 }));
 
-const Dashboard = (props) => {
+const Layout = (props) => {
   const classes = useStyles();
   const [open, setOpen] = useState(true);
   const handleDrawerOpen = () => {
@@ -119,7 +107,50 @@ const Dashboard = (props) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  let routes = null;
+  switch (localStorage.getItem("type")) {
+    case "Admin":
+      routes = (
+        <>
+          <Route path="/dashboard" exact component={AdminDashboard} />
+          <Route path="/admins" component={AddUser} />
+          <Route path="/clinics" component={AddUser} />
+          <Route path="/doctors" component={AddUser} />
+          <Route path="/clients" component={AddUser} />
+          <Route path="/pets" component={AddUser} />
+          <Route path="/appointments" component={AddUser} />
+          <Route path="/addUser" component={AddUser} />
+          <Route path="/" exact component={AdminDashboard} />
+        </>
+      )
+      break;
+    case "Client":
+      routes = (
+        <>
+          <Route path="/dashboard" exact component={ClientDashboard} />
+          <Route path="/pets" component={AddUser} />
+          <Route path="/appointments" component={AddUser} />
+          <Route path="/addPet" component={AddUser} />
+          <Route path="/" exact component={ClientDashboard} />
+        </>
+      );
+      break;
+    case "Clinic":
+      routes = (
+        <>
+          <Route path="/doctors" component={AddUser} />
+          <Route path="/appointments" component={AddUser} />
+          <Route path="/pets" component={AddUser} />
+        </>
+      );
+      break;
+    case "Doctor":
+      routes = <Route path="/appointments" component={AddUser} />;
+      break;
+    default:
+      break;
+  }
 
   return (
     <div className={classes.root}>
@@ -181,55 +212,13 @@ const Dashboard = (props) => {
         <Divider />
         <List>{secondaryListItems}</List>
       </Drawer>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={6}>
-              <Paper className={fixedHeightPaper}>
-                <h1>Clients</h1>
-                <Clients />
-              </Paper>
-            </Grid>
-
-            <Grid item xs={12} md={6} lg={6}>
-              <Paper className={fixedHeightPaper}>
-                <h1>Pets</h1>
-                <Pets />
-              </Paper>
-            </Grid>
-
-            <Grid item xs={12} md={6} lg={6}>
-              <Paper className={fixedHeightPaper}>
-                <h1>Clinics</h1>
-                <Clinics />
-              </Paper>
-            </Grid>
-
-            <Grid item xs={12} md={6} lg={6}>
-              <Paper className={fixedHeightPaper}>
-                <h1>Doctors</h1>
-                <Doctors />
-              </Paper>
-            </Grid>
-
-            <Grid item xs={12} md={6} lg={6}>
-              <Paper className={fixedHeightPaper}>
-                <h1>Admins</h1>
-                <Admins />
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <Paper className={fixedHeightPaper}>
-                <h1>Appointments</h1>
-                <Appointments />
-              </Paper>
-            </Grid>
-          </Grid>
-        </Container>
-      </main>
+      <Switch>
+        {routes}
+        <Route path="/profile" component={AddUser} />
+        <Route path="/editProfile" component={AddUser} />
+      </Switch>
     </div>
   );
 };
 
-export default Dashboard;
+export default Layout;

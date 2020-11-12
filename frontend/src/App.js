@@ -5,14 +5,8 @@ import { Route, Switch, withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "./store/actions/index";
 
-import asyncComponent from "./hoc/asyncComponent/asyncComponent";
+import asyncComponent from "./hoc/asyncComponent/asyncComponent"
 
-const Home = asyncComponent(() => {
-  return import("./containers/Dashboard/Dashboard");
-});
-const Logout = asyncComponent(() => {
-  return import("./components/Auth/Logout/Logout");
-});
 const Signin = asyncComponent(() => {
   return import("./components/Auth/signin");
 });
@@ -21,14 +15,38 @@ const Signup = asyncComponent(() => {
   return import("./components/Auth/signup");
 });
 
-const AddUser = asyncComponent(() => {
-  return import("./containers/Admins/add");
+const AdminLayout = asyncComponent(() => {
+  return import("./containers/Admins/AdminLayout");
+});
+
+const ClientLayout = asyncComponent(() => {
+  return import("./containers/Clients/ClientLayout");
 });
 
 const App = (props) => {
   useEffect(() => {
     props.onTryAutoLogin();
   }, []);
+
+  let Home = <h1>No view</h1>;
+  switch (props.type) {
+    case "Admin":
+      Home = AdminLayout;
+      break;
+    case "Client":
+      Home = ClientLayout;
+      break;
+    case "Clinic":
+      Home = <h1>Clinic</h1>;
+      break;
+    case "Doctor":
+      Home = <h1>Doctor G</h1>;
+      break;
+
+    default:
+      break;
+  }
+
   let routes = (
     <Switch>
       <Route path="/signup" component={Signup} />
@@ -37,17 +55,7 @@ const App = (props) => {
     </Switch>
   );
   if (props.isAuthenticated) {
-    routes = (
-      <Switch>
-        {localStorage.getItem("type") === "Admin" ? (
-          <Route path="/addUser" component={AddUser} />
-        ) : null}
-        <Route path="/dashboard" component={Home} />
-        <Route path="/logout" component={Logout} />
-        <Route path="/" exact component={Home} />
-        <Redirect to="/" />
-      </Switch>
-    );
+    routes = <Home type={props.type} />;
   }
   return (
     <div className="App">
@@ -60,6 +68,7 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.auth.token !== null,
+    type: state.auth.type
   };
 };
 

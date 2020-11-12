@@ -110,7 +110,6 @@ const SignUp = (props) => {
           <MenuItem value={"Client"}>Client</MenuItem>
           <MenuItem value={"Clinic"}>Clinic</MenuItem>
           <MenuItem value={"Doctor"}>Doctor</MenuItem>
-          <MenuItem value={"Admin"}>Admin</MenuItem>
         </Select>
       </FormControl>
       <TextField

@@ -9,11 +9,12 @@ const authStart = () => {
     }
 }
 
-export const authSuccess = ( token, userId ) => {
+export const authSuccess = ( token, userId, type ) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
         token: token, 
-        userId: userId
+        userId: userId,
+        userType: type
     }
 }
 
@@ -59,7 +60,7 @@ export const auth = ( authData, isSignup ) => {
                         localStorage.setItem('userId', res.data._id)
                         localStorage.setItem('email', res.data.email)
                         localStorage.setItem('type', res.data.type)
-                        dispatch(authSuccess( res.data.token, res.data._id))
+                        dispatch(authSuccess( res.data.token, res.data._id, res.data.type))
                         dispatch(checkAuthTimeout( 60 * 60 ))   
                     } else {
                         dispatch(authFail({ message : "Something went wrong" })) 
@@ -100,7 +101,8 @@ export const authCheckState = () => {
                 dispatch(logout())
             } else {
                 const userId  = localStorage.getItem('userId')
-                dispatch(authSuccess(token, userId))
+                const type  = localStorage.getItem('type')
+                dispatch(authSuccess(token, userId, type))
                 dispatch(checkAuthTimeout( (expiryDate.getTime() - new Date().getTime())/1000 ) )
             }
         }

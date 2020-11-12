@@ -1,0 +1,41 @@
+[{
+  "_id": {
+    "$oid": "5fac3e3c13e9b16c914455ac"
+  },
+  "appointmentTime": {
+    "$date": "2020-12-24T10:00:00Z"
+  },
+  "doctor": {
+    "$oid": "5fac2ae9553fb70c5de19e0f"
+  },
+  "pet": {
+    "$oid": "5fac3e0213e9b16c914455aa"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T19:40:44.508Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T19:40:44.508Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fac3e5013e9b16c914455ad"
+  },
+  "appointmentTime": {
+    "$date": "2020-12-24T10:00:00Z"
+  },
+  "doctor": {
+    "$oid": "5fac2ae9553fb70c5de19e0f"
+  },
+  "pet": {
+    "$oid": "5fac3df313e9b16c914455a9"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T19:41:04.744Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T19:41:04.744Z"
+  },
+  "__v": 0
+}]

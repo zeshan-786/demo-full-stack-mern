@@ -1,0 +1,43 @@
+[{
+  "_id": {
+    "$oid": "5fac3df313e9b16c914455a9"
+  },
+  "appointments": [],
+  "name": "dog",
+  "breed": "Huskey",
+  "type": "random",
+  "owner": {
+    "$oid": "5fa59b5215a28a0adefa082a"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T19:39:31.929Z"
+  },
+  "dob": {
+    "$date": "2012-10-20T00:00:00Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T19:39:31.929Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fac3e0213e9b16c914455aa"
+  },
+  "appointments": [],
+  "name": "dogie",
+  "breed": "Huskey",
+  "type": "dog",
+  "owner": {
+    "$oid": "5fa59b5215a28a0adefa082a"
+  },
+  "dob": {
+    "$date": "2012-10-20T00:00:00Z"
+  },
+  "createdAt": {
+    "$date": "2020-11-11T19:39:46.854Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-11T19:39:46.854Z"
+  },
+  "__v": 0
+}]

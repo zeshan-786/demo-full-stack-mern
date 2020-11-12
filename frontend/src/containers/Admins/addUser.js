@@ -15,8 +15,10 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
-import SaveIcon from '@material-ui/icons/Save';
+import SaveIcon from "@material-ui/icons/Save";
 import Spinner from "../../components/UI/Spinner/Spinner";
+
+import ContentView from "../../components/UI/ContentView/ContentView";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -177,43 +179,41 @@ const AddUser = (props) => {
     errorMessage = <p className={classes.error}>{props.error.message}</p>;
   }
   return (
-    <Container component="main" maxWidth="xs">
+    <ContentView>
       <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
+      <Avatar className={classes.avatar}>
+        <LockOutlinedIcon />
+      </Avatar>
+      <Typography component="h1" variant="h5">
+        Add User
+      </Typography>
+      {errorMessage}
+      <form className={classes.form} noValidate>
+        {form}
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+          onClick={handleSubmit}
+          startIcon={<SaveIcon />}
+        >
           Add User
-        </Typography>
-        {errorMessage}
-        <form className={classes.form} noValidate>
-          {form}
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={handleSubmit}
-            startIcon={<SaveIcon />}
-          >
-            Add User
-          </Button>
-        </form>
-      </div>
-    </Container>
+        </Button>
+      </form>
+    </ContentView>
   );
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (data) => dispatch(actions.auth(data, true))
+    onAuth: (data) => dispatch(actions.auth(data, true)),
   };
 };
 const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
-    error: state.auth.error
+    error: state.auth.error,
   };
 };
 
