@@ -35,14 +35,14 @@ next();
 /*
  * GET
  */
-router.get('/', verifyToken, HasRole(['Admin']), (req, res) => {
+router.get('/', verifyToken, HasRole(['Admin', 'Clinic', 'Client', 'Doctor']), (req, res) => {
   AppointmentController.list(req, res);
 });
 
 /*
  * GET
  */
-router.get('/:id', verifyToken, (req, res) => {
+router.get('/:id', verifyToken, HasRole(['Admin', 'Clinic', 'Client', 'Doctor']), (req, res) => {
   AppointmentController.show(req, res);
 });
 
