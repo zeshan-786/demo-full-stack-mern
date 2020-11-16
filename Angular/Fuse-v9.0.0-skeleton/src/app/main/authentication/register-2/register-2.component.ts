@@ -5,6 +5,9 @@ import { takeUntil } from 'rxjs/operators';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
+import { AuthService } from 'app/backend-services/auth/auth.service';
+import { Router } from '@angular/router';
+import { Auth } from 'app/models/user';
 
 @Component({
     selector     : 'register-2',
@@ -16,13 +19,15 @@ import { fuseAnimations } from '@fuse/animations';
 export class Register2Component implements OnInit, OnDestroy
 {
     registerForm: FormGroup;
-
+    error: any;
     // Private
     private _unsubscribeAll: Subject<any>;
 
     constructor(
         private _fuseConfigService: FuseConfigService,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private _AuthService: AuthService,
+        private _Router: Router
     )
     {
         // Configure the layout
@@ -57,10 +62,13 @@ export class Register2Component implements OnInit, OnDestroy
     ngOnInit(): void
     {
         this.registerForm = this._formBuilder.group({
+            type: ['', Validators.required],
             name           : ['', Validators.required],
             email          : ['', [Validators.required, Validators.email]],
             password       : ['', Validators.required],
-            passwordConfirm: ['', [Validators.required, confirmPasswordValidator]]
+            passwordConfirm: ['', [Validators.required, confirmPasswordValidator]],
+            dob: ['', Validators.required],
+            age: ['', Validators.required, ageValidator],
         });
 
         // Update the validity of the 'passwordConfirm' field
@@ -80,6 +88,17 @@ export class Register2Component implements OnInit, OnDestroy
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    onSubmit() {
+        this._AuthService.signup(this.registerForm.value).subscribe((res: Auth) => {
+            this._AuthService.setAuth(res)
+            this._Router.navigate(['sample'])
+        }, error => {
+            this.error = error && error.error ? error.error : { message: "Something went wrong" }
+            console.log(this.error);
+        }, () => console.log('Completed')
+        )
     }
 }
 
@@ -115,4 +134,26 @@ export const confirmPasswordValidator: ValidatorFn = (control: AbstractControl):
     }
 
     return {passwordsNotMatching: true};
+};
+
+
+/**
+ * Confirm password validator
+ *
+ * @param {AbstractControl} control
+ * @returns {ValidationErrors | null}
+ */
+export const ageValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+
+    if ( !control.parent || !control )
+    {
+        return null;
+    }
+
+    const age = control.parent.get('age');
+
+    if (age.value > 17) {
+        return null
+    }
+    return {underAge: true};
 };

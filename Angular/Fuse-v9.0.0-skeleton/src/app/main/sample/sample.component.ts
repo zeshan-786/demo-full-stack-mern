@@ -24,6 +24,5 @@ export class SampleComponent
     )
     {
         this._fuseTranslationLoaderService.loadTranslations(english, turkish);
-        console.log(localStorage.getItem('token'))
     }
 }

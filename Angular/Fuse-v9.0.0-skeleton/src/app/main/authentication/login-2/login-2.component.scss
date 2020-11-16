@@ -10,6 +10,7 @@ login-2 {
 
         #login-intro {
             padding: 128px;
+            color: white;
 
             @include media-breakpoint('sm') {
                 padding: 128px 64px;
@@ -34,6 +35,7 @@ login-2 {
         }
 
         #login-form-wrapper {
+            background: white;
             width: 400px;
             min-width: 400px;
             max-width: 400px;

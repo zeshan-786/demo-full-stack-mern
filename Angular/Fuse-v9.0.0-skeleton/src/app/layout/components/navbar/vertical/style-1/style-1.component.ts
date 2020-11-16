@@ -18,6 +18,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
 {
     fuseConfig: any;
     navigation: any;
+    email: string;
 
     // Private
     private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
@@ -119,6 +120,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
             .subscribe(() => {
                 this.navigation = this._fuseNavigationService.getCurrentNavigation();
             });
+        this.email = localStorage.getItem('email')
     }
 
     /**

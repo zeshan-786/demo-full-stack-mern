@@ -20,7 +20,7 @@ module.exports = {
     } catch (error) {
         console.log("error: ", error);
         // return res.send(error)
-        return res.status( error?.status || 500 ).json({ 
+        return res.status(500).json({ 
             message: error.message ? error.message : 'Something went wrong'
         });
     }

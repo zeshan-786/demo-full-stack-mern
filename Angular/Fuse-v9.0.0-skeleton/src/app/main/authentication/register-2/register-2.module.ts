@@ -9,28 +9,24 @@ import { MatInputModule } from '@angular/material/input';
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { Register2Component } from './register-2.component';
-
-const routes = [
-    {
-        path     : '/register',
-        component: Register2Component
-    }
-];
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
     declarations: [
         Register2Component
     ],
-    imports     : [
-        RouterModule.forChild(routes),
+    imports : [
 
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
+        MatSelectModule,
 
-        FuseSharedModule
+        FuseSharedModule,
+
+        RouterModule
     ]
 })
 export class Register2Module

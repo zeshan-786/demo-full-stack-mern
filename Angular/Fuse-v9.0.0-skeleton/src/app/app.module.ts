@@ -51,8 +51,8 @@ import { AppRoutingModule } from './app-routing.module';
         // App modules
         LayoutModule,
         SampleModule,
-        // Login2Module,
-        // Register2Module
+        Login2Module,
+        Register2Module
     ],
     bootstrap   : [
         AppComponent

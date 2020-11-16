@@ -20,7 +20,7 @@ import { HorizontalLayout1Module } from 'app/layout/horizontal/layout-1/layout-1
         VerticalLayout3Module,
 
         HorizontalLayout1Module
-    ]
+    ],
 })
 export class LayoutModule
 {
