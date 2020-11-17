@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { fuseAnimations } from '@fuse/animations';
@@ -9,16 +9,19 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { ContactsService } from './contacts.service';
 import { ContactsContactFormDialogComponent } from './contact-form/contact-form.component';
+// import { AdminService } from 'app/backend-services/Admin/admin.service';
+import { User } from 'app/models/user'
+
+import { AdminService } from './admin.service';;
 
 @Component({
-    selector     : 'contacts',
-    templateUrl  : './contacts.component.html',
-    styleUrls    : ['./contacts.component.scss'],
+    selector: 'contacts',
+    templateUrl: './contacts.component.html',
+    styleUrls: ['./contacts.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    animations: fuseAnimations
 })
-export class ContactsComponent implements OnInit, OnDestroy
-{
+export class ContactsComponent implements OnInit, OnDestroy {
     dialogRef: any;
     hasSelectedContacts: boolean;
     searchInput: FormControl;
@@ -36,9 +39,9 @@ export class ContactsComponent implements OnInit, OnDestroy
     constructor(
         private _contactsService: ContactsService,
         private _fuseSidebarService: FuseSidebarService,
-        private _matDialog: MatDialog
-    )
-    {
+        private _matDialog: MatDialog,
+        private _AdminService: AdminService
+    ) {
         // Set the defaults
         this.searchInput = new FormControl('');
 
@@ -53,8 +56,7 @@ export class ContactsComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         this._contactsService.onSelectedContactsChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selectedContacts => {
@@ -68,15 +70,15 @@ export class ContactsComponent implements OnInit, OnDestroy
                 distinctUntilChanged()
             )
             .subscribe(searchText => {
-                this._contactsService.onSearchTextChanged.next(searchText);
+                console.log("Test");
+                this._AdminService.onSearchTextChanged.next(searchText);
             });
     }
 
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -89,19 +91,17 @@ export class ContactsComponent implements OnInit, OnDestroy
     /**
      * New contact
      */
-    newContact(): void
-    {
+    newContact(): void {
         this.dialogRef = this._matDialog.open(ContactsContactFormDialogComponent, {
             panelClass: 'contact-form-dialog',
-            data      : {
+            data: {
                 action: 'new'
             }
         });
 
         this.dialogRef.afterClosed()
             .subscribe((response: FormGroup) => {
-                if ( !response )
-                {
+                if (!response) {
                     return;
                 }
 
@@ -114,8 +114,26 @@ export class ContactsComponent implements OnInit, OnDestroy
      *
      * @param name
      */
-    toggleSidebar(name): void
-    {
+    toggleSidebar(name): void {
         this._fuseSidebarService.getSidebar(name).toggleOpen();
     }
+
+
+    /**
+     * Get contacts
+     *
+     * @returns {Promise<any>}
+     */
+    // getAdmins(): Promise<any> {
+    //     return new Promise((resolve, reject) => {
+    //         console.log(this.searchText);
+    //         if (this.searchText && this.searchText !== '') {
+    //             this.admins = FuseUtils.filterArrayByString(this._AdminService.getCachedAdmins(), this.searchText);
+    //         }
+    //         this.onContactsChanged.next(this.admins);
+    //         resolve(this.admins);
+    //     }
+    //     );
+    // }
+
 }

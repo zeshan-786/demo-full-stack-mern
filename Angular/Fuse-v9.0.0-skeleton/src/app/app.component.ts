@@ -116,7 +116,7 @@ export class AppComponent implements OnInit, OnDestroy
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         if (localStorage.getItem('token')) {
-            this._Router.navigate(['sample'])
+            this._Router.navigate(['admins'])
         }
     }
 

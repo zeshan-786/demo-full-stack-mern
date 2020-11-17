@@ -6,7 +6,29 @@ export interface User {
     dob?: string,
 	email: string,
     details? : string
-    type: string
+    type?: string,
+    __userType?: string,
+    createdAt: string,
+    updatedAt: string,
+
+}
+
+export interface Doctor extends User {
+    // Doctor
+    speciality?: string,
+    clinic?: object,
+} 
+
+export interface Client extends User {
+    // Client
+    pets?: []
+
+} 
+
+export interface Clinic extends User {
+    // Client
+    doctors?: [],
+    website?: string
 }
 
 export interface Auth {

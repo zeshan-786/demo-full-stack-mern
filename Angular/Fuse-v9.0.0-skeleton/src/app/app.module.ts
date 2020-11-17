@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,13 +20,15 @@ import { Login2Module } from 'app/main/authentication/login-2/login-2.module';
 import { Register2Module } from 'app/main/authentication/register-2/register-2.module';
 
 import { AppRoutingModule } from './app-routing.module';
+import { AuthTokenService } from './backend-services/interceptors/auth-token.service';
+import { ContactsModule } from './main/entities/contacts/contacts.module';
 
 
 @NgModule({
     declarations: [
         AppComponent
     ],
-    imports     : [
+    imports: [
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
@@ -52,12 +54,14 @@ import { AppRoutingModule } from './app-routing.module';
         LayoutModule,
         SampleModule,
         Login2Module,
-        Register2Module
+        Register2Module,
+        ContactsModule
     ],
-    bootstrap   : [
+
+    providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthTokenService, multi: true }],
+    bootstrap: [
         AppComponent
     ]
 })
-export class AppModule
-{
+export class AppModule {
 }

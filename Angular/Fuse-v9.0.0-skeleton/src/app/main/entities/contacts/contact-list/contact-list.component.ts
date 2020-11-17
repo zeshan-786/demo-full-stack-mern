@@ -10,6 +10,8 @@ import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/conf
 
 import { ContactsService } from '../contacts.service';
 import { ContactsContactFormDialogComponent } from '../contact-form/contact-form.component';
+import { AdminService } from '../admin.service';
+
 
 @Component({
     selector     : 'contacts-contact-list',
@@ -26,11 +28,14 @@ export class ContactsContactListComponent implements OnInit, OnDestroy
     contacts: any;
     user: any;
     dataSource: FilesDataSource | null;
-    displayedColumns = ['checkbox', 'avatar', 'name', 'email', 'phone', 'jobTitle', 'buttons'];
+    displayedColumns = ['checkbox', 'avatar', 'name', 'email', 'age', 'dob', 'updatedAt', 'buttons'];
     selectedContacts: any[];
     checkboxes: {};
     dialogRef: any;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+
+    profile = '/assets/images/avatars/profile.jpg'
+
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -43,7 +48,8 @@ export class ContactsContactListComponent implements OnInit, OnDestroy
      */
     constructor(
         private _contactsService: ContactsService,
-        public _matDialog: MatDialog
+        public _matDialog: MatDialog,
+        private _adminService: AdminService
     )
     {
         // Set the private defaults
@@ -59,20 +65,19 @@ export class ContactsContactListComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        this.dataSource = new FilesDataSource(this._contactsService);
+        this.dataSource = new FilesDataSource(this._adminService);
 
-        this._contactsService.onContactsChanged
+        this._adminService.onContactsChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(contacts => {
                 this.contacts = contacts;
-
                 this.checkboxes = {};
                 contacts.map(contact => {
-                    this.checkboxes[contact.id] = false;
+                    this.checkboxes[contact._id] = false;
                 });
             });
 
-        this._contactsService.onSelectedContactsChanged
+        this._adminService.onSelectedContactsChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(selectedContacts => {
                 for ( const id in this.checkboxes )
@@ -115,16 +120,16 @@ export class ContactsContactListComponent implements OnInit, OnDestroy
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Edit contact
+     * Edit Admin
      *
-     * @param contact
+     * @param Admin
      */
-    editContact(contact): void
+    editContact(admin): void
     {
         this.dialogRef = this._matDialog.open(ContactsContactFormDialogComponent, {
             panelClass: 'contact-form-dialog',
             data      : {
-                contact: contact,
+                user: admin,
                 action : 'edit'
             }
         });
@@ -152,7 +157,7 @@ export class ContactsContactListComponent implements OnInit, OnDestroy
                      */
                     case 'delete':
 
-                        this.deleteContact(contact);
+                        this.deleteContact(admin);
 
                         break;
                 }
@@ -215,10 +220,10 @@ export class FilesDataSource extends DataSource<any>
     /**
      * Constructor
      *
-     * @param {ContactsService} _contactsService
+     * @param {AdminService} _adminService
      */
     constructor(
-        private _contactsService: ContactsService
+        private _adminService: AdminService
     )
     {
         super();
@@ -230,7 +235,7 @@ export class FilesDataSource extends DataSource<any>
      */
     connect(): Observable<any[]>
     {
-        return this._contactsService.onContactsChanged;
+        return this._adminService.onContactsChanged;
     }
 
     /**

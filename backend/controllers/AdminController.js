@@ -10,17 +10,20 @@ module.exports = {
    * AdminController.list()
    */
 
-  list: (req, res) => {
-    let filter = req.query.where;
-    AdminModel.find(filter, req.query.fields, req.query.sort, (err, Admins) => {
-      if (err) {
-        return res.status(500).json({
-          message: "Error when getting Admins.",
-          error: err,
+  list: async (req, res) => {
+    try {
+      const Admins = await AdminModel.find(req.query.where, req.query.fields, req.query.sort).select('-salt -hash').lean()
+      if (!Admins) {
+        return res.status(404).json({
+          message: 'No Admin found'
         });
       }
       return res.json(Admins);
-    });
+    } catch (error) {
+      return res.status(500).json({
+        message: error && error.message ? error.message : 'Error when getting Admins.'
+      });
+    }
   },
 
   /**

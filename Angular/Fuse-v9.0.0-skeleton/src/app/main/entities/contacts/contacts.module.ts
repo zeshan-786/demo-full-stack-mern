@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRippleModule } from '@angular/material/core';
@@ -21,25 +20,20 @@ import { ContactsSelectedBarComponent } from './selected-bar/selected-bar.compon
 import { ContactsMainSidebarComponent } from './sidebars/main/main.component';
 import { ContactsContactFormDialogComponent } from './contact-form/contact-form.component';
 import { AuthGuard } from 'app/authetication/auth.guard';
+// import { AdminService } from 'app/backend-services/Admin/admin.service';
+import { MatSelectModule } from '@angular/material/select';
+import { AdminService } from './admin.service';
 
-const routes: Routes = [
-    {
-        path     : '**',
-        component: ContactsComponent
-    }
-];
 
 @NgModule({
-    declarations   : [
+    declarations: [
         ContactsComponent,
         ContactsContactListComponent,
         ContactsSelectedBarComponent,
         ContactsMainSidebarComponent,
         ContactsContactFormDialogComponent
     ],
-    imports        : [
-        RouterModule.forChild(routes),
-
+    imports: [
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -50,19 +44,19 @@ const routes: Routes = [
         MatRippleModule,
         MatTableModule,
         MatToolbarModule,
-
+        MatSelectModule,
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule
     ],
-    providers      : [
+    providers: [
         ContactsService,
+        AdminService,
         AuthGuard
     ],
     entryComponents: [
         ContactsContactFormDialogComponent
     ]
 })
-export class ContactsModule
-{
-}
+
+export class ContactsModule { }

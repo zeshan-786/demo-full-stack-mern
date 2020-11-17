@@ -1,8 +1,7 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-
-import { Contact } from '../contact.model';
+import { User } from '../../../../models/user'
 
 @Component({
     selector     : 'contacts-contact-form-dialog',
@@ -14,7 +13,7 @@ import { Contact } from '../contact.model';
 export class ContactsContactFormDialogComponent
 {
     action: string;
-    contact: Contact;
+    user: User;
     contactForm: FormGroup;
     dialogTitle: string;
 
@@ -36,13 +35,12 @@ export class ContactsContactFormDialogComponent
 
         if ( this.action === 'edit' )
         {
-            this.dialogTitle = 'Edit Contact';
-            this.contact = _data.contact;
+            this.dialogTitle = 'Edit User';
+            this.user = _data.user;
         }
         else
         {
             this.dialogTitle = 'New Contact';
-            this.contact = new Contact({});
         }
 
         this.contactForm = this.createContactForm();
@@ -60,18 +58,17 @@ export class ContactsContactFormDialogComponent
     createContactForm(): FormGroup
     {
         return this._formBuilder.group({
-            id      : [this.contact.id],
-            name    : [this.contact.name],
-            lastName: [this.contact.lastName],
-            avatar  : [this.contact.avatar],
-            nickname: [this.contact.nickname],
-            company : [this.contact.company],
-            jobTitle: [this.contact.jobTitle],
-            email   : [this.contact.email],
-            phone   : [this.contact.phone],
-            address : [this.contact.address],
-            birthday: [this.contact.birthday],
-            notes   : [this.contact.notes]
+            name    : [ (this.user && this.user.name) || '' ],
+            // lastName: [this.user.lastName],
+            // avatar  : [this.user.avatar],
+            // nickname: [this.user.nickname],
+            age : [this.user && this.user.age],
+            // jobTitle: [this.user.jobTitle],
+            email   : [this.user && this.user.email],
+            // phone   : [this.user.phone],
+            // address : [this.user.address],
+            dob: [ this.user && this.user.dob ],
+            type   : [ this.user && (this.user.type || this.user.__userType)]
         });
     }
 }

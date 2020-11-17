@@ -36,6 +36,10 @@ export class AuthService {
     }
   }
 
+  getAuthToken<String>() {
+    return localStorage.getItem('token')
+  }
+
   isAuthenticated() {
     if (localStorage.getItem('token') && localStorage.getItem('_id') && localStorage.getItem('email') && localStorage.getItem('type')) {
       console.log("Auth Cleared!");
