@@ -17,14 +17,20 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { Route, Switch, withRouter } from "react-router-dom";
 
 import {
-  mainListItems,
-  secondaryListItems,
+  MainListItems,
+  SecondaryListItems,
 } from "../../components/ListItem/ListItem";
 
 import AdminDashboard from "./AdminDashboard";
 import AddUser from "./addUser";
 import ContentView from "../../components/UI/ContentView/ContentView";
 import Logout from "../../components/Auth/Logout/Logout";
+import AdminsView from "./AdminsView";
+import ClientsView from "../Clients/ClientsView";
+import ClinicsView from "../Clinics/ClinicsView";
+import DoctorsView from "../Doctors/DoctorsView";
+import PetsView from "../Pets/PetsView";
+import AppointmentsView from "../Appointments/AppointmentsView";
 
 const drawerWidth = 240;
 
@@ -155,33 +161,33 @@ const Layout = (props) => {
           </IconButton>
         </div>
         <Divider />
-        <List>{<mainListItems type={props.type}/>}</List>
+        <List>{<MainListItems type={props.type}/>}</List>
         <Divider />
-        <List>{secondaryListItems}</List>
+        <List>{<SecondaryListItems type={props.type} />}</List>
       </Drawer>
       <Switch>
         <Route path="/dashboard" component={AdminDashboard} />
         <Route
           path="/admins"
-          render={() => <ContentView>View Admins</ContentView>}
+          component={AdminsView}
         />
         <Route
           path="/clinics"
-          render={() => <ContentView>View Clinics</ContentView>}
+          component={ClinicsView}
         />
         <Route
           path="/doctors"
-          render={() => <ContentView>View Doctors</ContentView>}
+          component={DoctorsView}
         />
         <Route
           path="/clients"
-          render={() => <ContentView>View Clients</ContentView>}
+          component={ClientsView}
         />
         <Route
           path="/appointments"
-          render={() => <ContentView>View Appointments</ContentView>}
+          component={AppointmentsView}
         />
-        <Route path="/pets" render={() => <ContentView>View Pets</ContentView>} />
+        <Route path="/pets" component={PetsView} />
 
         <Route path="/addPet" render={() => <ContentView>Add Pet</ContentView>} />
         <Route path="/addUser" component={AddUser} />

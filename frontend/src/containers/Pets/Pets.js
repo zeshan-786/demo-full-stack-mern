@@ -20,15 +20,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const columns = [
-    { field: 'id', headerName: 'ID' },
     { field: 'name', headerName: 'Name' },
     { field: 'dob', headerName: 'Date of Birth' },
     { field: 'breed', headerName: 'Breed' },
     { field: 'type', headerName: 'Type' },
     { field: 'owner', headerName: 'Owner' },
-    { field: 'appointments', headerName: 'Appointments' },
-    { field: 'createdAt', headerName: 'Created' },
-    { field: 'updatedAt', headerName: 'Updated' },
+    { field: 'appointments', headerName: 'Appointments' }
   ];
 
 const Pets = (props) => {
@@ -52,13 +49,8 @@ const Pets = (props) => {
   if (props.error) {
     errorMessage = <p className={classes.error}>{props.error.message}</p>;
   }
-  let authRedirect = null;
-  if (props.isAuthenticated) {
-    authRedirect = <Redirect to={"/"} />;
-  }
   return (
     <>
-      {authRedirect}
       {errorMessage}
       {data}
     </>
@@ -74,8 +66,7 @@ const mapStateToProps = (state) => {
   return {
     loading: state.pet.loading,
     error: state.pet.error,
-    pets: state.pet.pets,
-    isAuthenticated: state.auth.token !== null,
+    pets: state.pet.pets
   };
 };
 

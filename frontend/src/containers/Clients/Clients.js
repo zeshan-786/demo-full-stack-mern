@@ -20,14 +20,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const columns = [
-    { field: 'id', headerName: 'ID' },
     { field: 'name', headerName: 'Full Name' },
     { field: 'email', headerName: 'Email',  },
     { field: 'dob', headerName: 'Date of Birth' },
     { field: 'age', headerName: 'Age' },
-    { field: 'pets', headerName: 'Pets' },
-    { field: 'createdAt', headerName: 'Created' },
-    { field: 'updatedAt', headerName: 'Updated' },
+    { field: 'pets', headerName: 'Pets' }
   ];
 
 const Clients = (props) => {
@@ -51,13 +48,8 @@ const Clients = (props) => {
   if (props.error) {
     errorMessage = <p className={classes.error}>{props.error.message}</p>;
   }
-  let authRedirect = null;
-  if (props.isAuthenticated) {
-    authRedirect = <Redirect to={"/"} />;
-  }
   return (
     <>
-      {authRedirect}
       {errorMessage}
       {data}
     </>
@@ -73,8 +65,7 @@ const mapStateToProps = (state) => {
   return {
     loading: state.client.loading,
     error: state.client.error,
-    clients: state.client.clients,
-    isAuthenticated: state.auth.token !== null,
+    clients: state.client.clients
   };
 };
 

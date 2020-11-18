@@ -20,12 +20,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const columns = [
-    { field: 'id', headerName: 'ID' },
     { field: 'appointmentTime', headerName: 'Appointment Time' },
     { field: 'doctor', headerName: 'Doctor',  },
-    { field: 'pet', headerName: 'Patient' },
-    { field: 'createdAt', headerName: 'Created' },
-    { field: 'updatedAt', headerName: 'Updated' },
+    { field: 'pet', headerName: 'Patient' }
   ];
 
 const Appointments = (props) => {
@@ -49,13 +46,8 @@ const Appointments = (props) => {
   if (props.error) {
     errorMessage = <p className={classes.error}>{props.error.message}</p>;
   }
-  let authRedirect = null;
-  if (props.isAuthenticated) {
-    authRedirect = <Redirect to={"/"} />;
-  }
   return (
     <>
-      {authRedirect}
       {errorMessage}
       {data}
     </>
@@ -71,8 +63,7 @@ const mapStateToProps = (state) => {
   return {
     loading: state.appointment.loading,
     error: state.appointment.error,
-    appointments: state.appointment.appointments,
-    isAuthenticated: state.auth.token !== null,
+    appointments: state.appointment.appointments
   };
 };
 

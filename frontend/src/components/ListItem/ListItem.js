@@ -17,7 +17,7 @@ import EditIcon from "@material-ui/icons/Edit";
 
 import { NavLink } from "react-router-dom";
 
-export const mainListItems = (props) => (
+export const MainListItems = (props) => (
   <div>
     <NavLink
       style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
@@ -41,7 +41,7 @@ export const mainListItems = (props) => (
         <ListItemText primary="Appointments" />
       </ListItem>
     </NavLink>
-    {["Admin"].includes(localStorage.getItem('type')) ? (
+    {["Admin"].includes(props.type) ? (
       <NavLink
         style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
         to={"/admins"}
@@ -54,7 +54,7 @@ export const mainListItems = (props) => (
         </ListItem>
       </NavLink>
     ) : null}
-    {["Admin"].includes(localStorage.getItem('type')) ? (
+    {["Admin"].includes(props.type) ? (
       <NavLink
         style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
         to={"/clients"}
@@ -67,7 +67,7 @@ export const mainListItems = (props) => (
         </ListItem>
       </NavLink>
     ) : null}
-    {["Admin"].includes(localStorage.getItem('type')) ? (
+    {["Admin"].includes(props.type) ? (
       <NavLink
         style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
         to={"/clinics"}
@@ -81,7 +81,7 @@ export const mainListItems = (props) => (
       </NavLink>
     ) : null}
     
-    {["Admin", "Client"].includes(localStorage.getItem('type')) ? (
+    {["Admin", "Client"].includes(props.type) ? (
       <NavLink
         style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
         to={"/pets"}
@@ -94,7 +94,7 @@ export const mainListItems = (props) => (
         </ListItem>
       </NavLink>
     ) : null}
-    {["Admin", "Clinic"].includes(localStorage.getItem('type')) ? (
+    {["Admin", "Clinic"].includes(props.type) ? (
       <NavLink
         style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
         to={"/doctors"}
@@ -110,7 +110,7 @@ export const mainListItems = (props) => (
   </div>
 );
 
-export const secondaryListItems =  (props) => (
+export const SecondaryListItems = (props) => (
   <div>
     <ListSubheader inset>More options</ListSubheader>
     <NavLink
@@ -136,7 +136,7 @@ export const secondaryListItems =  (props) => (
     </ListItem>
     </NavLink>
 
-    {["Admin", "Clinic"].includes(localStorage.getItem('type')) ? (
+    {["Admin", "Clinic"].includes(props.type) ? (
       <NavLink
         style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
         to={"/addUser"}
