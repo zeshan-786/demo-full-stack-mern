@@ -20,15 +20,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const columns = [
-    { field: 'id', headerName: 'ID' },
     { field: 'name', headerName: 'Full Name' },
     { field: 'email', headerName: 'Email',  },
     { field: 'dob', headerName: 'Date of Birth' },
     { field: 'age', headerName: 'Age' },
     { field: 'clinic', headerName: 'Clinic' },
-    { field: 'speciality', headerName: 'Speciality' },
-    { field: 'createdAt', headerName: 'Created' },
-    { field: 'updatedAt', headerName: 'Updated' },
+    { field: 'speciality', headerName: 'Speciality' }
   ];
 
 const Doctors = (props) => {
@@ -52,13 +49,8 @@ const Doctors = (props) => {
   if (props.error) {
     errorMessage = <p className={classes.error}>{props.error.message}</p>;
   }
-  let authRedirect = null;
-  if (props.isAuthenticated) {
-    authRedirect = <Redirect to={"/"} />;
-  }
   return (
     <>
-      {authRedirect}
       {errorMessage}
       {data}
     </>

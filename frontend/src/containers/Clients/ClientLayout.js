@@ -17,8 +17,8 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { Route, Switch, withRouter } from "react-router-dom";
 
 import {
-  mainListItems,
-  secondaryListItems,
+  MainListItems,
+  SecondaryListItems,
 } from "../../components/ListItem/ListItem";
 
 import ClientDashboard from "./ClientDashboard";
@@ -155,9 +155,9 @@ const Layout = (props) => {
           </IconButton>
         </div>
         <Divider />
-        <List>{<mainListItems type={props.type}/>}</List>
+        <List>{<MainListItems type={props.type}/>}</List>
         <Divider />
-        <List>{secondaryListItems}</List>
+        <List>{<SecondaryListItems type={props.type} />}</List>
       </Drawer>
       <Switch>
         <Route path="/dashboard" component={ClientDashboard} />

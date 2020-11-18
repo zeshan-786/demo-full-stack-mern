@@ -7,6 +7,8 @@ import DataTable from "../../components/UI/Table/Table";
 import { makeStyles } from "@material-ui/core/styles";
 
 import * as actions from "../../store/actions/index";
+import { formatDateTime, formatDate } from "../../shared/utility";
+
 
 const useStyles = makeStyles((theme) => ({
   error: {
@@ -20,14 +22,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const columns = [
-    { field: 'id', headerName: 'ID' },
-    { field: 'name', headerName: 'Full Name' },
-    { field: 'email', headerName: 'Email',  },
-    { field: 'dob', headerName: 'Date of Birth' },
-    { field: 'age', headerName: 'Age' },
-    { field: 'createdAt', headerName: 'Created' },
-    { field: 'updatedAt', headerName: 'Updated' },
-  ];
+  { field: "name", headerName: "Full Name" },
+  { field: "email", headerName: "Email" },
+  { field: "dob", headerName: "Date of Birth" },
+  { field: "age", headerName: "Age" },
+];
 
 const Admins = (props) => {
   const classes = useStyles();
@@ -37,9 +36,21 @@ const Admins = (props) => {
 
   let data = null;
   if (props.admins) {
-    data = <DataTable rows={props.admins.map( elm => {
-        return { ...elm, id: elm._id }
-    })} columns={columns} pageSize={props.admins.length}/>
+    data = (
+      <DataTable
+        rows={props.admins.map((elm) => {
+          return {
+            ...elm,
+            id: elm._id,
+            dob: formatDate(elm.dob),
+            createdAt: formatDateTime(elm.createdAt),
+            updatedAt: formatDateTime(elm.updatedAt),
+          };
+        })}
+        columns={columns}
+        pageSize={props.admins.length}
+      />
+    );
   }
 
   if (props.loading) {
@@ -50,18 +61,15 @@ const Admins = (props) => {
   if (props.error) {
     errorMessage = <p className={classes.error}>{props.error.message}</p>;
   }
-  let authRedirect = null;
-  if (props.isAuthenticated) {
-    authRedirect = <Redirect to={"/"} />;
-  }
   return (
     <>
-      {authRedirect}
       {errorMessage}
       {data}
     </>
   );
 };
+
+
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -73,11 +81,10 @@ const mapStateToProps = (state) => {
     loading: state.admin.loading,
     error: state.admin.error,
     admins: state.admin.admins,
-    isAuthenticated: state.auth.token !== null,
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps // or put null here if you do not have actions to dispatch
-)(Admins)
+)(Admins);

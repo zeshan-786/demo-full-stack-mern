@@ -10,7 +10,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { ContactsService } from './contacts.service';
 import { ContactsContactFormDialogComponent } from './contact-form/contact-form.component';
 // import { AdminService } from 'app/backend-services/Admin/admin.service';
-import { User } from 'app/models/user'
+// import { User } from 'app/models/user'
 
 import { AdminService } from './admin.service';;
 
