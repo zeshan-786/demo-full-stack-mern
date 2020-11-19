@@ -1,10 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import DataTable from "../../components/UI/Table/Table";
 
-import { makeStyles } from "@material-ui/core/styles";
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+
+import Chip from '@material-ui/core/Chip';
 
 import * as actions from "../../store/actions/index";
 
@@ -16,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
     color: "red",
     padding: "15px",
     fontWeight: "bold",
+  },
+  button: {
+    margin: theme.spacing(1)
   },
 }));
 
@@ -29,16 +36,37 @@ const columns = [
   ];
 
 const Pets = (props) => {
+  const [ selectedRow ,setSelectedRow ] = useState(null)
   const classes = useStyles();
   useEffect(() => {
     props.loadPets();
   }, []);
 
+  // useEffect(() => {
+  //   props.loadPets();
+  // }, [props.pets]);
+
+
+  
+  const getSelectedRow = ( params ) => {
+    console.log('Selected Row :: ',params);
+    setSelectedRow({ id : params.data._id, ...params })
+  }
+
+  const handleDelete = ( id ) => {
+    console.info('You clicked to Delete.', id);
+    props.deletePet( id )
+  };
+
+  const handleEdit = ( pet ) => {
+    console.info('You clicked to Edit.', pet);
+  };
+
   let data = null;
   if (props.pets) {
-    data = <DataTable rows={props.pets.map( elm => {
+    data = <DataTable onRowSelected={getSelectedRow} columns={columns} rows={props.pets.map( elm => {
         return { ...elm, id: elm._id, appointments: elm.appointments.join(', ') }
-    })} columns={columns} pageSize={props.pets.length}/>
+    })} rowsPerPageOptions={[ 10, 25, 50 ]}/>
   }
 
   if (props.loading) {
@@ -51,6 +79,33 @@ const Pets = (props) => {
   }
   return (
     <>
+      { selectedRow && selectedRow.id ? (<div className={classes.buttons}>
+        <Button
+        variant="contained"
+        color="primary"
+        className={classes.button}
+        startIcon={<DeleteIcon />}
+        onClick={()=> handleDelete(selectedRow.id)}
+      >
+        Delete
+      </Button>
+      <Button
+      variant="contained"
+      color="primary"
+      className={classes.button}
+      startIcon={<EditIcon />}
+      onClick={()=>handleEdit(selectedRow)}
+    >
+      Edit
+    </Button>
+    <Chip
+        label={ `Edit | ${selectedRow.id}`}
+        onClick={()=>handleEdit(selectedRow)}
+        onDelete={()=>handleDelete(selectedRow.id)}
+        variant="outlined"
+        deleteIcon={<DeleteIcon/>}
+      />
+      </div>) : null }
       {errorMessage}
       {data}
     </>
@@ -60,6 +115,7 @@ const Pets = (props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadPets: () => dispatch(actions.fetchPets()),
+    deletePet: ( id ) => dispatch(actions.deletePet( id ))
   };
 };
 const mapStateToProps = (state) => {

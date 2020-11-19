@@ -149,5 +149,18 @@ export const SecondaryListItems = (props) => (
         </ListItem>
       </NavLink>
     ) : null}
+    {["Admin", "Client"].includes(props.type) ? (
+      <NavLink
+        style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
+        to={"/addPet"}
+      >
+        <ListItem button>
+          <ListItemIcon>
+            <Pets />
+          </ListItemIcon>
+          <ListItemText primary="Add Pet" />
+        </ListItem>
+      </NavLink>
+    ) : null}
   </div>
 );

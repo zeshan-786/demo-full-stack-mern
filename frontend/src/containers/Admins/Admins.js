@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import DataTable from "../../components/UI/Table/Table";
 
@@ -32,7 +31,7 @@ const Admins = (props) => {
   const classes = useStyles();
   useEffect(() => {
     props.loadAdmins();
-  }, []);
+  }, [ ]);
 
   let data = null;
   if (props.admins) {
@@ -68,8 +67,6 @@ const Admins = (props) => {
     </>
   );
 };
-
-
 
 const mapDispatchToProps = (dispatch) => {
   return {

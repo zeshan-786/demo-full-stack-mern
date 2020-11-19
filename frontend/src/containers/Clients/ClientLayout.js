@@ -25,6 +25,10 @@ import ClientDashboard from "./ClientDashboard";
 import ContentView from "../../components/UI/ContentView/ContentView";
 
 import Logout from "../../components/Auth/Logout/Logout";
+import Profile from "../../components/Profile/Profile";
+import AppointmentsView from "../Appointments/AppointmentsView";
+import PetsView from "../Pets/PetsView";
+import AddPet from "../Pets/AddPet";
 
 const drawerWidth = 240;
 
@@ -161,15 +165,15 @@ const Layout = (props) => {
       </Drawer>
       <Switch>
         <Route path="/dashboard" component={ClientDashboard} />
-        <Route path="/pets" render={() => <ContentView>View Pets</ContentView>} />
+        <Route path="/pets" component={PetsView} />
         <Route
           path="/appointments"
-          render={() => <ContentView>View Appointments</ContentView>}
+          component={AppointmentsView}
         />
-        <Route path="/addPet" render={() => <ContentView>Add Pet</ContentView>} />
+        <Route path="/addPet" component={AddPet}/>
         <Route
           path="/profile"
-          render={() => <ContentView>View Profile</ContentView>}
+          component={Profile}
         />
         <Route
           path="/editProfile"

@@ -54,14 +54,18 @@ export const auth = ( authData, isSignup ) => {
         axios.post(url, authData)
                 .then( res => {
                     if ( res && res.data ) {
-                        const expiryDate = new Date(new Date().getTime() + 60 * 60 * 1000)
-                        localStorage.setItem('token', res.data.token)
-                        localStorage.setItem('expiryDate', expiryDate)
-                        localStorage.setItem('userId', res.data._id)
-                        localStorage.setItem('email', res.data.email)
-                        localStorage.setItem('type', res.data.type)
-                        dispatch(authSuccess( res.data.token, res.data._id, res.data.type))
-                        dispatch(checkAuthTimeout( 60 * 60 ))   
+                        if (!authData.isAdmin) {
+                            const expiryDate = new Date(new Date().getTime() + 60 * 60 * 1000)
+                            localStorage.setItem('token', res.data.token)
+                            localStorage.setItem('expiryDate', expiryDate)
+                            localStorage.setItem('userId', res.data._id)
+                            localStorage.setItem('email', res.data.email)
+                            localStorage.setItem('type', res.data.type)
+                            dispatch(authSuccess( res.data.token, res.data._id, res.data.type))
+                            dispatch(checkAuthTimeout( 60 * 60 ))     
+                        } else {
+                            dispatch(authFail({ message: "User added successfully" }))
+                        } 
                     } else {
                         dispatch(authFail({ message : "Something went wrong" })) 
                     }

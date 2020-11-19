@@ -71,7 +71,7 @@ module.exports = {
       .catch( err => {
         console.log("Error while Client Update: ", err);
       })
-    return res.status(201).json(pet);
+    return res.status(201).json(Pet);
   },
 
   /**
