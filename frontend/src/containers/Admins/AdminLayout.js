@@ -31,6 +31,8 @@ import ClinicsView from "../Clinics/ClinicsView";
 import DoctorsView from "../Doctors/DoctorsView";
 import PetsView from "../Pets/PetsView";
 import AppointmentsView from "../Appointments/AppointmentsView";
+import Profile from "../../components/Profile/Profile";
+import AddPet from "../Pets/AddPet";
 
 const drawerWidth = 240;
 
@@ -189,12 +191,12 @@ const Layout = (props) => {
         />
         <Route path="/pets" component={PetsView} />
 
-        <Route path="/addPet" render={() => <ContentView>Add Pet</ContentView>} />
+        <Route path="/addPet" component={AddPet} />
         <Route path="/addUser" component={AddUser} />
 
         <Route
           path="/profile"
-          render={() => <ContentView>View Profile</ContentView>}
+          component={Profile}
         />
         <Route
           path="/editProfile"

@@ -18,7 +18,9 @@ export {
 } from './doctor'
 
 export {
-    fetchPets
+    fetchPets,
+    addPet,
+    deletePet
 } from './pet'
 
 export {
