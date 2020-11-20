@@ -89,13 +89,10 @@ export const addPet = (pet) => {
         },
       })
       .then((res) => {
-        if (res && res.data) {
           dispatch(addPetsSuccess(res.data));
-        } else {
-          dispatch(addPetsFail({ message: "Something went wrong" }));
-        }
       })
       .catch((err) => {
+          console.log(err);
         if (err.response && err.response.data) {
           // client received an error response (5xx, 4xx)
           dispatch(addPetsFail(err.response.data));
@@ -142,6 +139,7 @@ export const deletePet = (id) => {
         }
       })
       .catch((err) => {
+          console.log("Error in delete: ",err);
         if (err.response && err.response.data) {
           // client received an error response (5xx, 4xx)
           dispatch(deletePetFail(err.response.data));

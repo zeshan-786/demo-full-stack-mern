@@ -49,37 +49,51 @@ module.exports = {
   /**
    * AdminController.update()
    */
-  update: (req, res) => {
+  update: async (req, res) => {
     const id = req.query.id || req.user._id
-    AdminModel.findOne({ _id: id }, (err, Admin) => {
-      if (err) {
-        return res.status(500).json({
-          message: "Error when getting Admin",
-          error: err,
-        });
+    // Checking if user already exist with same email
+    try {
+      if (req.body.email) {
+        const dupCheck = await AdminModel.findOne({ email: req.body.email })
+        if(dupCheck) throw Error('User already exists with this email!') 
       }
-      if (!Admin) {
-        return res.status(404).json({
-          message: "No such Admin",
-        });
-      }
-
-      Admin.name = req.body.name ? req.body.name : Admin.name;
-      Admin.email = req.body.email ? req.body.email : Admin.email;
-      Admin.age = req.body.age ? req.body.age : Admin.age;
-      Admin.dob = req.body.dob ? req.body.dob : Admin.dob;
-      Admin.details = req.body.details ? req.body.details : Admin.details;
-
-      Admin.save((err, Admin) => {
+      AdminModel.findOne({ _id: id }, (err, Admin) => {
         if (err) {
           return res.status(500).json({
-            message: "Error when updating Admin.",
+            message: "Error when getting Admin",
             error: err,
           });
         }
-        return res.json(Admin);
+        if (!Admin) {
+          return res.status(404).json({
+            message: "No such Admin",
+          });
+        }
+  
+        Admin.name = req.body.name ? req.body.name : Admin.name;
+        Admin.email = req.body.email ? req.body.email : Admin.email;
+        Admin.age = req.body.age ? req.body.age : Admin.age;
+        Admin.dob = req.body.dob ? req.body.dob : Admin.dob;
+        Admin.details = req.body.details ? req.body.details : Admin.details;
+  
+        Admin.save((err, Admin) => {
+          if (err) {
+            return res.status(500).json({
+              message: "Error when updating Admin.",
+              error: err,
+            });
+          }
+          return res.json(Admin);
+        });
       });
-    });
+      
+    } catch (error) {
+      return res
+        .status(error.status || 500)
+        .send({
+          message: error.message ? error.message : "Something went wrong",
+        });
+    }
   },
 
   /**

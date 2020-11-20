@@ -33,6 +33,9 @@ import PetsView from "../Pets/PetsView";
 import AppointmentsView from "../Appointments/AppointmentsView";
 import Profile from "../../components/Profile/Profile";
 import AddPet from "../Pets/AddPet";
+import SetPassword from "../../components/Profile/SetPassword";
+import EditUser from "../../components/Profile/EditUser";
+import AddAppointment from "../Appointments/AddAppointment";
 
 const drawerWidth = 240;
 
@@ -138,7 +141,7 @@ const Layout = (props) => {
           </Typography>
           <IconButton
             color="inherit"
-            onClick={() => console.log("Profile Button Clicked")}
+            onClick={() => props.history.push("profile")}
           >
             <AccountCircleIcon />
           </IconButton>
@@ -163,45 +166,32 @@ const Layout = (props) => {
           </IconButton>
         </div>
         <Divider />
-        <List>{<MainListItems type={props.type}/>}</List>
+        <List>{<MainListItems type={props.type} />}</List>
         <Divider />
         <List>{<SecondaryListItems type={props.type} />}</List>
       </Drawer>
       <Switch>
         <Route path="/dashboard" component={AdminDashboard} />
-        <Route
-          path="/admins"
-          component={AdminsView}
-        />
-        <Route
-          path="/clinics"
-          component={ClinicsView}
-        />
-        <Route
-          path="/doctors"
-          component={DoctorsView}
-        />
-        <Route
-          path="/clients"
-          component={ClientsView}
-        />
-        <Route
-          path="/appointments"
-          component={AppointmentsView}
-        />
+        <Route path="/admins" component={AdminsView} />
+        <Route path="/clinics" component={ClinicsView} />
+        <Route path="/doctors" component={DoctorsView} />
+        <Route path="/clients" component={ClientsView} />
+        <Route path="/appointments" component={AppointmentsView} />
         <Route path="/pets" component={PetsView} />
 
         <Route path="/addPet" component={AddPet} />
+
         <Route path="/addUser" component={AddUser} />
+        <Route path="/profile" component={Profile} />
+        <Route path="/setPassword" component={SetPassword} />
 
         <Route
-          path="/profile"
-          component={Profile}
-        />
-        <Route
           path="/editProfile"
-          render={() => <ContentView>Edit Profile</ContentView>}
+          // render={() => <ContentView>Edit Profile</ContentView>}
+          component={EditUser}
         />
+
+        <Route path="/addAppointment" component={AddAppointment} />
         <Route path="/logout" component={Logout} />
         <Route path="/" exact component={AdminDashboard} />
       </Switch>
@@ -209,4 +199,4 @@ const Layout = (props) => {
   );
 };
 
-export default withRouter(Layout)
+export default withRouter(Layout);

@@ -14,6 +14,8 @@ import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 
 import EditIcon from "@material-ui/icons/Edit";
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
+import AlarmOnIcon from '@material-ui/icons/AlarmOn';
 
 import { NavLink } from "react-router-dom";
 
@@ -126,6 +128,17 @@ export const SecondaryListItems = (props) => (
     </NavLink>
     <NavLink
       style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
+      to={"/setPassword"}
+    >
+    <ListItem button>
+      <ListItemIcon>
+        <VpnKeyIcon />
+      </ListItemIcon>
+      <ListItemText primary="Set Password" />
+    </ListItem>
+    </NavLink>
+    <NavLink
+      style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
       to={"/editProfile"}
     >
     <ListItem button>
@@ -159,6 +172,19 @@ export const SecondaryListItems = (props) => (
             <Pets />
           </ListItemIcon>
           <ListItemText primary="Add Pet" />
+        </ListItem>
+      </NavLink>
+    ) : null}
+    {["Admin", "Clinic"].includes(props.type) ? (
+      <NavLink
+        style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
+        to={"/addAppointment"}
+      >
+        <ListItem button>
+          <ListItemIcon>
+            <AlarmOnIcon />
+          </ListItemIcon>
+          <ListItemText primary="Add Appointment" />
         </ListItem>
       </NavLink>
     ) : null}

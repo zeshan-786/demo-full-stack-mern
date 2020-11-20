@@ -59,6 +59,11 @@ module.exports = {
     try {
       const id =
         req.query.id || req.user.__userType !== "Admin" ? req.user._id : null;
+      // Checking if user already exist with same email
+      if (req.body.email) {
+        const dupCheck = await ClientModel.findOne({ email: req.body.email })
+        if(dupCheck) throw Error('User already exists with this email!') 
+      }
       const User = await ClientModel.findOne({ _id: id }).select("-salt -hash");
       if (!User) {
         return res.status(404).json({

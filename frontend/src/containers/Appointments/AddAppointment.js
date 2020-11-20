@@ -3,8 +3,8 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import PetIcon from "@material-ui/icons/PetsOutlined";
-import Typography from "@material-ui/core/Typography";
+import AlarmOnIcon from '@material-ui/icons/AlarmOn';
+
 
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
@@ -52,33 +52,25 @@ const useStyles = makeStyles((theme) => ({
     padding: "15px",
     fontWeight: "bold",
   },
-  center: { margin: "5px auto" },
+  center: {margin: '5px auto'}
 }));
 
-const AddPet = (props) => {
+const AddAppointment = (props) => {
   const classes = useStyles();
-  const [type, setType] = useState({ value: "" });
-  const [breed, setBreed] = useState({ value: "" });
-  const [owner, setOwner] = useState({ value: "" });
-  const [name, setName] = useState({ value: "" });
-  const [dob, setDob] = useState({ value: "2000-05-24" });
+  const [doctor, setDoctor] = useState({ value: "" });
+  const [pet, setPet] = useState({ value: "" });
+  const [appointmentTime, setAppointmentTime] = useState({ value: "" });
 
   const onFieldChange = (event, fieldName) => {
     switch (fieldName) {
-      case "name":
-        setName({ value: event.target.value });
+      case "doctor":
+        setDoctor({ value: event.target.value });
         break;
-      case "type":
-        setType({ value: event.target.value });
+      case "pet":
+        setPet({ value: event.target.value });
         break;
-      case "breed":
-        setBreed({ value: event.target.value });
-        break;
-      case "owner":
-        setOwner({ value: event.target.value });
-        break;
-      case "dob":
-        setDob({ value: event.target.value });
+      case "appointmentTime":
+        setAppointmentTime({ value: event.target.value });
         break;
       default:
         break;
@@ -87,50 +79,39 @@ const AddPet = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    props.onAddPet({
-      breed: breed.value,
-      name: name.value,
-      dob: dob.value,
-      type: type.value,
-      owner: owner.value ? owner.value : undefined
+    props.onAuth({
+      pet: pet.value,
+      doctor: doctor.value,
+      appointmentTime: appointmentTime.value,
     });
-    props.history.push("pets");
   };
-
-  let owners = null;
-  if (props.type === "Admin") {
-    owners = (
-      <FormControl variant="outlined" margin="normal" required fullWidth>
-        <InputLabel id="demo-simple-select-outlined-label">Owner</InputLabel>
-        <Select
-          name="owner"
-          onChange={(event) => onFieldChange(event, "owner")}
-          label="Owner"
-          value={owner.value}
-        >
-          {props.owners.map((owner) => {
-            return <MenuItem value={owner._id}>{owner.name}</MenuItem>;
-          })}
-        </Select>
-      </FormControl>
-    );
-  }
 
   let form = (
     <>
       <FormControl variant="outlined" margin="normal" required fullWidth>
-        <InputLabel id="demo-simple-select-outlined-label">Type</InputLabel>
+        <InputLabel id="demo-simple-select-outlined-label">Pet</InputLabel>
         <Select
-          name="type"
-          onChange={(event) => onFieldChange(event, "type")}
-          label="Type"
-          value={type.value}
-          required
+          name="pet"
+          onChange={(event) => onFieldChange(event, "pet")}
+          label="Pet"
+          value={pet.value}
         >
-          <MenuItem value={"Cat"}>Cat</MenuItem>
-          <MenuItem value={"Dog"}>Dog</MenuItem>
-          <MenuItem value={"Horse"}>Horse</MenuItem>
-          <MenuItem value={"Bird"}>Bird</MenuItem>
+          {props.pets.map( pet => {
+             return  <MenuItem value={pet._id}>{pet.name}</MenuItem>
+          })}
+        </Select>
+      </FormControl>
+      <FormControl variant="outlined" margin="normal" required fullWidth>
+        <InputLabel id="demo-simple-select-outlined-label">Doctor</InputLabel>
+        <Select
+          name="doctor"
+          onChange={(event) => onFieldChange(event, "doctor")}
+          label="Doctor"
+          value={doctor.value}
+        >
+          {props.doctors.map( doc => {
+             return  <MenuItem value={doc._id}>{doc.name}</MenuItem>
+          })}
         </Select>
       </FormControl>
       <TextField
@@ -138,42 +119,16 @@ const AddPet = (props) => {
         margin="normal"
         required
         fullWidth
-        name="name"
-        label="Full Name"
-        type="text"
-        id="name"
-        autoComplete="name"
-        value={name.value}
-        onChange={(event) => onFieldChange(event, "name")}
-      />
-      <TextField
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        name="breed"
-        label="Breed"
-        type="text"
-        id="breed"
-        value={breed.value}
-        onChange={(event) => onFieldChange(event, "breed")}
-      />
-      <TextField
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        label="Date of Birth"
-        type="date"
-        name="dob"
+        label="Appointment Time"
+        type="datetime-local"
+        name="appointmentTime"
         className={classes.textField}
         InputLabelProps={{
           shrink: true,
         }}
-        value={dob.value}
-        onChange={(event) => onFieldChange(event, "dob")}
+        value={appointmentTime.value}
+        onChange={(event) => onFieldChange(event, "appointmentTime")}
       />
-      {owners}
     </>
   );
 
@@ -188,8 +143,8 @@ const AddPet = (props) => {
   return (
     <ContentView>
       <CssBaseline />
-      <Avatar className={[classes.avatar, classes.center].join(" ")}>
-        <PetIcon />
+      <Avatar className={[classes.avatar, classes.center].join(' ')}>
+        <AlarmOnIcon />
       </Avatar>
       {errorMessage}
       <form className={classes.form} noValidate>
@@ -201,7 +156,7 @@ const AddPet = (props) => {
           onClick={handleSubmit}
           startIcon={<SaveIcon />}
         >
-          Save Pet
+          Schedule Appointment
         </Button>
       </form>
     </ContentView>
@@ -210,19 +165,19 @@ const AddPet = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAddPet: (pet) => dispatch(actions.addPet(pet)),
+    onAuth: (data) => dispatch(actions.auth(data, true)),
   };
 };
 const mapStateToProps = (state) => {
   return {
-    loading: state.pet.loading,
-    error: state.pet.error,
-    type: state.auth.type,
-    owners: state.client.clients,
+    loading: state.appointment.loading,
+    error: state.appointment.error,
+    doctors: state.doctor.doctors,
+    pets: state.pet.pets
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps // or put null here if you do not have actions to dispatch
-)(AddPet);
+)(AddAppointment);

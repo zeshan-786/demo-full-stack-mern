@@ -2,7 +2,10 @@ export {
     auth,
     logout,
     setAuthRedirectPath,
-    authCheckState
+    authCheckState,
+    getProfile,
+    setPassword,
+    editUser
 } from './auth'
 
 export {

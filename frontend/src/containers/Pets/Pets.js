@@ -38,13 +38,16 @@ const columns = [
 const Pets = (props) => {
   const [ selectedRow ,setSelectedRow ] = useState(null)
   const classes = useStyles();
+
+  const { pets } = props
+
   useEffect(() => {
     props.loadPets();
   }, []);
 
-  // useEffect(() => {
-  //   props.loadPets();
-  // }, [props.pets]);
+  useEffect(() => {
+    console.log(pets);
+  }, [props.pets]);
 
 
   
@@ -63,8 +66,8 @@ const Pets = (props) => {
   };
 
   let data = null;
-  if (props.pets) {
-    data = <DataTable onRowSelected={getSelectedRow} columns={columns} rows={props.pets.map( elm => {
+  if (pets?.length) {
+    data = <DataTable onRowSelected={getSelectedRow} columns={columns} rows={pets.map( elm => {
         return { ...elm, id: elm._id, appointments: elm.appointments.join(', ') }
     })} rowsPerPageOptions={[ 10, 25, 50 ]}/>
   }
@@ -75,11 +78,11 @@ const Pets = (props) => {
 
   let errorMessage = null;
   if (props.error) {
-    errorMessage = <p className={classes.error}>{props.error.message}</p>;
+    errorMessage = <p className={classes.error}>{props.error?.message}</p>;
   }
   return (
     <>
-      { selectedRow && selectedRow.id ? (<div className={classes.buttons}>
+      { selectedRow?.id ? (<div className={classes.buttons}>
         <Button
         variant="contained"
         color="primary"

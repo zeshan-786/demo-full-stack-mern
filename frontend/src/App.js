@@ -7,6 +7,12 @@ import * as actions from "./store/actions/index";
 
 import asyncComponent from "./hoc/asyncComponent/asyncComponent"
 
+
+const Profile = asyncComponent(() => {
+  return import("./components/Profile/Profile");
+});
+
+
 const Signin = asyncComponent(() => {
   return import("./components/Auth/signin");
 });
@@ -28,6 +34,12 @@ const App = (props) => {
     props.onTryAutoLogin();
   }, []);
 
+    useEffect(() => {
+      if (props.type) {
+        props.getProfile() 
+      }
+    }, [props.type]);
+
   let Home = <h1>No view</h1>;
   switch (props.type) {
     case "Admin":
@@ -37,10 +49,10 @@ const App = (props) => {
       Home = ClientLayout;
       break;
     case "Clinic":
-      Home = <h1>Clinic</h1>;
+      Home = Profile
       break;
     case "Doctor":
-      Home = <h1>Doctor G</h1>;
+      Home = Profile
       break;
 
     default:
@@ -55,7 +67,7 @@ const App = (props) => {
     </Switch>
   );
   if (props.isAuthenticated) {
-    routes = <Home type={props.type} />;
+    routes = <Home type={props.type} user={props.user} />;
   }
   return (
     <div className="App">
@@ -68,12 +80,14 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.auth.token !== null,
-    type: state.auth.type
+    type: state.auth.type,
+    user: state.auth.user
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getProfile: () => dispatch(actions.getProfile()),
     onTryAutoLogin: () => dispatch(actions.authCheckState()),
   };
 };

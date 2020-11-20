@@ -62,7 +62,7 @@ const AddUser = (props) => {
   const [password, setpassword] = useState({ value: "" });
   const [role, setRole] = useState({ value: "Client" });
   const [name, setName] = useState({ value: "" });
-  const [dob, setDob] = useState({ value: "2000-05-24" });
+  const [dob, setDob] = useState({ value: "2000-01-01" });
 
   const onFieldChange = (event, fieldName) => {
     switch (fieldName) {
@@ -186,14 +186,10 @@ const AddUser = (props) => {
       <Avatar className={[classes.avatar, classes.center].join(' ')}>
         <LockOutlinedIcon />
       </Avatar>
-      {/* <Typography component="h1" variant="h5">
-        Add User
-      </Typography> */}
       {errorMessage}
       <form className={classes.form} noValidate>
         {form}
         <Button
-          fullWidth
           variant="contained"
           color="primary"
           className={classes.submit}
