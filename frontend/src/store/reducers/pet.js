@@ -27,12 +27,11 @@ const fetchPetsFail = ( state, action ) => {
 }
 
 const addPetStart = ( state, action ) => {
-    return updateObject( state, { error: null, loading: true, pet: null } )
+    return updateObject( state, { error: null, loading: true} )
 }
 
 const addPetSuccess = ( state, action ) => {
     return updateObject( state, { 
-        pets: [ ...state.pets, action.pet  ],
         error: { message: "Pet added successfully" }, 
         loading: false
     })

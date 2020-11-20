@@ -12,7 +12,7 @@ const fields = {
 	 	type: Schema.Types.ObjectId,
 	 	ref: 'Pet'
 	},
-	'details' : String
+	'details' : Schema.Types.Mixed
 }
 
 let AppointmentSchema = new Schema(fields, { timestamps: true });

@@ -62,7 +62,7 @@ const SignUp = (props) => {
   const [password, setpassword] = useState({ value: "" });
   const [role, setRole] = useState({ value: "Client" });
   const [name, setName] = useState({ value: "" });
-  const [dob, setDob] = useState({ value: "2000-05-24" });
+  const [dob, setDob] = useState({ value: "2000-01-01" });
 
   const onFieldChange = (event, fieldName) => {
     switch (fieldName) {

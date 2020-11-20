@@ -29,6 +29,8 @@ import Profile from "../../components/Profile/Profile";
 import AppointmentsView from "../Appointments/AppointmentsView";
 import PetsView from "../Pets/PetsView";
 import AddPet from "../Pets/AddPet";
+import SetPassword from "../../components/Profile/SetPassword";
+import EditUser from "../../components/Profile/EditUser";
 
 const drawerWidth = 240;
 
@@ -134,7 +136,7 @@ const Layout = (props) => {
           </Typography>
           <IconButton
             color="inherit"
-            onClick={() => console.log("Profile Button Clicked")}
+            onClick={() => props.history.push("profile")}
           >
             <AccountCircleIcon />
           </IconButton>
@@ -159,26 +161,22 @@ const Layout = (props) => {
           </IconButton>
         </div>
         <Divider />
-        <List>{<MainListItems type={props.type}/>}</List>
+        <List>{<MainListItems type={props.type} />}</List>
         <Divider />
         <List>{<SecondaryListItems type={props.type} />}</List>
       </Drawer>
       <Switch>
         <Route path="/dashboard" component={ClientDashboard} />
         <Route path="/pets" component={PetsView} />
-        <Route
-          path="/appointments"
-          component={AppointmentsView}
-        />
-        <Route path="/addPet" component={AddPet}/>
-        <Route
-          path="/profile"
-          component={Profile}
-        />
+        <Route path="/appointments" component={AppointmentsView} />
+        <Route path="/addPet" component={AddPet} />
+        <Route path="/profile" component={Profile} />
         <Route
           path="/editProfile"
-          render={() => <ContentView>Edit Profile</ContentView>}
+          // render={() => <ContentView>Edit Profile</ContentView>}
+          component={EditUser}
         />
+        <Route path="/setPassword" component={SetPassword} />
         <Route path="/logout" component={Logout} />
         <Route path="/" exact component={ClientDashboard} />
       </Switch>

@@ -22,3 +22,11 @@ export const formatDate = (date) => {
       day: "2-digit"
     }).format(new Date(date));
 };
+
+export const formatDateNumeric = (date) => {
+    return Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).format(new Date(date));
+};

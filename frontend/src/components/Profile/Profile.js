@@ -7,6 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+import { connect } from "react-redux";
+
 import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles({
@@ -35,18 +37,18 @@ const Profile = (props) => {
     <ContentView>
     <Card className={classes.root} variant="outlined">
       <CardContent>
-      <Avatar alt="John Doe" style={{ margin: '5px auto' }} > J </Avatar>
+      <Avatar alt="John Doe" style={{ margin: '5px auto' }} > { props.user?.name[0] } </Avatar>
         <Typography className={classes.title} component="h1" color="textSecondary" gutterBottom>
-          John Doe
+          {props.user.name}
         </Typography>
         <Typography variant="h5" component="h2">
-          john@gmail.com
+          {props.user.email}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          { new Date().toLocaleDateString() }
+          { new Date(props.user.dob).toLocaleDateString() }
         </Typography>
         <Typography variant="body2" component="p">
-          25 years old
+          {props.user.age} years old
           <br />
         </Typography>
       </CardContent>
@@ -58,4 +60,11 @@ const Profile = (props) => {
   );
 }
 
-export default  Profile
+const mapStateToProps = (state) => {
+    return {
+      user: state.auth.user
+    };
+  };
+
+
+export default connect(mapStateToProps)(Profile)
