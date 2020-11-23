@@ -4,8 +4,6 @@ import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import LockOutlinedIcon from "@material-ui/icons/PersonAdd";
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
 
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
@@ -53,16 +51,19 @@ const useStyles = makeStyles((theme) => ({
     padding: "15px",
     fontWeight: "bold",
   },
-  center: {margin: '5px auto'}
+  center: { margin: "5px auto" },
 }));
 
 const AddUser = (props) => {
   const classes = useStyles();
   const [email, setEmail] = useState({ value: "" });
   const [password, setpassword] = useState({ value: "" });
-  const [role, setRole] = useState({ value: "Client" });
+  const [role, setRole] = useState({ value: "Doctor" });
   const [name, setName] = useState({ value: "" });
   const [dob, setDob] = useState({ value: "2000-01-01" });
+  const [clinic, setClinic] = useState({ value: props.userId });
+  const [website, setWebsite] = useState({ value: "" });
+  const [speciality, setSpeciality] = useState({ value: "" });
 
   const onFieldChange = (event, fieldName) => {
     switch (fieldName) {
@@ -81,6 +82,15 @@ const AddUser = (props) => {
       case "dob":
         setDob({ value: event.target.value });
         break;
+      case "clinic":
+        setClinic({ value: event.target.value });
+        break;
+      case "website":
+        setWebsite({ value: event.target.value });
+        break;
+      case "speciality":
+        setSpeciality({ value: event.target.value });
+        break;
       default:
         break;
     }
@@ -94,12 +104,15 @@ const AddUser = (props) => {
       name: name.value,
       dob: dob.value,
       type: role.value,
-      isAdmin: true
+      clinic: clinic.value ? clinic.value : undefined,
+      website: website.value ? website.value : undefined,
+      speciality: speciality.value ? speciality.value : undefined,
+      isAdmin: true,
     });
   };
 
-  let form = (
-    <>
+  let userRole =
+    props.type === "Admin" ? (
       <FormControl variant="outlined" margin="normal" required fullWidth>
         <InputLabel id="demo-simple-select-outlined-label">Role</InputLabel>
         <Select
@@ -114,6 +127,70 @@ const AddUser = (props) => {
           <MenuItem value={"Admin"}>Admin</MenuItem>
         </Select>
       </FormControl>
+    ) : null;
+
+  let clinicWebsite =
+    role.value === "Clinic" ? (
+      <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        fullWidth
+        name="website"
+        label="Clinic Website"
+        type="text"
+        id="website"
+        autoComplete="website"
+        value={website.value}
+        onChange={(event) => onFieldChange(event, "website")}
+      />
+    ) : null;
+
+  let doctorClinic =
+    role.value === "Doctor" ? (
+      <>
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          name="speciality"
+          label="Doctor's Speciality"
+          type="text"
+          id="speciality"
+          autoComplete="speciality"
+          value={speciality.value}
+          onChange={(event) => onFieldChange(event, "speciality")}
+        />
+        {props.type === "Admin" ? (
+          <FormControl variant="outlined" margin="normal" required fullWidth>
+            <InputLabel id="demo-simple-select-outlined-label">
+              Clinic
+            </InputLabel>
+            <Select
+              name="clinic"
+              onChange={(event) => onFieldChange(event, "clinic")}
+              label="Clinic"
+              value={clinic.value}
+            >
+              {props.clinics.map((clinic) => {
+                return (
+                  <MenuItem key={clinic._id} value={clinic._id}>
+                    {clinic.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        ) : null}
+      </>
+    ) : null;
+
+  let form = (
+    <>
+      {userRole}
+      {doctorClinic}
+      {clinicWebsite}
       <TextField
         variant="outlined"
         margin="normal"
@@ -183,7 +260,7 @@ const AddUser = (props) => {
   return (
     <ContentView>
       <CssBaseline />
-      <Avatar className={[classes.avatar, classes.center].join(' ')}>
+      <Avatar className={[classes.avatar, classes.center].join(" ")}>
         <LockOutlinedIcon />
       </Avatar>
       {errorMessage}
@@ -212,6 +289,9 @@ const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
     error: state.auth.error,
+    type: state.auth.type,
+    clinics: state.clinic.clinics,
+    userId: state.auth.userId,
   };
 };
 

@@ -11,14 +11,12 @@ const DataTable = (props) => {
 
   props = {
     ...props,
-    columns: [...id, ...props.columns, ...timeStamps]
-  }
+    columns: [...id, ...props.columns, ...timeStamps],
+  };
 
   return (
     <div style={{ height: "100%", width: "100%" }}>
-      <DataGrid
-        {...props}
-      />
+      {props.rows?.length && props.columns?.length ? <DataGrid {...props} /> : null}
     </div>
   );
 };

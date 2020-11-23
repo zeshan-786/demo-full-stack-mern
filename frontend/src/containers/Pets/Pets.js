@@ -12,6 +12,8 @@ import Chip from '@material-ui/core/Chip';
 
 import * as actions from "../../store/actions/index";
 
+// import Notification from '../../components/UI/Notification/Notification'
+
 const useStyles = makeStyles((theme) => ({
   error: {
     border: "1px solid red",
@@ -39,14 +41,12 @@ const Pets = (props) => {
   const [ selectedRow ,setSelectedRow ] = useState(null)
   const classes = useStyles();
 
-  const { pets } = props
-
   useEffect(() => {
     props.loadPets();
   }, []);
 
   useEffect(() => {
-    console.log(pets);
+    console.log(props.pets);
   }, [props.pets]);
 
 
@@ -66,9 +66,9 @@ const Pets = (props) => {
   };
 
   let data = null;
-  if (pets?.length) {
-    data = <DataTable onRowSelected={getSelectedRow} columns={columns} rows={pets.map( elm => {
-        return { ...elm, id: elm._id, appointments: elm.appointments.join(', ') }
+  if (props.pets?.length) {
+    data = <DataTable onRowSelected={getSelectedRow} columns={columns} rows={props.pets?.map( elm => {
+        return { ...elm, id: elm._id, owner: elm.owner?.name, appointments: elm.appointments.join(', ') }
     })} rowsPerPageOptions={[ 10, 25, 50 ]}/>
   }
 
@@ -78,6 +78,7 @@ const Pets = (props) => {
 
   let errorMessage = null;
   if (props.error) {
+    // errorMessage = <Notification severity={"error"} message={props.error?.message}/>
     errorMessage = <p className={classes.error}>{props.error?.message}</p>;
   }
   return (

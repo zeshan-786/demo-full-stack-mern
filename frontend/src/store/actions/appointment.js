@@ -55,3 +55,55 @@ export const fetchAppointments = () => {
         
     }
 }
+
+
+// Adding Appointment
+
+const addAppointmentStart = () => {
+    return {
+      type: actionTypes.ADD_APPOINTMENT_START,
+    };
+  };
+  
+  export const addAppointmentSuccess = (appointment) => {
+    return {
+      type: actionTypes.ADD_APPOINTMENT_SUCCESS,
+      appointment: appointment,
+    };
+  };
+  
+  export const addAppointmentFail = (error) => {
+    return {
+      type: actionTypes.ADD_APPOINTMENT_FAIL,
+      error: error,
+    };
+  };
+  
+  export const addAppointment = (appointment) => {
+    return (dispatch) => {
+      dispatch(addAppointmentStart());
+      let url = `http://localhost:3000/appointment`;
+      axios
+        .post(url, appointment, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+            dispatch(addAppointmentSuccess(res.data));
+        })
+        .catch((err) => {
+            console.log(err);
+          if (err.response && err.response.data) {
+            // client received an error response (5xx, 4xx)
+            dispatch(addAppointmentFail(err.response.data));
+          } else if (err.request && err.request.data) {
+            // client never received a response, or request never left
+            dispatch(addAppointmentFail(err.request.data));
+          } else {
+            // anything else
+            dispatch(addAppointmentFail({ message: "Something went wrong" }));
+          }
+        });
+    };
+  };

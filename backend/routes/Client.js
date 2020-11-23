@@ -37,14 +37,14 @@ next();
 /*
  * GET
  */
-router.get('/', verifyToken, HasRole(['Admin']), (req, res) => {
+router.get('/', verifyToken, HasRole(['Admin', 'Clinic']), (req, res) => {
   ClientController.list(req, res);
 });
 
 /*
  * GET
  */
-router.get('/me', verifyToken, HasRole(['Admin', 'Client']), (req, res) => {
+router.get('/me', verifyToken, HasRole(['Admin', 'Client', 'Clinic']), (req, res) => {
   ClientController.show(req, res);
 });
 

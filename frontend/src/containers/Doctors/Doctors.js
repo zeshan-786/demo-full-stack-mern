@@ -37,7 +37,7 @@ const Doctors = (props) => {
   let data = null;
   if (props.doctors) {
     data = <DataTable rows={props.doctors.map( elm => {
-        return { ...elm, id: elm._id }
+        return { ...elm, id: elm._id, clinic : elm.clinic?.name }
     })} columns={columns} pageSize={props.doctors.length}/>
   }
 

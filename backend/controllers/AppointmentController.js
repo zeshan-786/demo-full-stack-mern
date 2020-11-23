@@ -11,12 +11,31 @@ module.exports = {
    */
   list: async (req, res) => {
     try {
-      let Appointments = await AppointmentModel.find(req.query.where,
-        req.query.fields,
-        req.query.sort,)
-        .populate("pet", "_id name")
-        .populate("doctor", "_id name email")
-        .lean()
+      let filter = {};
+      let petOps = { path: "pet", select: "_id name owner", model: "Pet" };
+      let doctorOps = {
+        path: "doctor",
+        select: "_id name email clinic",
+        model: "Doctor",
+      };
+      if (req.user.__userType === "Doctor") {
+        filter = { doctor: req.user._id };
+      }
+
+      if (req.user.__userType === "Client") {
+        // filter = { "pet.owner": req.user._id }
+        petOps.match = { owner: req.user._id }
+      }
+
+      if (req.user.__userType === "Clinic") {
+        // filter = { "doctor.clinic": req.user._id }
+        doctorOps.match = { clinic: req.user._id }
+      }
+
+      let Appointments = await AppointmentModel.find(filter)
+        .populate(petOps)
+        .populate(doctorOps)
+        .lean();
       if (!Appointments) {
         return res.status(404).json({
           message: "No Appointments found",
@@ -40,7 +59,7 @@ module.exports = {
       let Appointment = await AppointmentModel.findOne({ _id: id })
         .populate("pet", "_id name")
         .populate("doctor", "_id name email")
-        .lean()
+        .lean();
       if (!Appointment) {
         return res.status(404).json({
           message: "No such Appointment",

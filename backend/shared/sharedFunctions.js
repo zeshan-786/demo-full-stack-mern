@@ -13,6 +13,10 @@ const getSchema = (User, body) => {
     age: body.age,
     dob: body.dob,
     details: body.details,
+    clinic: body.clinic,
+    speciality: body.speciality,
+    website: body.website,
+    setting: body.setting
   });
 };
 

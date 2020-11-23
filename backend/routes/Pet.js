@@ -34,14 +34,14 @@ next();
 /*
  * GET
  */
-router.get('/', verifyToken, HasRole(['Admin', 'Client']), (req, res) => {
+router.get('/', verifyToken, HasRole(['Admin', 'Client', 'Clinic']), (req, res) => {
   PetController.list(req, res);
 });
 
 /*
  * GET
  */
-router.get('/:id', verifyToken, HasRole(['Admin', 'Client']), (req, res) => {
+router.get('/:id', verifyToken, HasRole(['Admin', 'Client', 'Clinic']), (req, res) => {
   PetController.show(req, res);
 });
 
