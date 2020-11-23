@@ -56,7 +56,7 @@ export const MainListItems = (props) => (
         </ListItem>
       </NavLink>
     ) : null}
-    {["Admin"].includes(props.type) ? (
+    {["Admin", "Clinic"].includes(props.type) ? (
       <NavLink
         style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
         to={"/clients"}
@@ -83,7 +83,7 @@ export const MainListItems = (props) => (
       </NavLink>
     ) : null}
     
-    {["Admin", "Client"].includes(props.type) ? (
+    {["Admin", "Client", "Clinic"].includes(props.type) ? (
       <NavLink
         style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
         to={"/pets"}
@@ -152,13 +152,13 @@ export const SecondaryListItems = (props) => (
     {["Admin", "Clinic"].includes(props.type) ? (
       <NavLink
         style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
-        to={"/addUser"}
+        to={props.type === 'Admin' ? "/addUser" : "/addDoctor"}
       >
         <ListItem button>
           <ListItemIcon>
             <PersonAddIcon />
           </ListItemIcon>
-          <ListItemText primary="Add User" />
+          <ListItemText primary={props.type === 'Admin' ? "Add User" : "Add Doctor"} />
         </ListItem>
       </NavLink>
     ) : null}

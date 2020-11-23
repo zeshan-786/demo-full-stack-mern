@@ -4,7 +4,6 @@ import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import PetIcon from "@material-ui/icons/PetsOutlined";
-import Typography from "@material-ui/core/Typography";
 
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
@@ -94,7 +93,7 @@ const AddPet = (props) => {
       type: type.value,
       owner: owner.value ? owner.value : undefined
     });
-    props.history.push("pets");
+    // props.history.push("pets");
   };
 
   let owners = null;
@@ -109,7 +108,7 @@ const AddPet = (props) => {
           value={owner.value}
         >
           {props.owners.map((owner) => {
-            return <MenuItem value={owner._id}>{owner.name}</MenuItem>;
+            return <MenuItem key={owner._id} value={owner._id}>{owner.name}</MenuItem>;
           })}
         </Select>
       </FormControl>

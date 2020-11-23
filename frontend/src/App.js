@@ -5,13 +5,11 @@ import { Route, Switch, withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "./store/actions/index";
 
-import asyncComponent from "./hoc/asyncComponent/asyncComponent"
-
+import asyncComponent from "./hoc/asyncComponent/asyncComponent";
 
 const Profile = asyncComponent(() => {
   return import("./components/Profile/Profile");
 });
-
 
 const Signin = asyncComponent(() => {
   return import("./components/Auth/signin");
@@ -29,16 +27,24 @@ const ClientLayout = asyncComponent(() => {
   return import("./containers/Clients/ClientLayout");
 });
 
+const ClinicLayout = asyncComponent(() => {
+  return import("./containers/Clinics/ClinicLayout");
+});
+
+const DoctorLayout = asyncComponent(() => {
+  return import("./containers/Doctors/DoctorLayout");
+});
+
 const App = (props) => {
   useEffect(() => {
     props.onTryAutoLogin();
   }, []);
 
-    useEffect(() => {
-      if (props.type) {
-        props.getProfile() 
-      }
-    }, [props.type]);
+  useEffect(() => {
+    if (props.type) {
+      props.getProfile();
+    }
+  }, [props.type]);
 
   let Home = <h1>No view</h1>;
   switch (props.type) {
@@ -49,10 +55,10 @@ const App = (props) => {
       Home = ClientLayout;
       break;
     case "Clinic":
-      Home = Profile
+      Home = ClinicLayout;
       break;
     case "Doctor":
-      Home = Profile
+      Home = DoctorLayout;
       break;
 
     default:
@@ -81,7 +87,7 @@ const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.auth.token !== null,
     type: state.auth.type,
-    user: state.auth.user
+    user: state.auth.user,
   };
 };
 

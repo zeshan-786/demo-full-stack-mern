@@ -31,5 +31,6 @@ export {
 } from './admin'
 
 export {
-    fetchAppointments
+    fetchAppointments,
+    addAppointment
 } from './appointment'

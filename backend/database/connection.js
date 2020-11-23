@@ -6,6 +6,7 @@ const chalk = require('chalk');
 
 //require database URL from properties file
 const dbURL = 'mongodb://localhost:27017/practiceProject'
+// const dbURL = 'mongodb+srv://zeshan:zeshan@123@cluster0.hds9r.mongodb.net/practiceProject'
 
 const connected = chalk.bold.cyan;
 const error = chalk.bold.yellow;

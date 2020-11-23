@@ -17,7 +17,7 @@ module.exports = {
         filter,
         req.query.fields,
         req.query.sort
-      ).select("-salt -hash");
+      ).select("-salt -hash").populate('clinic', '_id name').lean()
       return res.json(doctors);
     } catch (error) {
       return res.status(500).json({
@@ -40,7 +40,7 @@ module.exports = {
           : null;
       const Doctor = await DoctorModel.findOne({ _id: id }).select(
         "-salt -hash"
-      );
+      ).lean();
       if (!Doctor) {
         return res.status(404).json({
           message: "No such Doctor",

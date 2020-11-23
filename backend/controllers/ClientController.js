@@ -17,8 +17,8 @@ module.exports = {
         req.query.sort
       )
         .select("-salt -hash")
-        .populate('pets','_id name', 'Pet')
-        .lean()
+        .populate("pets", "_id name", "Pet")
+        .lean();
       return res.json(users);
     } catch (error) {
       return res.status(500).json({
@@ -33,10 +33,13 @@ module.exports = {
    */
   show: async (req, res) => {
     try {
-      const id =
-        req.query.id || req.user.__userType !== "Admin" ? req.user._id : null;
+      let id = req.query.id;
+      id = ["Admin", "Clinic"].includes(req.user.__userType)
+        ? id
+        : req.user._id;
       const User = await ClientModel.findOne({ _id: id })
         .select("-salt -hash")
+        .populate("pets", "_id name", "Pet")
         .lean();
       if (!User) {
         return res.status(404).json({
@@ -57,12 +60,12 @@ module.exports = {
    */
   update: async (req, res) => {
     try {
-      const id =
-        req.query.id || req.user.__userType !== "Admin" ? req.user._id : null;
+      let id = req.query.id 
+      id = req.user.__userType !== "Admin" ? req.user._id : null;
       // Checking if user already exist with same email
       if (req.body.email) {
-        const dupCheck = await ClientModel.findOne({ email: req.body.email })
-        if(dupCheck) throw Error('User already exists with this email!') 
+        const dupCheck = await ClientModel.findOne({ email: req.body.email });
+        if (dupCheck) throw Error("User already exists with this email!");
       }
       const User = await ClientModel.findOne({ _id: id }).select("-salt -hash");
       if (!User) {
@@ -80,11 +83,9 @@ module.exports = {
       await User.save();
       return res.json(User);
     } catch (error) {
-      return res
-        .status(error.status || 500)
-        .send({
-          message: error.message ? error.message : "Something went wrong",
-        });
+      return res.status(error.status || 500).send({
+        message: error.message ? error.message : "Something went wrong",
+      });
     }
   },
 
@@ -104,11 +105,9 @@ module.exports = {
       });
       return res.status(204).json();
     } catch (error) {
-      return res
-        .status(500)
-        .send({
-          message: error.message ? error.message : "Something went wrong",
-        });
+      return res.status(500).send({
+        message: error.message ? error.message : "Something went wrong",
+      });
     }
   },
 };

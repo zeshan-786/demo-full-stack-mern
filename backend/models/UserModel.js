@@ -55,7 +55,7 @@ const ClientSchema = new mongoose.Schema({
 	pets : Array
 })
 const DoctorSchema = new mongoose.Schema({
-	spaciality: String,
+	speciality: String,
 	clinic : {
 		type: Schema.Types.ObjectId,
 		ref: 'Clinic'

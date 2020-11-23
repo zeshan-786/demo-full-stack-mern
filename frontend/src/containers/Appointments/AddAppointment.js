@@ -79,11 +79,12 @@ const AddAppointment = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    props.onAuth({
+    props.onAddAppointment({
       pet: pet.value,
       doctor: doctor.value,
       appointmentTime: appointmentTime.value,
     });
+    // props.history.push("appointments");
   };
 
   let form = (
@@ -97,7 +98,7 @@ const AddAppointment = (props) => {
           value={pet.value}
         >
           {props.pets.map( pet => {
-             return  <MenuItem value={pet._id}>{pet.name}</MenuItem>
+             return  <MenuItem key={pet._id} value={pet._id}>{pet.name}</MenuItem>
           })}
         </Select>
       </FormControl>
@@ -110,7 +111,7 @@ const AddAppointment = (props) => {
           value={doctor.value}
         >
           {props.doctors.map( doc => {
-             return  <MenuItem value={doc._id}>{doc.name}</MenuItem>
+             return  <MenuItem key={doc._id} value={doc._id}>{doc.name}</MenuItem>
           })}
         </Select>
       </FormControl>
@@ -165,7 +166,7 @@ const AddAppointment = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (data) => dispatch(actions.auth(data, true)),
+    onAddAppointment: (appointment) => dispatch(actions.addAppointment(appointment)),
   };
 };
 const mapStateToProps = (state) => {

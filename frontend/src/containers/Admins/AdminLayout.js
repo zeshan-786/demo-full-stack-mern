@@ -22,8 +22,7 @@ import {
 } from "../../components/ListItem/ListItem";
 
 import AdminDashboard from "./AdminDashboard";
-import AddUser from "./addUser";
-import ContentView from "../../components/UI/ContentView/ContentView";
+import AddUser from "../AddUser/AddUser";
 import Logout from "../../components/Auth/Logout/Logout";
 import AdminsView from "./AdminsView";
 import ClientsView from "../Clients/ClientsView";

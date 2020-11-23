@@ -14,26 +14,19 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, withRouter } from "react-router-dom";
 
 import {
-  mainListItems,
-  secondaryListItems,
+  MainListItems,
+  SecondaryListItems,
 } from "../../components/ListItem/ListItem";
 
-import asyncComponent from "../../hoc/asyncComponent/asyncComponent";
-
-const AdminDashboard = asyncComponent(() => {
-  return import("../Admins/AdminDashboard");
-});
-
-const ClientDashboard = asyncComponent(() => {
-  return import("../Clients/ClientDashboard");
-});
-
-const AddUser = asyncComponent(() => {
-  return import("../AddUser/AddUser");
-});
+import Logout from "../../components/Auth/Logout/Logout";
+import AppointmentsView from "../Appointments/AppointmentsView";
+import Profile from "../../components/Profile/Profile";
+import SetPassword from "../../components/Profile/SetPassword";
+import EditUser from "../../components/Profile/EditUser";
+import DoctorDashBoard from './DoctorDashboard'
 
 const drawerWidth = 240;
 
@@ -108,50 +101,6 @@ const Layout = (props) => {
     setOpen(false);
   };
 
-  let routes = null;
-  switch (localStorage.getItem("type")) {
-    case "Admin":
-      routes = (
-        <>
-          <Route path="/dashboard" exact component={AdminDashboard} />
-          <Route path="/admins" component={AddUser} />
-          <Route path="/clinics" component={AddUser} />
-          <Route path="/doctors" component={AddUser} />
-          <Route path="/clients" component={AddUser} />
-          <Route path="/pets" component={AddUser} />
-          <Route path="/appointments" component={AddUser} />
-          <Route path="/addUser" component={AddUser} />
-          <Route path="/" exact component={AdminDashboard} />
-        </>
-      )
-      break;
-    case "Client":
-      routes = (
-        <>
-          <Route path="/dashboard" exact component={ClientDashboard} />
-          <Route path="/pets" component={AddUser} />
-          <Route path="/appointments" component={AddUser} />
-          <Route path="/addPet" component={AddUser} />
-          <Route path="/" exact component={ClientDashboard} />
-        </>
-      );
-      break;
-    case "Clinic":
-      routes = (
-        <>
-          <Route path="/doctors" component={AddUser} />
-          <Route path="/appointments" component={AddUser} />
-          <Route path="/pets" component={AddUser} />
-        </>
-      );
-      break;
-    case "Doctor":
-      routes = <Route path="/appointments" component={AddUser} />;
-      break;
-    default:
-      break;
-  }
-
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -179,11 +128,11 @@ const Layout = (props) => {
             noWrap
             className={classes.title}
           >
-            {localStorage.getItem("type")} Dashboard
+            {props.type} Dashboard
           </Typography>
           <IconButton
             color="inherit"
-            onClick={() => console.log("Profile Button Clicked")}
+            onClick={() => props.history.push("profile")}
           >
             <AccountCircleIcon />
           </IconButton>
@@ -208,17 +157,23 @@ const Layout = (props) => {
           </IconButton>
         </div>
         <Divider />
-        <List>{mainListItems}</List>
+        <List>{<MainListItems type={props.type} />}</List>
         <Divider />
-        <List>{secondaryListItems}</List>
+        <List>{<SecondaryListItems type={props.type} />}</List>
       </Drawer>
       <Switch>
-        {routes}
-        <Route path="/profile" component={AddUser} />
-        <Route path="/editProfile" component={AddUser} />
+        <Route path="/dashboard" component={DoctorDashBoard} />
+        <Route path="/appointments" component={AppointmentsView} />
+
+        <Route path="/profile" component={Profile} />
+        <Route path="/setPassword" component={SetPassword} />
+
+        <Route path="/editProfile" component={EditUser} />
+        <Route path="/logout" component={Logout} />
+        <Route path="/" exact component={DoctorDashBoard} />
       </Switch>
     </div>
   );
 };
 
-export default Layout;
+export default withRouter(Layout);
