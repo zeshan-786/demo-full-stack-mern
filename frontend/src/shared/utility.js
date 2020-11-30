@@ -30,3 +30,5 @@ export const formatDateNumeric = (date) => {
       day: "2-digit"
     }).format(new Date(date));
 };
+
+export const backendURL = 'http://localhost:3000'

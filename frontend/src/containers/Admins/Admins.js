@@ -8,6 +8,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import * as actions from "../../store/actions/index";
 import { formatDateTime, formatDate } from "../../shared/utility";
 
+import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
+import { withRouter } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   error: {
@@ -20,23 +22,63 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const columns = [
-  { field: "name", headerName: "Full Name" },
-  { field: "email", headerName: "Email" },
-  { field: "dob", headerName: "Date of Birth" },
-  { field: "age", headerName: "Age" },
-];
-
 const Admins = (props) => {
   const classes = useStyles();
   useEffect(() => {
     props.loadAdmins();
-  }, [ ]);
+  }, []);
+
+  const getSelectedRow = (params) => {
+    console.log("Selected Row :: ", params);
+    props.onSelectAdmin({ id: params.data._id, ...params.data });
+  };
+
+  const handleDelete = (id) => {
+    // props.deletePet(id);
+  };
+
+  const handleEdit = () => {
+    props.history.push("addUser");
+  };
+
+  const handleView = () => {
+    console.info("You clicked to View.");
+  };
+
+  const columns = [
+    {
+      width: ["Admin"].includes(props.type) ? 160 : 100,
+      field: "",
+      headerName: "Action",
+      renderCell: (params) => (
+        <div>
+          {
+            <ActionButtons
+              type={props.type}
+              params={params}
+              roles={["Admin"]}
+              handleDelete={handleDelete}
+              handleEdit={handleEdit}
+              handleView={handleView}
+            />
+          }
+        </div>
+      ),
+    },
+    { field: "id", headerName: "ID" },
+    { field: "name", headerName: "Full Name" },
+    { field: "email", headerName: "Email" },
+    { field: "dob", headerName: "Date of Birth" },
+    { field: "age", headerName: "Age" },
+    { field: "createdAt", headerName: "CreatedAt" },
+    { field: "updatedAt", headerName: "UpdatedAt" },
+  ];
 
   let data = null;
   if (props.admins) {
     data = (
       <DataTable
+        onRowSelected={getSelectedRow}
         rows={props.admins.map((elm) => {
           return {
             ...elm,
@@ -71,6 +113,7 @@ const Admins = (props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadAdmins: () => dispatch(actions.fetchAdmins()),
+    onSelectAdmin: (admin) => dispatch(actions.selectAdmin(admin)),
   };
 };
 const mapStateToProps = (state) => {
@@ -78,10 +121,11 @@ const mapStateToProps = (state) => {
     loading: state.admin.loading,
     error: state.admin.error,
     admins: state.admin.admins,
+    type: state.auth.type,
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps // or put null here if you do not have actions to dispatch
-)(Admins);
+)(withRouter(Admins));

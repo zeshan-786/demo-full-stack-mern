@@ -1,4 +1,5 @@
 import * as actionTypes from "./actionTypes";
+import { backendURL } from "../../shared/utility";
 
 import axios from "axios";
 
@@ -49,7 +50,7 @@ export const auth = (authData, isSignup) => {
   return (dispatch) => {
     dispatch(authStart());
     let method = isSignup ? "signup" : "signin";
-    let url = `http://localhost:3000/auth/${method}`;
+    let url = `${backendURL}/auth/${method}`;
     axios
       .post(url, authData)
       .then((res) => {
@@ -132,7 +133,7 @@ export const getProfileFail = (error) => {
 
 export const getProfile = () => {
   return (dispatch) => {
-    let url = `http://localhost:3000/${localStorage
+    let url = `${backendURL}/${localStorage
       .getItem("type")
       .toLowerCase()}/me`;
     axios
@@ -187,7 +188,7 @@ export const setPasswordFail = (error) => {
 export const setPassword = (data) => {
   return (dispatch) => {
     dispatch(setPasswordStart());
-    let url = `http://localhost:3000/auth/setPassword`;
+    let url = `${backendURL}/auth/setPassword`;
     axios
       .post(url, data, {
         headers: {
@@ -239,7 +240,7 @@ const editUserStart = () => {
   export const editUser = (data) => {
     return (dispatch) => {
       dispatch(editUserStart());
-      let url = `http://localhost:3000/${localStorage.getItem('type')}`;
+      let url = `${backendURL}/${localStorage.getItem('type')}`;
       axios
         .put(url, data, {
           headers: {

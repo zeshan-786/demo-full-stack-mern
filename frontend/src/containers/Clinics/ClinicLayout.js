@@ -21,7 +21,6 @@ import {
   SecondaryListItems,
 } from "../../components/ListItem/ListItem";
 
-import AddUser from "../AddUser/AddUser";
 import Logout from "../../components/Auth/Logout/Logout";
 import ClientsView from "../Clients/ClientsView";
 import DoctorsView from "../Doctors/DoctorsView";
@@ -32,6 +31,7 @@ import SetPassword from "../../components/Profile/SetPassword";
 import EditUser from "../../components/Profile/EditUser";
 import AddAppointment from "../Appointments/AddAppointment";
 import ClinicDashBoard from "./ClinicDashboard";
+import AddUser from "../../components/Profile/AddUser";
 
 const drawerWidth = 240;
 

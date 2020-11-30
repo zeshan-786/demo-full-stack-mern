@@ -1,12 +1,17 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import DataTable from "../../components/UI/Table/Table";
 
 import { makeStyles } from "@material-ui/core/styles";
+import ViewIcon from "@material-ui/icons/Visibility";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 
 import * as actions from "../../store/actions/index";
+import { withRouter } from "react-router";
+import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
 
 const useStyles = makeStyles((theme) => ({
   error: {
@@ -19,26 +24,72 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const columns = [
-    { field: 'name', headerName: 'Full Name' },
-    { field: 'email', headerName: 'Email',  },
-    { field: 'dob', headerName: 'Date of Birth' },
-    { field: 'age', headerName: 'Age' },
-    { field: 'clinic', headerName: 'Clinic' },
-    { field: 'speciality', headerName: 'Speciality' }
-  ];
-
 const Doctors = (props) => {
   const classes = useStyles();
   useEffect(() => {
     props.loadDoctors();
   }, []);
 
+  const getSelectedRow = (params) => {
+    console.log("Selected Row :: ", params);
+    props.onSelectDoctor({ id: params.data._id, ...params.data });
+  };
+
+  const handleDelete = (id) => {
+    // props.deletePet(id);
+  };
+
+  const handleEdit = () => {
+    props.history.push("addDoctor");
+  };
+
+  const handleView = () => {
+    console.info("You clicked to View.");
+  };
+
+  const columns = [
+    {
+      width: ["Admin", "Clinic"].includes(props.type) ? 160 : 100,
+      field: "",
+      headerName: "Action",
+      renderCell: (params) => (
+        <div>
+          {
+            <ActionButtons
+              type={props.type}
+              params={params}
+              roles={["Admin", "Clinic"]}
+              handleDelete={handleDelete}
+              handleEdit={handleEdit}
+              handleView={handleView}
+            />
+          }
+        </div>
+      ),
+    },
+    { field: "id", headerName: "ID" },
+    { field: "name", headerName: "Full Name" },
+    { field: "email", headerName: "Email" },
+    { field: "dob", headerName: "Date of Birth" },
+    { field: "age", headerName: "Age" },
+    { field: "clinic", headerName: "Clinic" },
+    { field: "speciality", headerName: "Speciality" },
+    { field: "createdAt", headerName: "CreatedAt" },
+    { field: "updatedAt", headerName: "UpdatedAt" },
+  ];
+
   let data = null;
-  if (props.doctors) {
-    data = <DataTable rows={props.doctors.map( elm => {
-        return { ...elm, id: elm._id, clinic : elm.clinic?.name }
-    })} columns={columns} pageSize={props.doctors.length}/>
+  if (props.doctors?.length) {
+    data = (
+      <DataTable
+        onRowSelected={getSelectedRow}
+        rows={props.doctors.map((elm) => {
+          return { ...elm, id: elm._id, clinic: elm.clinic?.name };
+        })}
+        columns={columns}
+        pageSize={props.doctors.length}
+      />
+    );
   }
 
   if (props.loading) {
@@ -60,6 +111,7 @@ const Doctors = (props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadDoctors: () => dispatch(actions.fetchDoctors()),
+    onSelectDoctor: (doctor) => dispatch(actions.selectDoctor(doctor)),
   };
 };
 const mapStateToProps = (state) => {
@@ -67,11 +119,11 @@ const mapStateToProps = (state) => {
     loading: state.doctor.loading,
     error: state.doctor.error,
     doctors: state.doctor.doctors,
-    isAuthenticated: state.auth.token !== null,
+    type: state.auth.type,
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps // or put null here if you do not have actions to dispatch
-)(Doctors)
+)(withRouter(Doctors));

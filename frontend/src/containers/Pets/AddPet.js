@@ -5,18 +5,19 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import PetIcon from "@material-ui/icons/PetsOutlined";
 
-import { connect } from "react-redux";
-import * as actions from "../../store/actions";
-
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 import SaveIcon from "@material-ui/icons/Save";
-import Spinner from "../../components/UI/Spinner/Spinner";
 
+import { connect } from "react-redux";
+import * as actions from "../../store/actions";
+
+import Spinner from "../../components/UI/Spinner/Spinner";
 import ContentView from "../../components/UI/ContentView/ContentView";
+import Notification from "../../components/UI/Notification/Notification";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -56,11 +57,21 @@ const useStyles = makeStyles((theme) => ({
 
 const AddPet = (props) => {
   const classes = useStyles();
-  const [type, setType] = useState({ value: "" });
-  const [breed, setBreed] = useState({ value: "" });
-  const [owner, setOwner] = useState({ value: "" });
-  const [name, setName] = useState({ value: "" });
-  const [dob, setDob] = useState({ value: "2000-05-24" });
+  const [type, setType] = useState({
+    value: props.selectedPet?.type ? props.selectedPet.type : "",
+  });
+  const [breed, setBreed] = useState({
+    value: props.selectedPet?.breed ? props.selectedPet.breed : "",
+  });
+  const [owner, setOwner] = useState({
+    value: props.selectedPet?.owner?._id ? props.selectedPet?.owner?._id : "",
+  });
+  const [name, setName] = useState({
+    value: props.selectedPet?.name ? props.selectedPet.name : "",
+  });
+  const [dob, setDob] = useState({
+    value: props.selectedPet?.dob ? props.selectedPet.dob : "2000-05-24",
+  });
 
   const onFieldChange = (event, fieldName) => {
     switch (fieldName) {
@@ -86,18 +97,29 @@ const AddPet = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    props.onAddPet({
-      breed: breed.value,
-      name: name.value,
-      dob: dob.value,
-      type: type.value,
-      owner: owner.value ? owner.value : undefined
-    });
-    // props.history.push("pets");
+    if (props.selectedPet?._id) {
+      props.onEditPet(
+        {
+          breed: breed.value,
+          name: name.value,
+          dob: dob.value,
+          type: type.value,
+        },
+        props.selectedPet._id
+      );
+    } else {
+      props.onAddPet({
+        breed: breed.value,
+        name: name.value,
+        dob: dob.value,
+        type: type.value,
+        owner: owner.value ? owner.value : undefined,
+      });
+    }
   };
 
   let owners = null;
-  if (props.type === "Admin") {
+  if (props.type === "Admin" && !props.selectedPet) {
     owners = (
       <FormControl variant="outlined" margin="normal" required fullWidth>
         <InputLabel id="demo-simple-select-outlined-label">Owner</InputLabel>
@@ -108,7 +130,11 @@ const AddPet = (props) => {
           value={owner.value}
         >
           {props.owners.map((owner) => {
-            return <MenuItem key={owner._id} value={owner._id}>{owner.name}</MenuItem>;
+            return (
+              <MenuItem key={owner._id} value={owner._id}>
+                {owner.name}
+              </MenuItem>
+            );
           })}
         </Select>
       </FormControl>
@@ -182,7 +208,11 @@ const AddPet = (props) => {
 
   let errorMessage = null;
   if (props.error) {
-    errorMessage = <p className={classes.error}>{props.error.message}</p>;
+    const message = props.error?.message;
+    const severity = message.toLowerCase().includes("successfully")
+      ? "success"
+      : "error";
+    errorMessage = <Notification severity={severity} message={message} />;
   }
   return (
     <ContentView>
@@ -200,7 +230,7 @@ const AddPet = (props) => {
           onClick={handleSubmit}
           startIcon={<SaveIcon />}
         >
-          Save Pet
+          {props.selectedPet ? "Update Pet" : "Add Pet"}
         </Button>
       </form>
     </ContentView>
@@ -210,6 +240,7 @@ const AddPet = (props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onAddPet: (pet) => dispatch(actions.addPet(pet)),
+    onEditPet: (pet, id) => dispatch(actions.editPet(pet, id)),
   };
 };
 const mapStateToProps = (state) => {
@@ -218,6 +249,7 @@ const mapStateToProps = (state) => {
     error: state.pet.error,
     type: state.auth.type,
     owners: state.client.clients,
+    selectedPet: state.pet.selectedPet,
   };
 };
 

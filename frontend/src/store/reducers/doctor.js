@@ -4,9 +4,11 @@ import { updateObject } from '../../shared/utility'
 const initialState = {
     doctors: null,
     error: null,
-    loading: false
+    loading: false,
+    selectedDoctor: null
 }
 
+// Fetch Doctors
 const fetchDoctorsStart = ( state, action ) => {
     return updateObject( state, { error: null, loading: true, doctors: null } )
 }
@@ -26,11 +28,23 @@ const fetchDoctorsFail = ( state, action ) => {
     })
 }
 
+// Select Doctor
+const selectDoctor = (state, action) => {
+    return updateObject(state, {
+      selectedDoctor: action.doctor,
+    });
+  };
+  
+
 const reducer = ( state=initialState, action ) => {
     switch (action.type) {
+        // Fetch Doctors
         case actionTypes.FETCH_DOCTORS_START: return fetchDoctorsStart( state, action )
         case actionTypes.FETCH_DOCTORS_SUCCESS: return fetchDoctorsSuccess( state, action )
         case actionTypes.FETCH_DOCTORS_FAIL: return fetchDoctorsFail( state, action )
+        // Select Doctor
+        case actionTypes.SELECT_DOCTOR: return selectDoctor( state, action )
+
         default:
           return state
     }

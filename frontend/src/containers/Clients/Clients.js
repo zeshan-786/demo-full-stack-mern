@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import DataTable from "../../components/UI/Table/Table";
 
 import { makeStyles } from "@material-ui/core/styles";
 
 import * as actions from "../../store/actions/index";
+
+import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
+import { withRouter } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   error: {
@@ -19,25 +21,75 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const columns = [
-    { field: 'name', headerName: 'Full Name' },
-    { field: 'email', headerName: 'Email',  },
-    { field: 'dob', headerName: 'Date of Birth' },
-    { field: 'age', headerName: 'Age' },
-    { field: 'pets', headerName: 'Pets' }
-  ];
-
 const Clients = (props) => {
   const classes = useStyles();
   useEffect(() => {
     props.loadClients();
   }, []);
 
+  const getSelectedRow = (params) => {
+    console.log("Selected Row :: ", params);
+    props.onSelectClient({ id: params.data._id, ...params.data });
+  };
+
+  const handleDelete = (id) => {
+    // props.deletePet(id);
+  };
+
+  const handleEdit = () => {
+    props.history.push("addUser");
+  };
+
+  const handleView = () => {
+    console.info("You clicked to View.");
+  };
+
+  const columns = [
+    {
+      width: ["Admin"].includes(props.type) ? 160 : 100,
+      field: "",
+      headerName: "Action",
+      renderCell: (params) => (
+        <div>
+          {
+            <ActionButtons
+              type={props.type}
+              params={params}
+              roles={["Admin"]}
+              handleDelete={handleDelete}
+              handleEdit={handleEdit}
+              handleView={handleView}
+            />
+          }
+        </div>
+      ),
+    },
+    { field: "id", headerName: "ID" },
+    { field: "name", headerName: "Full Name" },
+    { field: "email", headerName: "Email" },
+    { field: "dob", headerName: "Date of Birth" },
+    { field: "age", headerName: "Age" },
+    { field: "pets", headerName: "Pets" },
+    { field: "createdAt", headerName: "CreatedAt" },
+    { field: "updatedAt", headerName: "UpdatedAt" },
+  ];
+
   let data = null;
   if (props.clients) {
-    data = <DataTable rows={props.clients.map( elm => {
-        return { ...elm, id: elm._id, pets: elm.pets.flatMap( pet => pet.name).join(', ') }
-    })} columns={columns} pageSize={props.clients.length}/>
+    data = (
+      <DataTable
+        onRowSelected={getSelectedRow}
+        rows={props.clients.map((elm) => {
+          return {
+            ...elm,
+            id: elm._id,
+            pets: elm.pets.flatMap((pet) => pet.name).join(", "),
+          };
+        })}
+        columns={columns}
+        pageSize={props.clients.length}
+      />
+    );
   }
 
   if (props.loading) {
@@ -59,17 +111,19 @@ const Clients = (props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadClients: () => dispatch(actions.fetchClients()),
+    onSelectClient: (client) => dispatch(actions.selectClient(client)),
   };
 };
 const mapStateToProps = (state) => {
   return {
     loading: state.client.loading,
     error: state.client.error,
-    clients: state.client.clients
+    clients: state.client.clients,
+    type: state.auth.type,
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps // or put null here if you do not have actions to dispatch
-)(Clients)
+)(withRouter(Clients));

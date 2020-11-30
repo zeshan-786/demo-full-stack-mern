@@ -9,28 +9,35 @@ export {
 } from './auth'
 
 export {
-    fetchClients
+    fetchClients,
+    selectClient
 } from './client'
 
 export {
-    fetchClinics
+    fetchClinics,
+    selectClinic
 } from './clinic'
 
 export {
-    fetchDoctors
+    fetchDoctors,
+    selectDoctor
 } from './doctor'
 
 export {
     fetchPets,
     addPet,
-    deletePet
+    deletePet,
+    editPet,
+    selectPet,
 } from './pet'
 
 export {
-    fetchAdmins
+    fetchAdmins,
+    selectAdmin
 } from './admin'
 
 export {
     fetchAppointments,
-    addAppointment
+    addAppointment,
+    selectAppointment
 } from './appointment'

@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import DataTable from "../../components/UI/Table/Table";
 
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-
-import Chip from '@material-ui/core/Chip';
+import { makeStyles } from "@material-ui/core/styles";
+import ViewIcon from "@material-ui/icons/Visibility";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 
 import * as actions from "../../store/actions/index";
 
-// import Notification from '../../components/UI/Notification/Notification'
+import Notification from "../../components/UI/Notification/Notification";
+import { withRouter } from "react-router";
+import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
 
 const useStyles = makeStyles((theme) => ({
   error: {
@@ -24,52 +25,106 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
   },
   button: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
 }));
 
-const columns = [
-    { field: 'name', headerName: 'Name' },
-    { field: 'dob', headerName: 'Date of Birth' },
-    { field: 'breed', headerName: 'Breed' },
-    { field: 'type', headerName: 'Type' },
-    { field: 'owner', headerName: 'Owner' },
-    { field: 'appointments', headerName: 'Appointments' }
-  ];
-
 const Pets = (props) => {
-  const [ selectedRow ,setSelectedRow ] = useState(null)
   const classes = useStyles();
 
   useEffect(() => {
     props.loadPets();
   }, []);
 
-  useEffect(() => {
-    console.log(props.pets);
-  }, [props.pets]);
+  useEffect(() => {}, [props.pets]);
 
-
-  
-  const getSelectedRow = ( params ) => {
-    console.log('Selected Row :: ',params);
-    setSelectedRow({ id : params.data._id, ...params })
-  }
-
-  const handleDelete = ( id ) => {
-    console.info('You clicked to Delete.', id);
-    props.deletePet( id )
+  const getSelectedRow = (params) => {
+    console.log("Selected Row :: ", params);
+    props.onSelectPet({ id: params.data._id, ...params.data });
   };
 
-  const handleEdit = ( pet ) => {
-    console.info('You clicked to Edit.', pet);
+  const handleDelete = (id) => {
+    props.deletePet(id);
   };
+
+  const handleEdit = () => {
+    props.history.push("addPet");
+  };
+
+  const handleView = () => {
+    console.info("You clicked to View.");
+  };
+
+  const actionButtons = ["Admin", "Client"].includes(props.type)
+    ? (params) => (
+        <>
+          <IconButton color="inherit" onClick={() => handleView()}>
+            <ViewIcon />
+          </IconButton>
+          <IconButton color="inherit" onClick={() => handleEdit()}>
+            <EditIcon />
+          </IconButton>
+          <IconButton
+            color="inherit"
+            onClick={() => handleDelete(params.data.id)}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </>
+      )
+    : (params) => (
+        <IconButton color="inherit" onClick={() => handleView()}>
+          <ViewIcon />
+        </IconButton>
+      );
+
+  const columns = [
+    {
+      width: ["Admin", "Client"].includes(props.type) ? 160 : 100,
+      field: "",
+      headerName: "Action",
+      renderCell: (params) => (
+        <div>
+          <ActionButtons
+            type={props.type}
+            params={params}
+            roles={["Admin", "Client"]}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+            handleView={handleView}
+          />
+        </div>
+      ),
+    },
+    { field: "id", headerName: "ID" },
+    { field: "name", headerName: "Name" },
+    { field: "dob", headerName: "Date of Birth" },
+    { field: "breed", headerName: "Breed" },
+    { field: "type", headerName: "Type" },
+    { field: "owner", headerName: "Owner" },
+    { field: "appointments", headerName: "Appointments" },
+    { field: "createdAt", headerName: "CreatedAt" },
+    { field: "updatedAt", headerName: "UpdatedAt" },
+  ];
 
   let data = null;
   if (props.pets?.length) {
-    data = <DataTable onRowSelected={getSelectedRow} columns={columns} rows={props.pets?.map( elm => {
-        return { ...elm, id: elm._id, owner: elm.owner?.name, appointments: elm.appointments.join(', ') }
-    })} rowsPerPageOptions={[ 10, 25, 50 ]}/>
+    console.log("Total Pets", props.pets?.length);
+    data = (
+      <DataTable
+        onRowSelected={getSelectedRow}
+        columns={columns}
+        rows={props.pets?.map((elm) => {
+          return {
+            ...elm,
+            id: elm._id,
+            owner: elm.owner?.name,
+            appointments: elm.appointments.join(", "),
+          };
+        })}
+        rowsPerPageOptions={[10, 25, 50]}
+      />
+    );
   }
 
   if (props.loading) {
@@ -78,38 +133,14 @@ const Pets = (props) => {
 
   let errorMessage = null;
   if (props.error) {
-    // errorMessage = <Notification severity={"error"} message={props.error?.message}/>
-    errorMessage = <p className={classes.error}>{props.error?.message}</p>;
+    const message = props.error?.message;
+    const severity = message.toLowerCase().includes("successfully")
+      ? "success"
+      : "error";
+    errorMessage = <Notification severity={severity} message={message} />;
   }
   return (
     <>
-      { selectedRow?.id ? (<div className={classes.buttons}>
-        <Button
-        variant="contained"
-        color="primary"
-        className={classes.button}
-        startIcon={<DeleteIcon />}
-        onClick={()=> handleDelete(selectedRow.id)}
-      >
-        Delete
-      </Button>
-      <Button
-      variant="contained"
-      color="primary"
-      className={classes.button}
-      startIcon={<EditIcon />}
-      onClick={()=>handleEdit(selectedRow)}
-    >
-      Edit
-    </Button>
-    <Chip
-        label={ `Edit | ${selectedRow.id}`}
-        onClick={()=>handleEdit(selectedRow)}
-        onDelete={()=>handleDelete(selectedRow.id)}
-        variant="outlined"
-        deleteIcon={<DeleteIcon/>}
-      />
-      </div>) : null }
       {errorMessage}
       {data}
     </>
@@ -119,18 +150,20 @@ const Pets = (props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadPets: () => dispatch(actions.fetchPets()),
-    deletePet: ( id ) => dispatch(actions.deletePet( id ))
+    deletePet: (id) => dispatch(actions.deletePet(id)),
+    onSelectPet: (pet) => dispatch(actions.selectPet(pet)),
   };
 };
 const mapStateToProps = (state) => {
   return {
     loading: state.pet.loading,
     error: state.pet.error,
-    pets: state.pet.pets
+    pets: state.pet.pets,
+    type: state.auth.type,
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps // or put null here if you do not have actions to dispatch
-)(Pets)
+)(withRouter(Pets));

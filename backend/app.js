@@ -46,7 +46,7 @@ app.use("/admin", adminRoutes);
 app.use("/appointment", appointmentRoutes);
 
 app.get("/", verifyToken, HasRole(["Admin"]), (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello World!!");
 });
 
 // If something broke in application

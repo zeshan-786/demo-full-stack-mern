@@ -148,45 +148,5 @@ export const SecondaryListItems = (props) => (
       <ListItemText primary="Edit Profile" />
     </ListItem>
     </NavLink>
-
-    {["Admin", "Clinic"].includes(props.type) ? (
-      <NavLink
-        style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
-        to={props.type === 'Admin' ? "/addUser" : "/addDoctor"}
-      >
-        <ListItem button>
-          <ListItemIcon>
-            <PersonAddIcon />
-          </ListItemIcon>
-          <ListItemText primary={props.type === 'Admin' ? "Add User" : "Add Doctor"} />
-        </ListItem>
-      </NavLink>
-    ) : null}
-    {["Admin", "Client"].includes(props.type) ? (
-      <NavLink
-        style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
-        to={"/addPet"}
-      >
-        <ListItem button>
-          <ListItemIcon>
-            <Pets />
-          </ListItemIcon>
-          <ListItemText primary="Add Pet" />
-        </ListItem>
-      </NavLink>
-    ) : null}
-    {["Admin", "Clinic"].includes(props.type) ? (
-      <NavLink
-        style={{ color: "rgba(0, 0, 0, 0.87)", textDecoration: "none" }}
-        to={"/addAppointment"}
-      >
-        <ListItem button>
-          <ListItemIcon>
-            <AlarmOnIcon />
-          </ListItemIcon>
-          <ListItemText primary="Add Appointment" />
-        </ListItem>
-      </NavLink>
-    ) : null}
   </div>
 );

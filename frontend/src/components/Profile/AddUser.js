@@ -14,9 +14,9 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 import SaveIcon from "@material-ui/icons/Save";
-import Spinner from "../../components/UI/Spinner/Spinner";
+import Spinner from "../UI/Spinner/Spinner";
 
-import ContentView from "../../components/UI/ContentView/ContentView";
+import ContentView from "../UI/ContentView/ContentView";
 
 const useStyles = makeStyles((theme) => ({
   paper: {

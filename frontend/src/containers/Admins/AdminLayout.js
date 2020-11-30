@@ -22,7 +22,7 @@ import {
 } from "../../components/ListItem/ListItem";
 
 import AdminDashboard from "./AdminDashboard";
-import AddUser from "../AddUser/AddUser";
+import AddUser from "../../components/Profile/AddUser";
 import Logout from "../../components/Auth/Logout/Logout";
 import AdminsView from "./AdminsView";
 import ClientsView from "../Clients/ClientsView";
@@ -181,6 +181,7 @@ const Layout = (props) => {
         <Route path="/addPet" component={AddPet} />
 
         <Route path="/addUser" component={AddUser} />
+        <Route path="/addDoctor" component={AddUser} />
         <Route path="/profile" component={Profile} />
         <Route path="/setPassword" component={SetPassword} />
 

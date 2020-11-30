@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import * as actions from "./store/actions/index";
 
 import asyncComponent from "./hoc/asyncComponent/asyncComponent";
+import BackButton from "./components/UI/BackButton/BackButton";
 
 const Profile = asyncComponent(() => {
   return import("./components/Profile/Profile");
@@ -65,6 +66,7 @@ const App = (props) => {
       break;
   }
 
+  let backButton = null
   let routes = (
     <Switch>
       <Route path="/signup" component={Signup} />
@@ -72,12 +74,15 @@ const App = (props) => {
       <Redirect to="/" />
     </Switch>
   );
+
   if (props.isAuthenticated) {
     routes = <Home type={props.type} user={props.user} />;
+    backButton = <BackButton />
   }
   return (
     <div className="App">
       {routes}
+      {backButton}
       <Footer />
     </div>
   );

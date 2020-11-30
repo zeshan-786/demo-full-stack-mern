@@ -4,8 +4,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 
+import { connect } from "react-redux";
+import * as actions from "../../store/actions/index";
 import ContentView from "../../components/UI/ContentView/ContentView";
 import Pets from "./Pets";
+import AddButton from "../../components/UI/AddButton/AddButton";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -15,20 +18,25 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   fixedHeight: {
-    height: 400,
+    height: window.innerHeight,
   },
 }));
 
 const PetsView = (props) => {
   const classes = useStyles();
-
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  const handleAddButton = () => {
+    props.onSelectPet();
+    props.history.push("addPet");
+  };
 
   return (
     <ContentView>
       <Grid item xs={12} md={12} lg={12}>
         <Paper className={fixedHeightPaper}>
           <h1>Pets</h1>
+          { <AddButton roles={["Admin", "Client"]} handleAddButton={handleAddButton} />   }
           <Pets />
         </Paper>
       </Grid>
@@ -36,4 +44,13 @@ const PetsView = (props) => {
   );
 };
 
-export default PetsView;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSelectPet: () => dispatch(actions.selectPet(null)),
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps // or put null here if you do not have actions to dispatch
+)(PetsView);
