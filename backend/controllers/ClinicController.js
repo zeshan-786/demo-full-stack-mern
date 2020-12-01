@@ -97,7 +97,7 @@ module.exports = {
       const id =
         req.query.id || req.user.__userType !== "Admin" ? req.user._id : null;
       const Clinic = await ClinicModel.findByIdAndRemove(id);
-      if (!Clinic) throw Error("Error when deleting the Clinic.");
+      if (!Clinic) throw Error("Clinic not found.");
       await DoctorModel.deleteMany({
         _id: {
           $in: Clinic.doctors,

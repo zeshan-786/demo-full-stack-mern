@@ -58,4 +58,64 @@
     "$date": "2020-11-23T17:44:14.769Z"
   },
   "__v": 0
+},{
+  "_id": {
+    "$oid": "5fc6623b6f7fa5023a8aa300"
+  },
+  "appointmentTime": {
+    "$date": "2020-12-30T15:33:00Z"
+  },
+  "doctor": {
+    "$oid": "5fbbf4c271fb7470662bd7c1"
+  },
+  "pet": {
+    "$oid": "5fc553ccab84031821a39512"
+  },
+  "createdAt": {
+    "$date": "2020-12-01T15:33:15.764Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-01T15:33:15.764Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fc6623d6f7fa5023a8aa301"
+  },
+  "appointmentTime": {
+    "$date": "2020-12-30T15:33:00Z"
+  },
+  "doctor": {
+    "$oid": "5fbbf4c271fb7470662bd7c1"
+  },
+  "pet": {
+    "$oid": "5fc553ccab84031821a39512"
+  },
+  "createdAt": {
+    "$date": "2020-12-01T15:33:17.064Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-01T15:33:17.064Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fc6623e6f7fa5023a8aa304"
+  },
+  "appointmentTime": {
+    "$date": "2020-12-30T15:33:00Z"
+  },
+  "doctor": {
+    "$oid": "5fbbf4c271fb7470662bd7c1"
+  },
+  "pet": {
+    "$oid": "5fc553ccab84031821a39512"
+  },
+  "createdAt": {
+    "$date": "2020-12-01T15:33:18.326Z"
+  },
+  "updatedAt": {
+    "$date": "2020-12-01T15:33:18.326Z"
+  },
+  "__v": 0
 }]

@@ -51,6 +51,23 @@ const addAppointmentFail = (state, action) => {
   });
 };
 
+// Delete Appointment
+const deleteAppointmentSuccess = (state, action) => {
+  const filteredAppointments = state.appointments.filter(
+    (appointment) => appointment._id !== action._id
+  );
+  return updateObject(state, {
+    appointments: filteredAppointments,
+    error: { message: "Appointment deleted successfully" }
+  });
+};
+
+const deleteAppointmentFail = (state, action) => {
+  return updateObject(state, {
+    error: action.error,
+  });
+};
+
 // Select Appointment
 const selectAppointment = (state, action) => {
   return updateObject(state, {
@@ -74,6 +91,13 @@ const reducer = (state = initialState, action) => {
       return addAppointmentSuccess(state, action);
     case actionTypes.ADD_APPOINTMENT_FAIL:
       return addAppointmentFail(state, action);
+
+    // Delete Appointment
+    case actionTypes.DEL_APPOINTMENT_SUCCESS:
+      return deleteAppointmentSuccess(state, action);
+    case actionTypes.DEL_APPOINTMENT_FAIL:
+      return deleteAppointmentFail(state, action);
+
     // Select Appointment
     case actionTypes.SELECT_APPOINTMENT:
       return selectAppointment(state, action);

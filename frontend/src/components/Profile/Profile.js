@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 
 import Avatar from "@material-ui/core/Avatar";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     height: "100%",
@@ -27,15 +27,23 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
-});
+  large: {
+    width: theme.spacing(15),
+    height: theme.spacing(15),
+  },
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+  },
+}));
 
 const Profile = (props) => {
   const classes = useStyles();
   //   const bull = <span className={classes.bullet}>•</span>;
 
   const goToEdit = () => {
-      props.history.push('editProfile')
-  }
+    props.history.push("editProfile");
+  };
 
   let dobNage =
     props.user?.__userType !== "Clinic" ? (
@@ -57,10 +65,19 @@ const Profile = (props) => {
     <ContentView>
       <Card className={classes.root} variant="outlined">
         <CardContent>
-          <Avatar alt="John Doe" style={{ margin: "5px auto" }}>
-            {" "}
-            {props.user?.name[0]}{" "}
-          </Avatar>
+          {props.user?.profilePicture ? (
+            <Avatar
+              className={classes.large}
+              alt={props.user.name}
+              src={props.user?.profilePicture}
+              style={{ margin: "5px auto" }}
+            />
+          ) : (
+            <Avatar alt={props.user.name} style={{ margin: "5px auto" }}>
+              {props.user?.name[0]}{" "}
+            </Avatar>
+          )}
+
           <Typography
             className={classes.title}
             component="h1"
@@ -75,7 +92,11 @@ const Profile = (props) => {
           {dobNage}
         </CardContent>
         <CardActions>
-          <Button size="medium" style={{ margin: "5px auto" }} onClick={goToEdit} >
+          <Button
+            size="medium"
+            style={{ margin: "5px auto" }}
+            onClick={goToEdit}
+          >
             Edit
           </Button>
         </CardActions>

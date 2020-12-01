@@ -5,7 +5,8 @@ export {
     authCheckState,
     getProfile,
     setPassword,
-    editUser
+    editUser,
+    uploadPic
 } from './auth'
 
 export {
@@ -39,5 +40,6 @@ export {
 export {
     fetchAppointments,
     addAppointment,
-    selectAppointment
+    selectAppointment,
+    deleteAppointment
 } from './appointment'

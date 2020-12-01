@@ -11,7 +11,8 @@ const UserSchema = new Schema({
 	email: String,
 	hash: String,
 	salt: String,
-	details : Schema.Types.Mixed,
+  details : Schema.Types.Mixed,
+  profilePicture: String
 },{
 	discriminatorKey: '__userType',
 	timestamps: true

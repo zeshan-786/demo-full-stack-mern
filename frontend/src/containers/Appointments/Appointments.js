@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import * as actions from "../../store/actions/index";
 import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
 import { withRouter } from "react-router";
+import Notification from "../../components/UI/Notification/Notification";
 
 const useStyles = makeStyles((theme) => ({
   error: {
@@ -29,11 +30,11 @@ const Appointments = (props) => {
 
   const getSelectedRow = (params) => {
     console.log("Selected Row :: ", params);
-    props.onSelectAdmin({ id: params.data._id, ...params.data });
+    props.onSelectAppointment({ id: params.data._id, ...params.data });
   };
 
   const handleDelete = (id) => {
-    // props.deletePet(id);
+    props.onDeleteAppointment(id);
   };
 
   const handleEdit = () => {
@@ -46,7 +47,7 @@ const Appointments = (props) => {
 
   const columns = [
     {
-      width: ["Admin", "Clinic", ].includes(props.type) ? 160 : 100,
+      width: ["Admin", "Clinic"].includes(props.type) ? 160 : 100,
       field: "",
       headerName: "Action",
       renderCell: (params) => (
@@ -75,6 +76,7 @@ const Appointments = (props) => {
   if (props.appointments) {
     data = (
       <DataTable
+        onRowSelected={getSelectedRow}
         rows={props.appointments.map((elm) => {
           return {
             ...elm,
@@ -95,7 +97,11 @@ const Appointments = (props) => {
 
   let errorMessage = null;
   if (props.error) {
-    errorMessage = <p className={classes.error}>{props.error.message}</p>;
+    const message = props.error?.message;
+    const severity = message.toLowerCase().includes("successfully")
+      ? "success"
+      : "error";
+    errorMessage = <Notification severity={severity} message={message} />;
   }
   return (
     <>
@@ -108,6 +114,9 @@ const Appointments = (props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadAppointments: () => dispatch(actions.fetchAppointments()),
+    onDeleteAppointment: (id) => dispatch(actions.deleteAppointment(id)),
+    onSelectAppointment: (appointment) =>
+      dispatch(actions.selectAppointment(appointment)),
   };
 };
 const mapStateToProps = (state) => {
@@ -115,7 +124,7 @@ const mapStateToProps = (state) => {
     loading: state.appointment.loading,
     error: state.appointment.error,
     appointments: state.appointment.appointments,
-    type: state.auth.type
+    type: state.auth.type,
   };
 };
 
@@ -123,4 +132,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps // or put null here if you do not have actions to dispatch
 )(withRouter(Appointments));
-

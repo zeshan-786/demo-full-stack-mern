@@ -10,6 +10,7 @@ import { formatDateTime, formatDate } from "../../shared/utility";
 
 import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
 import { withRouter } from "react-router";
+import { Avatar } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   error: {
@@ -63,6 +64,22 @@ const Admins = (props) => {
             />
           }
         </div>
+      ),
+    },
+    {
+      field: "profilePic",
+      headerName: "Picture",
+      renderCell: (params) => (
+        params.data.profilePicture ? (<Avatar
+              alt={params.data.name}
+              src={params.data?.profilePicture}
+              style={{ margin: "5px auto" }}
+            />
+          ) : (
+            <Avatar alt={params.data.name} style={{ margin: "5px auto" }}>
+              {params.data?.name[0]}{" "}
+            </Avatar>
+        )
       ),
     },
     { field: "id", headerName: "ID" },

@@ -17,6 +17,7 @@ import SaveIcon from "@material-ui/icons/Save";
 import Spinner from "../UI/Spinner/Spinner";
 
 import ContentView from "../UI/ContentView/ContentView";
+import Notification from "../UI/Notification/Notification";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,14 +43,6 @@ const useStyles = makeStyles((theme) => ({
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
-  },
-  error: {
-    border: "1px solid red",
-    borderRadius: "4px",
-    width: "100%",
-    color: "red",
-    padding: "15px",
-    fontWeight: "bold",
   },
   center: { margin: "5px auto" },
 }));
@@ -255,7 +248,11 @@ const AddUser = (props) => {
 
   let errorMessage = null;
   if (props.error) {
-    errorMessage = <p className={classes.error}>{props.error.message}</p>;
+    const message = props.error?.message;
+    const severity = message.toLowerCase().includes("successfully")
+      ? "success"
+      : "error";
+    errorMessage = <Notification severity={severity} message={message} />;
   }
   return (
     <ContentView>

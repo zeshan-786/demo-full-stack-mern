@@ -145,6 +145,9 @@ module.exports = {
           message: "Error when deleting the Appointment.",
           error: err,
         });
+      } 
+      if (!Appointment) {
+        res.status(404).json({ message: "Appointment not found." });
       }
       return res.status(204).json();
     });

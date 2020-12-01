@@ -55,28 +55,28 @@ const Pets = (props) => {
     console.info("You clicked to View.");
   };
 
-  const actionButtons = ["Admin", "Client"].includes(props.type)
-    ? (params) => (
-        <>
-          <IconButton color="inherit" onClick={() => handleView()}>
-            <ViewIcon />
-          </IconButton>
-          <IconButton color="inherit" onClick={() => handleEdit()}>
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            color="inherit"
-            onClick={() => handleDelete(params.data.id)}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </>
-      )
-    : (params) => (
-        <IconButton color="inherit" onClick={() => handleView()}>
-          <ViewIcon />
-        </IconButton>
-      );
+  // const actionButtons = ["Admin", "Client"].includes(props.type)
+  //   ? (params) => (
+  //       <>
+  //         <IconButton color="inherit" onClick={() => handleView()}>
+  //           <ViewIcon />
+  //         </IconButton>
+  //         <IconButton color="inherit" onClick={() => handleEdit()}>
+  //           <EditIcon />
+  //         </IconButton>
+  //         <IconButton
+  //           color="inherit"
+  //           onClick={() => handleDelete(params.data.id)}
+  //         >
+  //           <DeleteIcon />
+  //         </IconButton>
+  //       </>
+  //     )
+  //   : (params) => (
+  //       <IconButton color="inherit" onClick={() => handleView()}>
+  //         <ViewIcon />
+  //       </IconButton>
+  //     );
 
   const columns = [
     {
@@ -109,7 +109,6 @@ const Pets = (props) => {
 
   let data = null;
   if (props.pets?.length) {
-    console.log("Total Pets", props.pets?.length);
     data = (
       <DataTable
         onRowSelected={getSelectedRow}

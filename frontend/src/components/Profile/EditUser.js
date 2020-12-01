@@ -1,20 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import LockOutlinedIcon from "@material-ui/icons/PersonAdd";
+
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from "@material-ui/core/FormControl";
 
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 
 import { makeStyles } from "@material-ui/core/styles";
 import SaveIcon from "@material-ui/icons/Save";
+import IconButton from "@material-ui/core/IconButton";
+import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import Spinner from "../UI/Spinner/Spinner";
 
 import ContentView from "../UI/ContentView/ContentView";
 
-import * as moment from 'moment'
+import * as moment from "moment";
+import Notification from "../UI/Notification/Notification";
+import { EditOutlined } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -49,14 +56,23 @@ const useStyles = makeStyles((theme) => ({
     padding: "15px",
     fontWeight: "bold",
   },
-  center: {margin: '5px auto'}
+  center: { margin: "5px auto" },
+  input: {
+    display: "none",
+  },
+  large: {
+    width: theme.spacing(15),
+    height: theme.spacing(15),
+  },
 }));
 
 const EditUser = (props) => {
   const classes = useStyles();
-  const [email, setEmail] = useState({ value: props.user?.email || '' });
-  const [name, setName] = useState({ value: props.user?.name || '' });
-  const [dob, setDob] = useState({ value: moment().format(props.user?.dob, 'yyyy-MM-dd') || "2000-01-01" });
+  const [email, setEmail] = useState({ value: props.user?.email || "" });
+  const [name, setName] = useState({ value: props.user?.name || "" });
+  const [dob, setDob] = useState({
+    value: moment().format(props.user?.dob, "yyyy-MM-dd") || "2000-01-01",
+  });
 
   const onFieldChange = (event, fieldName) => {
     switch (fieldName) {
@@ -81,6 +97,15 @@ const EditUser = (props) => {
       name: name.value,
       dob: dob.value,
     });
+  };
+
+  const handleUpload = (event) => {
+    event.preventDefault();
+    if (event.target.files[0]) {
+      const formData = new FormData();
+      formData.append("profilePic", event.target.files[0]);
+      props.onUploadPic(formData);
+    }
   };
 
   let form = (
@@ -127,6 +152,39 @@ const EditUser = (props) => {
         value={dob.value}
         onChange={(event) => onFieldChange(event, "dob")}
       />
+      <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        label="Profile Picture"
+        type="file"
+        className={classes.textField}
+        InputLabelProps={{
+          shrink: true,
+        }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton aria-label="upload photo" edge="end">
+                <PhotoCamera />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+        onChange={handleUpload}
+      />
+      {props.user?.profilePicture ? (
+        <Avatar
+          className={classes.large}
+          alt={props.user.name}
+          src={props.user?.profilePicture}
+          style={{ margin: "5px auto" }}
+        />
+      ) : (
+        <Avatar alt={props.user.name} style={{ margin: "5px auto" }}>
+          {props.user?.name[0]}{" "}
+        </Avatar>
+      )}
     </>
   );
 
@@ -136,13 +194,17 @@ const EditUser = (props) => {
 
   let errorMessage = null;
   if (props.error) {
-    errorMessage = <p className={classes.error}>{props.error.message}</p>;
+    const message = props.error?.message;
+    const severity = message.toLowerCase().includes("successfully")
+      ? "success"
+      : "error";
+    errorMessage = <Notification severity={severity} message={message} />;
   }
   return (
     <ContentView>
       <CssBaseline />
-      <Avatar className={[classes.avatar, classes.center].join(' ')}>
-        <LockOutlinedIcon />
+      <Avatar className={[classes.avatar, classes.center].join(" ")}>
+        <EditOutlined />
       </Avatar>
       {errorMessage}
       <form className={classes.form} noValidate>
@@ -164,13 +226,14 @@ const EditUser = (props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onEditUser: (data) => dispatch(actions.editUser(data)),
+    onUploadPic: (data) => dispatch(actions.uploadPic(data, null)),
   };
 };
 const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
     error: state.auth.error,
-    user: state.auth.user
+    user: state.auth.user,
   };
 };
 

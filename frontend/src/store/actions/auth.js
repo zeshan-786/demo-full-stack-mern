@@ -4,7 +4,6 @@ import { backendURL } from "../../shared/utility";
 import axios from "axios";
 
 // Authentication system
-
 const authStart = () => {
   return {
     type: actionTypes.AUTH_START,
@@ -94,6 +93,7 @@ export const setAuthRedirectPath = (path) => {
   };
 };
 
+// Check if user is logged in or not
 export const authCheckState = () => {
   return (dispatch) => {
     const token = localStorage.getItem("token");
@@ -116,7 +116,6 @@ export const authCheckState = () => {
 };
 
 // Get logged in user's profile
-
 export const getProfileSuccess = (user) => {
   return {
     type: actionTypes.AUTH_ME_SUCCESS,
@@ -165,7 +164,6 @@ export const getProfile = () => {
 };
 
 // Set user's password
-
 const setPasswordStart = () => {
   return {
     type: actionTypes.SET_PASSWORD_START,
@@ -215,8 +213,6 @@ export const setPassword = (data) => {
 
 
 // Edit user details
-
-
 const editUserStart = () => {
     return {
       type: actionTypes.EDIT_USER_START,
@@ -264,3 +260,52 @@ const editUserStart = () => {
         });
     };
   };
+
+  // Upload Picture
+const uploadPicStart = () => {
+  return {
+    type: actionTypes.UPLOAD_PIC_START,
+  };
+};
+
+export const uploadPicSuccess = (response) => {
+  return {
+    type: actionTypes.UPLOAD_PIC_SUCCESS,
+    response: response
+  };
+};
+
+export const uploadPicFail = (error) => {
+  return {
+    type: actionTypes.EDIT_USER_FAIL,
+    error: error,
+  };
+};
+
+export const uploadPic = (data, params) => {
+  return (dispatch) => {
+    dispatch(uploadPicStart());
+    let url = `${backendURL}/uploadPic?${params? params : "" }`;
+    axios
+      .post(url, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        dispatch(uploadPicSuccess(res.data))
+      })
+      .catch((err) => {
+        if (err.response && err.response.data) {
+          // client received an error response (5xx, 4xx)
+          dispatch(uploadPicFail(err.response.data));
+        } else if (err.request && err.request.data) {
+          // client never received a response, or request never left
+          dispatch(uploadPicFail(err.request.data));
+        } else {
+          // anything else
+          dispatch(uploadPicFail({ message: "Something went wrong" }));
+        }
+      });
+  };
+};

@@ -106,6 +106,53 @@ export const addAppointment = (appointment) => {
   };
 };
 
+// Delete Appointment
+export const deleteAppointmentFail = (error) => {
+  return {
+    type: actionTypes.DEL_APPOINTMENT_FAIL,
+    error: error,
+  };
+};
+
+export const deleteAppointmentSuccess = (id) => {
+  return {
+    type: actionTypes.DEL_APPOINTMENT_SUCCESS,
+    _id: id,
+  };
+};
+
+export const deleteAppointment = (id) => {
+  return (dispatch) => {
+    let url = `${backendURL}/appointment/${id}`;
+    axios
+      .delete(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        if (res && res.data) {
+          dispatch(deleteAppointmentSuccess(id));
+        } else {
+          dispatch(deleteAppointmentSuccess(id));
+        }
+      })
+      .catch((err) => {
+        console.log("Error in delete: ", err);
+        if (err.response && err.response.data) {
+          // client received an error response (5xx, 4xx)
+          dispatch(deleteAppointmentFail(err.response.data));
+        } else if (err.request && err.request.data) {
+          // client never received a response, or request never left
+          dispatch(deleteAppointmentFail(err.request.data));
+        } else {
+          // anything else
+          dispatch(deleteAppointmentFail({ message: "Something went wrong" }));
+        }
+      });
+  };
+};
+
 // Selete Appointment
 export const selectAppointment = (appointment) => {
   return {

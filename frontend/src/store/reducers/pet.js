@@ -45,7 +45,7 @@ const addPetFail = (state, action) => {
   });
 };
 
-const deletPetSuccess = (state, action) => {
+const deletePetSuccess = (state, action) => {
   const filteredPets = state.pets.filter((pet) => pet._id !== action._id);
   return updateObject(state, {
     pets: filteredPets,
@@ -54,7 +54,7 @@ const deletPetSuccess = (state, action) => {
   });
 };
 
-const deletPetFail = (state, action) => {
+const deletePetFail = (state, action) => {
   return updateObject(state, {
     error: action.error,
     loading: false,
@@ -111,9 +111,9 @@ const reducer = (state = initialState, action) => {
       return editPetFail(state, action);
 
     case actionTypes.DEL_PET_SUCCESS:
-      return deletPetSuccess(state, action);
+      return deletePetSuccess(state, action);
     case actionTypes.DEL_PET_FAIL:
-      return deletPetFail(state, action);
+      return deletePetFail(state, action);
 
     case actionTypes.SELECT_PET:
       return selectPet(state, action);

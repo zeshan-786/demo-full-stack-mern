@@ -12,7 +12,6 @@ const initialState = {
 }
 
 // User Signup/Signin
-
 const authStart = ( state, action ) => {
     return updateObject( state, { error: null, loading: true } )
 }
@@ -33,7 +32,7 @@ const authFail = ( state, action ) => {
         loading: false 
     })
 }
-
+// Logout
 const authLogout = ( state, action ) => {
     return updateObject( state, {
         token: null,
@@ -63,7 +62,6 @@ const getProfileFail = ( state, action ) => {
 }
 
 // Set Password
-
 const setPasswordStart = ( state, action ) => {
     return updateObject( state, { error: null, loading: true } )
 }
@@ -102,6 +100,25 @@ const editUserFail = ( state, action ) => {
     })
 }
 
+// Edit User
+const uploadPicStart = ( state, action ) => {
+    return updateObject( state, { error: null, loading: true } )
+}
+
+const uploadPicSuccess = ( state, action ) => {
+    return updateObject( state, {
+        error: action.response, 
+        loading: false
+    })
+}
+
+const uploadPicFail = ( state, action ) => {
+    return updateObject( state, {
+        error: action.error, 
+        loading: false 
+    })
+}
+
 const reducer = ( state=initialState, action ) => {
     switch (action.type) {
 
@@ -125,6 +142,11 @@ const reducer = ( state=initialState, action ) => {
         case actionTypes.EDIT_USER_START: return editUserStart( state, action )
         case actionTypes.EDIT_USER_SUCCESS: return editUserSuccess( state, action )
         case actionTypes.EDIT_USER_FAIL: return editUserFail( state, action )
+
+        // Upload Picture
+        case actionTypes.UPLOAD_PIC_START: return uploadPicStart( state, action )
+        case actionTypes.UPLOAD_PIC_SUCCESS: return uploadPicSuccess( state, action )
+        case actionTypes.UPLOAD_PIC_FAIL: return uploadPicFail( state, action )
 
         default:
           return state

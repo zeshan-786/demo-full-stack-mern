@@ -4,14 +4,11 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import DataTable from "../../components/UI/Table/Table";
 
 import { makeStyles } from "@material-ui/core/styles";
-import ViewIcon from "@material-ui/icons/Visibility";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
 
 import * as actions from "../../store/actions/index";
 import { withRouter } from "react-router";
 import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
+import { Avatar } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   error: {
@@ -67,11 +64,27 @@ const Doctors = (props) => {
         </div>
       ),
     },
+    {
+      field: "profilePic",
+      headerName: "Picture",
+      renderCell: (params) => (
+        params.data.profilePicture ? (<Avatar
+              alt={params.data.name}
+              src={params.data?.profilePicture}
+              style={{ margin: "5px auto" }}
+            />
+          ) : (
+            <Avatar alt={params.data.name} style={{ margin: "5px auto" }}>
+              {params.data?.name[0]}{" "}
+            </Avatar>
+        )
+      ),
+    },
     { field: "id", headerName: "ID" },
     { field: "name", headerName: "Full Name" },
     { field: "email", headerName: "Email" },
     { field: "dob", headerName: "Date of Birth" },
-    { field: "age", headerName: "Age" },
+    // { field: "age", headerName: "Age" },
     { field: "clinic", headerName: "Clinic" },
     { field: "speciality", headerName: "Speciality" },
     { field: "createdAt", headerName: "CreatedAt" },

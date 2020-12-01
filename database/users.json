@@ -8,6 +8,18 @@
     },
     {
       "$oid": "5fbbd59170cd2c281100f69d"
+    },
+    {
+      "$oid": "5fc553c8ab84031821a3950f"
+    },
+    {
+      "$oid": "5fc553cbab84031821a39511"
+    },
+    {
+      "$oid": "5fc553ccab84031821a39512"
+    },
+    {
+      "$oid": "5fc553ccab84031821a39513"
     }
   ],
   "__userType": "Client",
@@ -23,9 +35,10 @@
     "$date": "2020-11-06T18:52:03.065Z"
   },
   "updatedAt": {
-    "$date": "2020-11-23T15:30:25.861Z"
+    "$date": "2020-12-01T20:32:14.364Z"
   },
-  "__v": 0
+  "__v": 0,
+  "profilePicture": "http://localhost:3000/assets/images/5fa59b5215a28a0adefa082a_profile.jpeg"
 },{
   "_id": {
     "$oid": "5fb3ec8e9f77e120c8dfea8c"
@@ -43,9 +56,10 @@
     "$date": "2020-11-17T15:30:22.332Z"
   },
   "updatedAt": {
-    "$date": "2020-11-17T15:30:22.332Z"
+    "$date": "2020-12-01T20:14:50.132Z"
   },
-  "__v": 0
+  "__v": 0,
+  "profilePicture": "http://localhost:3000/assets/images/5fb3ec8e9f77e120c8dfea8c_profile.jpeg"
 },{
   "_id": {
     "$oid": "5fbbd26b2810c0188979a248"
@@ -62,15 +76,16 @@
     "$date": "2020-11-23T15:16:59.418Z"
   },
   "updatedAt": {
-    "$date": "2020-11-23T15:16:59.418Z"
+    "$date": "2020-12-01T20:33:53.228Z"
   },
-  "__v": 0
+  "__v": 0,
+  "profilePicture": "http://localhost:3000/assets/images/5fbbd26b2810c0188979a248_profile.jpg"
 },{
   "_id": {
     "$oid": "5fbbd2d72810c0188979a249"
   },
   "__userType": "Doctor",
-  "name": "Dr Robert",
+  "name": "Robert",
   "email": "robert@gmail.com",
   "dob": {
     "$date": "2000-01-01T00:00:00Z"
@@ -81,15 +96,16 @@
     "$date": "2020-11-23T15:18:47.840Z"
   },
   "updatedAt": {
-    "$date": "2020-11-23T15:18:47.840Z"
+    "$date": "2020-12-01T20:46:50.258Z"
   },
-  "__v": 0
+  "__v": 0,
+  "profilePicture": "http://localhost:3000/assets/images/5fbbd2d72810c0188979a249_profile.jpg"
 },{
   "_id": {
     "$oid": "5fbbec5913ca615f3698e50b"
   },
   "__userType": "Doctor",
-  "name": "Dr Jonnas",
+  "name": "Jonnas",
   "email": "jonnas@gmail.com",
   "dob": {
     "$date": "1992-07-01T00:00:00Z"
@@ -100,15 +116,16 @@
     "$date": "2020-11-23T17:07:37.901Z"
   },
   "updatedAt": {
-    "$date": "2020-11-23T17:07:37.901Z"
+    "$date": "2020-12-01T20:42:14.565Z"
   },
-  "__v": 0
+  "__v": 0,
+  "profilePicture": "http://localhost:3000/assets/images/5fbbec5913ca615f3698e50b_profile.jpeg"
 },{
   "_id": {
     "$oid": "5fbbf15b71fb7470662bd7be"
   },
   "__userType": "Doctor",
-  "name": "Dr Shukla",
+  "name": "Shukla",
   "email": "shukla@gmail.com",
   "dob": {
     "$date": "1997-06-01T00:00:00Z"
@@ -119,9 +136,10 @@
     "$date": "2020-11-23T17:28:59.480Z"
   },
   "updatedAt": {
-    "$date": "2020-11-23T17:28:59.480Z"
+    "$date": "2020-12-01T20:40:51.695Z"
   },
-  "__v": 0
+  "__v": 0,
+  "profilePicture": "http://localhost:3000/assets/images/5fbbf15b71fb7470662bd7be_profile.jpg"
 },{
   "_id": {
     "$oid": "5fbbf33f71fb7470662bd7c0"
@@ -138,15 +156,16 @@
     "$date": "2020-11-23T17:37:03.816Z"
   },
   "updatedAt": {
-    "$date": "2020-11-23T17:37:03.816Z"
+    "$date": "2020-12-01T20:34:57.309Z"
   },
-  "__v": 0
+  "__v": 0,
+  "profilePicture": "http://localhost:3000/assets/images/5fbbf33f71fb7470662bd7c0_profile.jpg"
 },{
   "_id": {
     "$oid": "5fbbf4c271fb7470662bd7c1"
   },
   "__userType": "Doctor",
-  "name": "Dr Jimmy",
+  "name": "Jimmy",
   "email": "jimmy@gmail.com",
   "dob": {
     "$date": "1989-03-15T00:00:00Z"
@@ -157,7 +176,8 @@
     "$date": "2020-11-23T17:43:30.341Z"
   },
   "updatedAt": {
-    "$date": "2020-11-23T17:43:30.341Z"
+    "$date": "2020-12-01T20:39:50.444Z"
   },
-  "__v": 0
+  "__v": 0,
+  "profilePicture": "http://localhost:3000/assets/images/5fbbf4c271fb7470662bd7c1_profile.jpg"
 }]

@@ -19,4 +19,88 @@
     "$date": "2020-11-23T15:30:25.852Z"
   },
   "__v": 0
+},{
+  "_id": {
+    "$oid": "5fc553c8ab84031821a3950f"
+  },
+  "appointments": [],
+  "name": "test",
+  "dob": {
+    "$date": "2000-05-24T00:00:00Z"
+  },
+  "breed": "Jazzi",
+  "type": "Dog",
+  "owner": {
+    "$oid": "5fa59b5215a28a0adefa082a"
+  },
+  "createdAt": {
+    "$date": "2020-11-30T20:19:20.814Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-30T20:19:20.814Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fc553cbab84031821a39511"
+  },
+  "appointments": [],
+  "name": "test",
+  "dob": {
+    "$date": "2000-05-24T00:00:00Z"
+  },
+  "breed": "Jazzi",
+  "type": "Dog",
+  "owner": {
+    "$oid": "5fa59b5215a28a0adefa082a"
+  },
+  "createdAt": {
+    "$date": "2020-11-30T20:19:23.860Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-30T20:19:23.860Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fc553ccab84031821a39512"
+  },
+  "appointments": [],
+  "name": "test",
+  "dob": {
+    "$date": "2000-05-24T00:00:00Z"
+  },
+  "breed": "Jazzi",
+  "type": "Dog",
+  "owner": {
+    "$oid": "5fa59b5215a28a0adefa082a"
+  },
+  "createdAt": {
+    "$date": "2020-11-30T20:19:24.054Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-30T20:19:24.054Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5fc553ccab84031821a39513"
+  },
+  "appointments": [],
+  "name": "test",
+  "dob": {
+    "$date": "2000-05-24T00:00:00Z"
+  },
+  "breed": "Jazzi",
+  "type": "Dog",
+  "owner": {
+    "$oid": "5fa59b5215a28a0adefa082a"
+  },
+  "createdAt": {
+    "$date": "2020-11-30T20:19:24.206Z"
+  },
+  "updatedAt": {
+    "$date": "2020-11-30T20:19:24.206Z"
+  },
+  "__v": 0
 }]

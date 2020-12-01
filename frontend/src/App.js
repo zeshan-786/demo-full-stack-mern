@@ -8,9 +8,6 @@ import * as actions from "./store/actions/index";
 import asyncComponent from "./hoc/asyncComponent/asyncComponent";
 import BackButton from "./components/UI/BackButton/BackButton";
 
-const Profile = asyncComponent(() => {
-  return import("./components/Profile/Profile");
-});
 
 const Signin = asyncComponent(() => {
   return import("./components/Auth/signin");
