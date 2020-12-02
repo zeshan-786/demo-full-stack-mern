@@ -6,7 +6,7 @@ import DataTable from "../../components/UI/Table/Table";
 import { makeStyles } from "@material-ui/core/styles";
 
 import * as actions from "../../store/actions/index";
-import { formatDateTime, formatDate } from "../../shared/utility";
+import { formatDateTime, formatDate, _calculateAge } from "../../shared/utility";
 
 import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
 import { withRouter } from "react-router";
@@ -44,6 +44,7 @@ const Admins = (props) => {
 
   const handleView = () => {
     console.info("You clicked to View.");
+    props.history.push("viewAdmin");
   };
 
   const columns = [
@@ -86,7 +87,11 @@ const Admins = (props) => {
     { field: "name", headerName: "Full Name" },
     { field: "email", headerName: "Email" },
     { field: "dob", headerName: "Date of Birth" },
-    { field: "age", headerName: "Age" },
+    {
+      field: "age",
+      headerName: "Age",
+      valueGetter: (params) => _calculateAge(new Date(params.data.dob) || undefined ),
+    },
     { field: "createdAt", headerName: "CreatedAt" },
     { field: "updatedAt", headerName: "UpdatedAt" },
   ];
@@ -106,7 +111,6 @@ const Admins = (props) => {
           };
         })}
         columns={columns}
-        pageSize={props.admins.length}
       />
     );
   }

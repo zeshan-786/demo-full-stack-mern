@@ -31,4 +31,15 @@ export const formatDateNumeric = (date) => {
     }).format(new Date(date));
 };
 
+export const _calculateAge = (birthday) => { // birthday is a date
+  const ageDifMs = Date.now() - birthday.getTime();
+  const ageDate = new Date(ageDifMs); // miliseconds from epoch
+  const years = ageDate.getUTCFullYear() - 1970
+  const month = ageDate.getUTCMonth()
+  const days = ageDate.getUTCDay()
+  // const value =  (ageDifMs/31540000000).toFixed(2)
+  // return Math.abs(value);
+  return `Years(s) ${Math.abs(years)} & Month(s) ${month} & Day(s) ${days}`
+}
+
 export const backendURL = 'http://localhost:3000'

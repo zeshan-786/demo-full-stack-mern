@@ -3,34 +3,14 @@ import { connect } from "react-redux";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import DataTable from "../../components/UI/Table/Table";
 
-import { makeStyles } from "@material-ui/core/styles";
-import ViewIcon from "@material-ui/icons/Visibility";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-
 import * as actions from "../../store/actions/index";
 
 import Notification from "../../components/UI/Notification/Notification";
 import { withRouter } from "react-router";
 import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
-
-const useStyles = makeStyles((theme) => ({
-  error: {
-    border: "1px solid red",
-    borderRadius: "4px",
-    width: "100%",
-    color: "red",
-    padding: "15px",
-    fontWeight: "bold",
-  },
-  button: {
-    margin: theme.spacing(1),
-  },
-}));
+import { _calculateAge } from "../../shared/utility";
 
 const Pets = (props) => {
-  const classes = useStyles();
 
   useEffect(() => {
     props.loadPets();
@@ -55,29 +35,6 @@ const Pets = (props) => {
     console.info("You clicked to View.");
   };
 
-  // const actionButtons = ["Admin", "Client"].includes(props.type)
-  //   ? (params) => (
-  //       <>
-  //         <IconButton color="inherit" onClick={() => handleView()}>
-  //           <ViewIcon />
-  //         </IconButton>
-  //         <IconButton color="inherit" onClick={() => handleEdit()}>
-  //           <EditIcon />
-  //         </IconButton>
-  //         <IconButton
-  //           color="inherit"
-  //           onClick={() => handleDelete(params.data.id)}
-  //         >
-  //           <DeleteIcon />
-  //         </IconButton>
-  //       </>
-  //     )
-  //   : (params) => (
-  //       <IconButton color="inherit" onClick={() => handleView()}>
-  //         <ViewIcon />
-  //       </IconButton>
-  //     );
-
   const columns = [
     {
       width: ["Admin", "Client"].includes(props.type) ? 160 : 100,
@@ -99,10 +56,15 @@ const Pets = (props) => {
     { field: "id", headerName: "ID" },
     { field: "name", headerName: "Name" },
     { field: "dob", headerName: "Date of Birth" },
+    {
+      field: "age",
+      headerName: "Age",
+      valueGetter: (params) => _calculateAge(new Date(params.data.dob) || undefined ),
+    },
     { field: "breed", headerName: "Breed" },
     { field: "type", headerName: "Type" },
     { field: "owner", headerName: "Owner" },
-    { field: "appointments", headerName: "Appointments" },
+    // { field: "appointments", headerName: "Appointments" },
     { field: "createdAt", headerName: "CreatedAt" },
     { field: "updatedAt", headerName: "UpdatedAt" },
   ];
@@ -118,10 +80,9 @@ const Pets = (props) => {
             ...elm,
             id: elm._id,
             owner: elm.owner?.name,
-            appointments: elm.appointments.join(", "),
+            // appointments: elm.appointments.join(", "),
           };
         })}
-        rowsPerPageOptions={[10, 25, 50]}
       />
     );
   }

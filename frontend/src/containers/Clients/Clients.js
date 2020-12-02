@@ -10,6 +10,7 @@ import * as actions from "../../store/actions/index";
 import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
 import { withRouter } from "react-router";
 import { Avatar } from "@material-ui/core";
+import { _calculateAge } from "../../shared/utility";
 
 const useStyles = makeStyles((theme) => ({
   error: {
@@ -42,7 +43,7 @@ const Clients = (props) => {
   };
 
   const handleView = () => {
-    console.info("You clicked to View.");
+    props.history.push("viewClient");
   };
 
   const columns = [
@@ -68,24 +69,28 @@ const Clients = (props) => {
     {
       field: "profilePic",
       headerName: "Picture",
-      renderCell: (params) => (
-        params.data.profilePicture ? (<Avatar
-              alt={params.data.name}
-              src={params.data?.profilePicture}
-              style={{ margin: "5px auto" }}
-            />
-          ) : (
-            <Avatar alt={params.data.name} style={{ margin: "5px auto" }}>
-              {params.data?.name[0]}{" "}
-            </Avatar>
-        )
-      ),
+      renderCell: (params) =>
+        params.data.profilePicture ? (
+          <Avatar
+            alt={params.data.name}
+            src={params.data?.profilePicture}
+            style={{ margin: "5px auto" }}
+          />
+        ) : (
+          <Avatar alt={params.data.name} style={{ margin: "5px auto" }}>
+            {params.data?.name[0]}{" "}
+          </Avatar>
+        ),
     },
     { field: "id", headerName: "ID" },
     { field: "name", headerName: "Full Name" },
     { field: "email", headerName: "Email" },
     { field: "dob", headerName: "Date of Birth" },
-    // { field: "age", headerName: "Age" },
+    {
+      field: "age",
+      headerName: "Age",
+      valueGetter: (params) => _calculateAge(new Date(params.data.dob) || undefined ),
+    },
     { field: "pets", headerName: "Pets" },
     { field: "createdAt", headerName: "CreatedAt" },
     { field: "updatedAt", headerName: "UpdatedAt" },
@@ -104,7 +109,6 @@ const Clients = (props) => {
           };
         })}
         columns={columns}
-        pageSize={props.clients.length}
       />
     );
   }

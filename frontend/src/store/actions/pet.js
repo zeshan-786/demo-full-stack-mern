@@ -182,9 +182,7 @@ export const deletePet = (id) => {
         },
       })
       .then((res) => {
-        if (res && res.data) {
-          dispatch(deletePetSuccess(id));
-        } else {
+        if (res) {
           dispatch(deletePetSuccess(id));
         }
       })

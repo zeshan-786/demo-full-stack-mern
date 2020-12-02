@@ -1,32 +1,20 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import DataTable from "../../components/UI/Table/Table";
-
-import { makeStyles } from "@material-ui/core/styles";
 
 import * as actions from "../../store/actions/index";
 import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
 import { withRouter } from "react-router";
 import Notification from "../../components/UI/Notification/Notification";
 
-const useStyles = makeStyles((theme) => ({
-  error: {
-    border: "1px solid red",
-    borderRadius: "4px",
-    width: "100%",
-    color: "red",
-    padding: "15px",
-    fontWeight: "bold",
-  },
-}));
-
 const Appointments = (props) => {
-  const classes = useStyles();
+
   useEffect(() => {
     props.loadAppointments();
   }, []);
+
+  // useEffect(() => {}, [props.appointments]);
 
   const getSelectedRow = (params) => {
     console.log("Selected Row :: ", params);
@@ -67,26 +55,26 @@ const Appointments = (props) => {
     },
     { field: "id", headerName: "ID" },
     { field: "appointmentTime", headerName: "Appointment Time" },
-    { field: "doctor", headerName: "Doctor" },
-    { field: "pet", headerName: "Patient" },
+    { field: "_doctor", headerName: "Doctor" },
+    { field: "_pet", headerName: "Patient" },
     { field: "createdAt", headerName: "CreatedAt" },
     { field: "updatedAt", headerName: "UpdatedAt" },
   ];
+
   let data = null;
-  if (props.appointments) {
+  if (props.appointments?.length) {
     data = (
       <DataTable
         onRowSelected={getSelectedRow}
-        rows={props.appointments.map((elm) => {
+        columns={columns}
+        rows={props.appointments?.map((elm) => {
           return {
             ...elm,
             id: elm._id,
-            pet: elm.pet && elm.pet.name,
-            doctor: elm.doctor && elm.doctor.name,
+            _pet: elm.pet && elm.pet.name,
+            _doctor: elm.doctor && elm.doctor.name,
           };
         })}
-        columns={columns}
-        pageSize={props.appointments.length}
       />
     );
   }

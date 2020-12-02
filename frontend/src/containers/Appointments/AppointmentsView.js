@@ -28,7 +28,7 @@ const AppointmentsView = (props) => {
 
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   const handleAddButton = () => {
-    // props.onSelectAppointment();
+    props.onSelectAppointment()
     props.history.push("addAppointment");
   };
   return (
@@ -46,7 +46,7 @@ const AppointmentsView = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSelectAppointment: () => dispatch(actions.selectPet(null)),
+    onSelectAppointment: () => dispatch(actions.selectAppointment(null)),
   };
 };
 

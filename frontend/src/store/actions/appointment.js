@@ -106,6 +106,56 @@ export const addAppointment = (appointment) => {
   };
 };
 
+// Editing Appointment
+
+const editAppointmentStart = () => {
+  return {
+    type: actionTypes.EDIT_APPOINTMENT_START,
+  };
+};
+
+export const editAppointmentSuccess = (appointment) => {
+  return {
+    type: actionTypes.EDIT_APPOINTMENT_SUCCESS,
+    appointment: appointment,
+  };
+};
+
+export const editAppointmentFail = (error) => {
+  return {
+    type: actionTypes.EDIT_APPOINTMENT_FAIL,
+    error: error,
+  };
+};
+
+export const editAppointment = (appointment, id) => {
+  console.log(appointment);
+  return (dispatch) => {
+    dispatch(editAppointmentStart());
+    axios
+      .put(`${backendURL}/appointment/${id}`, appointment, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        dispatch(editAppointmentSuccess(res.data));
+      })
+      .catch((err) => {
+        if (err.response && err.response.data) {
+          // client received an error response (5xx, 4xx)
+          dispatch(editAppointmentFail(err.response.data));
+        } else if (err.request && err.request.data) {
+          // client never received a response, or request never left
+          dispatch(editAppointmentFail(err.request.data));
+        } else {
+          // anything else
+          dispatch(editAppointmentFail({ message: "Something went wrong" }));
+        }
+      });
+  };
+};
+
 // Delete Appointment
 export const deleteAppointmentFail = (error) => {
   return {
@@ -131,9 +181,7 @@ export const deleteAppointment = (id) => {
         },
       })
       .then((res) => {
-        if (res && res.data) {
-          dispatch(deleteAppointmentSuccess(id));
-        } else {
+        if (res) {
           dispatch(deleteAppointmentSuccess(id));
         }
       })

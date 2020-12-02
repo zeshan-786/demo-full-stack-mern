@@ -3,8 +3,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import AlarmOnIcon from '@material-ui/icons/AlarmOn';
-
+import AlarmOnIcon from "@material-ui/icons/AlarmOn";
 
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
@@ -18,6 +17,7 @@ import SaveIcon from "@material-ui/icons/Save";
 import Spinner from "../../components/UI/Spinner/Spinner";
 
 import ContentView from "../../components/UI/ContentView/ContentView";
+import Notification from "../../components/UI/Notification/Notification";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -52,14 +52,24 @@ const useStyles = makeStyles((theme) => ({
     padding: "15px",
     fontWeight: "bold",
   },
-  center: {margin: '5px auto'}
+  center: { margin: "5px auto" },
 }));
 
 const AddAppointment = (props) => {
   const classes = useStyles();
-  const [doctor, setDoctor] = useState({ value: "" });
-  const [pet, setPet] = useState({ value: "" });
-  const [appointmentTime, setAppointmentTime] = useState({ value: "" });
+  const [doctor, setDoctor] = useState({
+    value: props.selectedAppointment
+      ? props.selectedAppointment?.doctor?._id
+      : "",
+  });
+  const [pet, setPet] = useState({
+    value: props.selectedAppointment ? props.selectedAppointment?.pet?._id : "",
+  });
+  const [appointmentTime, setAppointmentTime] = useState({
+    value: props.selectedAppointment
+      ? props.selectedAppointment?.appointmentTime
+      : "",
+  });
 
   const onFieldChange = (event, fieldName) => {
     switch (fieldName) {
@@ -79,12 +89,22 @@ const AddAppointment = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    props.onAddAppointment({
-      pet: pet.value,
-      doctor: doctor.value,
-      appointmentTime: appointmentTime.value,
-    });
-    // props.history.push("appointments");
+    if (props.selectedAppointment?._id) {
+      props.onEditAppointment(
+        {
+          pet: pet.value,
+          doctor: doctor.value,
+          appointmentTime: appointmentTime.value,
+        },
+        props.selectedAppointment?._id
+      );
+    } else {
+      props.onAddAppointment({
+        pet: pet.value,
+        doctor: doctor.value,
+        appointmentTime: appointmentTime.value,
+      });
+    }
   };
 
   let form = (
@@ -97,8 +117,12 @@ const AddAppointment = (props) => {
           label="Pet"
           value={pet.value}
         >
-          {props.pets.map( pet => {
-             return  <MenuItem key={pet._id} value={pet._id}>{pet.name}</MenuItem>
+          {props.pets.map((pet) => {
+            return (
+              <MenuItem key={pet._id} value={pet._id}>
+                {pet.name}
+              </MenuItem>
+            );
           })}
         </Select>
       </FormControl>
@@ -110,8 +134,12 @@ const AddAppointment = (props) => {
           label="Doctor"
           value={doctor.value}
         >
-          {props.doctors.map( doc => {
-             return  <MenuItem key={doc._id} value={doc._id}>{doc.name}</MenuItem>
+          {props.doctors.map((doc) => {
+            return (
+              <MenuItem key={doc._id} value={doc._id}>
+                {doc.name}
+              </MenuItem>
+            );
           })}
         </Select>
       </FormControl>
@@ -139,12 +167,16 @@ const AddAppointment = (props) => {
 
   let errorMessage = null;
   if (props.error) {
-    errorMessage = <p className={classes.error}>{props.error.message}</p>;
+    const message = props.error?.message;
+    const severity = message.toLowerCase().includes("successfully")
+      ? "success"
+      : "error";
+    errorMessage = <Notification severity={severity} message={message} />;
   }
   return (
     <ContentView>
       <CssBaseline />
-      <Avatar className={[classes.avatar, classes.center].join(' ')}>
+      <Avatar className={[classes.avatar, classes.center].join(" ")}>
         <AlarmOnIcon />
       </Avatar>
       {errorMessage}
@@ -166,7 +198,10 @@ const AddAppointment = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAddAppointment: (appointment) => dispatch(actions.addAppointment(appointment)),
+    onAddAppointment: (appointment) =>
+      dispatch(actions.addAppointment(appointment)),
+    onEditAppointment: (appointment, id) =>
+      dispatch(actions.editAppointment(appointment, id)),
   };
 };
 const mapStateToProps = (state) => {
@@ -174,7 +209,8 @@ const mapStateToProps = (state) => {
     loading: state.appointment.loading,
     error: state.appointment.error,
     doctors: state.doctor.doctors,
-    pets: state.pet.pets
+    pets: state.pet.pets,
+    selectedAppointment: state.appointment.selectedAppointment,
   };
 };
 

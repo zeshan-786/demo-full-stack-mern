@@ -1,3 +1,4 @@
+const AppointmentModel = require("../models/AppointmentModel.js");
 const PetModel = require("../models/PetModel.js");
 const { ClientModel } = require("../models/UserModel");
 
@@ -128,6 +129,7 @@ module.exports = {
         });
       }
       if (!Pet) return res.status(404).json({ message: "Pet not found" });
+      // Delete pet from clients' pets
       ClientModel.findOneAndUpdate(
         { _id: Pet.owner },
         { $pull: { pets: Pet._id } },
@@ -138,6 +140,14 @@ module.exports = {
           console.log("Updated Client: ", obj);
         }
       );
+      // Delete pet appointments
+      AppointmentModel.deleteMany({ pet: id }, (err) => {
+        if (err) {
+          console.log("Error while deleteing appointments : ", err);
+        }
+        console.log("Appointments deleted");
+      })
+
       return res.status(204).json();
     });
   },

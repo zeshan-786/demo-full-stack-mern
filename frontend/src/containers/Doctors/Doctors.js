@@ -9,6 +9,7 @@ import * as actions from "../../store/actions/index";
 import { withRouter } from "react-router";
 import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
 import { Avatar } from "@material-ui/core";
+import { _calculateAge } from "../../shared/utility";
 
 const useStyles = makeStyles((theme) => ({
   error: {
@@ -41,7 +42,7 @@ const Doctors = (props) => {
   };
 
   const handleView = () => {
-    console.info("You clicked to View.");
+    props.history.push("viewDoctor");
   };
 
   const columns = [
@@ -84,7 +85,11 @@ const Doctors = (props) => {
     { field: "name", headerName: "Full Name" },
     { field: "email", headerName: "Email" },
     { field: "dob", headerName: "Date of Birth" },
-    // { field: "age", headerName: "Age" },
+    {
+      field: "age",
+      headerName: "Age",
+      valueGetter: (params) => _calculateAge(new Date(params.data.dob) || undefined ),
+    },
     { field: "clinic", headerName: "Clinic" },
     { field: "speciality", headerName: "Speciality" },
     { field: "createdAt", headerName: "CreatedAt" },
@@ -100,7 +105,6 @@ const Doctors = (props) => {
           return { ...elm, id: elm._id, clinic: elm.clinic?.name };
         })}
         columns={columns}
-        pageSize={props.doctors.length}
       />
     );
   }

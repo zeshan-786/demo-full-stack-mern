@@ -35,6 +35,11 @@ import AddPet from "../Pets/AddPet";
 import SetPassword from "../../components/Profile/SetPassword";
 import EditUser from "../../components/Profile/EditUser";
 import AddAppointment from "../Appointments/AddAppointment";
+import ViewAdmin from "./ViewAdmin";
+import ViewClient from "../Clients/ViewClient";
+import ViewClinic from "../Clinics/ViewClinic";
+import ViewDoctor from "../Doctors/ViewDoctor";
+
 
 const drawerWidth = 240;
 
@@ -171,27 +176,37 @@ const Layout = (props) => {
       </Drawer>
       <Switch>
         <Route path="/dashboard" component={AdminDashboard} />
-        <Route path="/admins" component={AdminsView} />
-        <Route path="/clinics" component={ClinicsView} />
-        <Route path="/doctors" component={DoctorsView} />
-        <Route path="/clients" component={ClientsView} />
-        <Route path="/appointments" component={AppointmentsView} />
-        <Route path="/pets" component={PetsView} />
 
+        <Route path="/admins" component={AdminsView} />
+        <Route path="/viewAdmin" component={ViewAdmin} />
+
+        <Route path="/clinics" component={ClinicsView} />
+        <Route path="/viewClinic" component={ViewClinic} />
+
+        <Route path="/doctors" component={DoctorsView} />
+        <Route path="/addDoctor" component={AddUser} />
+        <Route path="/viewDoctor" component={ViewDoctor} />
+
+
+        
+        <Route path="/clients" component={ClientsView} />
+        <Route path="/viewClient" component={ViewClient} />
+
+        
+
+        <Route path="/appointments" component={AppointmentsView} />
+        <Route path="/addAppointment" component={AddAppointment} />
+
+        <Route path="/pets" component={PetsView} />
         <Route path="/addPet" component={AddPet} />
 
         <Route path="/addUser" component={AddUser} />
-        <Route path="/addDoctor" component={AddUser} />
+
         <Route path="/profile" component={Profile} />
         <Route path="/setPassword" component={SetPassword} />
+        <Route path="/editProfile" component={EditUser} />
 
-        <Route
-          path="/editProfile"
-          // render={() => <ContentView>Edit Profile</ContentView>}
-          component={EditUser}
-        />
 
-        <Route path="/addAppointment" component={AddAppointment} />
         <Route path="/logout" component={Logout} />
         <Route path="/" exact component={AdminDashboard} />
       </Switch>

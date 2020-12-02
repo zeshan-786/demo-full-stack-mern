@@ -18,18 +18,19 @@ module.exports = {
         select: "_id name email clinic",
         model: "Doctor",
       };
+
       if (req.user.__userType === "Doctor") {
         filter = { doctor: req.user._id };
       }
 
       if (req.user.__userType === "Client") {
         // filter = { "pet.owner": req.user._id }
-        petOps.match = { owner: req.user._id }
+        petOps.match = { owner: req.user._id };
       }
 
       if (req.user.__userType === "Clinic") {
         // filter = { "doctor.clinic": req.user._id }
-        doctorOps.match = { clinic: req.user._id }
+        doctorOps.match = { clinic: req.user._id };
       }
 
       let Appointments = await AppointmentModel.find(filter)
@@ -120,6 +121,10 @@ module.exports = {
       Appointment.details = req.body.details
         ? req.body.details
         : Appointment.details;
+      Appointment.pet = req.body.pet ? req.body.pet : Appointment.pet;
+      Appointment.doctor = req.body.doctor
+        ? req.body.doctor
+        : Appointment.doctor;
 
       Appointment.save((err, Appointment) => {
         if (err) {
@@ -145,7 +150,7 @@ module.exports = {
           message: "Error when deleting the Appointment.",
           error: err,
         });
-      } 
+      }
       if (!Appointment) {
         res.status(404).json({ message: "Appointment not found." });
       }

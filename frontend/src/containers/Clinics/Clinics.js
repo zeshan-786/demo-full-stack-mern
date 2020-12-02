@@ -9,6 +9,7 @@ import * as actions from "../../store/actions/index";
 import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
 import { withRouter } from "react-router";
 import { Avatar } from "@material-ui/core";
+import { _calculateAge } from "../../shared/utility";
 
 const useStyles = makeStyles((theme) => ({
   error: {
@@ -34,13 +35,12 @@ const Clinics = (props) => {
   const handleDelete = (id) => {
     // props.deletePet(id);
   };
-
   const handleEdit = () => {
     props.history.push("addUser");
   };
 
   const handleView = () => {
-    console.info("You clicked to View.");
+    props.history.push("viewClinic");
   };
 
   const columns = [
@@ -66,24 +66,25 @@ const Clinics = (props) => {
     {
       field: "profilePic",
       headerName: "Picture",
-      renderCell: (params) => (
-        params.data.profilePicture ? (<Avatar
-              alt={params.data.name}
-              src={params.data?.profilePicture}
-              style={{ margin: "5px auto" }}
-            />
-          ) : (
-            <Avatar alt={params.data.name} style={{ margin: "5px auto" }}>
-              {params.data?.name[0]}{" "}
-            </Avatar>
-        )
-      ),
+      renderCell: (params) =>
+        params.data.profilePicture ? (
+          <Avatar
+            alt={params.data.name}
+            src={params.data?.profilePicture}
+            style={{ margin: "5px auto" }}
+          />
+        ) : (
+          <Avatar alt={params.data.name} style={{ margin: "5px auto" }}>
+            {params.data?.name[0]}{" "}
+          </Avatar>
+        ),
     },
     { field: "id", headerName: "ID" },
     { field: "name", headerName: "Full Name" },
     { field: "email", headerName: "Email" },
-    { field: "dob", headerName: "Date of Birth" },
-    { field: "doctors", headerName: "Doctors" },
+    { field: "dob", headerName: "Joining Date" },
+    { field: "website", headerName: "Website" },
+    // { field: "doctors", headerName: "Doctors" },
     { field: "createdAt", headerName: "CreatedAt" },
     { field: "updatedAt", headerName: "UpdatedAt" },
   ];
@@ -94,10 +95,13 @@ const Clinics = (props) => {
       <DataTable
         onRowSelected={getSelectedRow}
         rows={props.clinics.map((elm) => {
-          return { ...elm, id: elm._id, doctors: elm.doctors.join(", ") };
+          return { 
+            ...elm, 
+            id: elm._id, 
+            // doctors: elm.doctors.join(", ") 
+          };
         })}
         columns={columns}
-        pageSize={props.clients?.length}
       />
     );
   }

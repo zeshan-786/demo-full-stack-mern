@@ -40,6 +40,7 @@ export {
 export {
     fetchAppointments,
     addAppointment,
+    editAppointment,
     selectAppointment,
     deleteAppointment
 } from './appointment'
