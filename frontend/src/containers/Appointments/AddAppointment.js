@@ -18,6 +18,7 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 
 import ContentView from "../../components/UI/ContentView/ContentView";
 import Notification from "../../components/UI/Notification/Notification";
+import { mommentFormatDate } from "../../shared/utility";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -66,9 +67,8 @@ const AddAppointment = (props) => {
     value: props.selectedAppointment ? props.selectedAppointment?.pet?._id : "",
   });
   const [appointmentTime, setAppointmentTime] = useState({
-    value: props.selectedAppointment
-      ? props.selectedAppointment?.appointmentTime
-      : "",
+    value: mommentFormatDate ( props.selectedAppointment?.appointmentTime, "YYYY-MM-DDThh:mm")
+      || "",
   });
 
   const onFieldChange = (event, fieldName) => {

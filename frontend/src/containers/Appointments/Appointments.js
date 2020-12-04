@@ -7,7 +7,7 @@ import * as actions from "../../store/actions/index";
 import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
 import { withRouter } from "react-router";
 import Notification from "../../components/UI/Notification/Notification";
-import { formatDate, formatDateTime } from "../../shared/utility";
+import { formatDateTime } from "../../shared/utility";
 
 const Appointments = (props) => {
 
@@ -21,6 +21,7 @@ const Appointments = (props) => {
   };
 
   const handleDelete = (id) => {
+    debugger
     props.onDeleteAppointment(id);
   };
 
@@ -72,7 +73,7 @@ const Appointments = (props) => {
             id: elm._id,
             _pet: elm.pet && elm.pet.name,
             _doctor: elm.doctor && elm.doctor.name,
-            appointmentTime: formatDate(elm.appointmentTime),
+            appointmentTime: formatDateTime(elm.appointmentTime),
             createdAt: formatDateTime(elm.createdAt),
             updatedAt: formatDateTime(elm.updatedAt),
           };

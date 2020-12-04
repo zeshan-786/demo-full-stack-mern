@@ -18,6 +18,7 @@ import * as actions from "../../store/actions";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import ContentView from "../../components/UI/ContentView/ContentView";
 import Notification from "../../components/UI/Notification/Notification";
+import { mommentFormatDate } from "../../shared/utility";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -70,7 +71,7 @@ const AddPet = (props) => {
     value: props.selectedPet?.name ? props.selectedPet.name : "",
   });
   const [dob, setDob] = useState({
-    value: props.selectedPet?.dob ? props.selectedPet.dob : "2000-05-24",
+    value: mommentFormatDate( props.selectedPet?.dob, "YYYY-MM-DD" ) || "2000-05-24",
   });
 
   const onFieldChange = (event, fieldName) => {

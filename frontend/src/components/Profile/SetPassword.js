@@ -154,8 +154,7 @@ const SetPassword = (props) => {
   let errorMessage = null;
   if (props.error || invalid) {
     errorMessage = <p className={classes.error}>{props.error?.message || 'All fields are required'}</p>;
-  }
-  console.log('Authentication: ',props.isAuthenticated);
+  } 
 
   return (
     <ContentView>

@@ -23,8 +23,7 @@ app
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json({ limit: "5mb" }))
   .use('/assets/images', express.static(path.join(__dirname, '/assets/images')))
-
-const { verifyToken, HasRole } = require("./middlewares/Auth");
+  .use(express.static(path.join(__dirname, '../frontend/build')))
 
 const authRoutes = require("./routes/Auth");
 const clientRoutes = require("./routes/Client");
@@ -49,10 +48,9 @@ app.use("/admin", adminRoutes);
 app.use("/appointment", appointmentRoutes);
 
 app.use(imageUploadRoutes);
-
-app.get("/", verifyToken, HasRole(["Admin"]), (req, res) => {
-  console.log(req.user);
-  res.send("Hello World!!");
+// frontend/build/index.html
+app.get("/", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"));
 });
 
 // If something broke in application

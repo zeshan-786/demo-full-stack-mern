@@ -17,9 +17,9 @@ import Spinner from "../UI/Spinner/Spinner";
 
 import ContentView from "../UI/ContentView/ContentView";
 
-import * as moment from "moment";
 import Notification from "../UI/Notification/Notification";
 import { EditOutlined } from "@material-ui/icons";
+import { mommentFormatDate } from "../../shared/utility";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -69,7 +69,7 @@ const EditUser = (props) => {
   const [email, setEmail] = useState({ value: props.user?.email || "" });
   const [name, setName] = useState({ value: props.user?.name || "" });
   const [dob, setDob] = useState({
-    value: moment().format(props.user?.dob, "yyyy-MM-dd") || "2000-01-01",
+    value: mommentFormatDate( props.user?.dob, "YYYY-MM-DD" ) || "2000-01-01",
   });
 
   const onFieldChange = (event, fieldName) => {

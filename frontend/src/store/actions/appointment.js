@@ -181,6 +181,8 @@ export const deleteAppointment = (id) => {
         },
       })
       .then((res) => {
+  debugger
+
         if (res) {
           dispatch(deleteAppointmentSuccess(id));
         }
