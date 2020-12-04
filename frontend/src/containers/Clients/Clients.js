@@ -10,7 +10,7 @@ import * as actions from "../../store/actions/index";
 import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
 import { withRouter } from "react-router";
 import { Avatar } from "@material-ui/core";
-import { _calculateAge } from "../../shared/utility";
+import { formatDate, formatDateTime, _calculateAge } from "../../shared/utility";
 
 const useStyles = makeStyles((theme) => ({
   error: {
@@ -106,6 +106,9 @@ const Clients = (props) => {
             ...elm,
             id: elm._id,
             pets: elm.pets.flatMap((pet) => pet.name).join(", "),
+            dob: formatDate(elm.dob),
+            createdAt: formatDateTime(elm.createdAt),
+            updatedAt: formatDateTime(elm.updatedAt),
           };
         })}
         columns={columns}

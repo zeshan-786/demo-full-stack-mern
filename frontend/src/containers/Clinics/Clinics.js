@@ -9,7 +9,7 @@ import * as actions from "../../store/actions/index";
 import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
 import { withRouter } from "react-router";
 import { Avatar } from "@material-ui/core";
-import { _calculateAge } from "../../shared/utility";
+import { formatDate, formatDateTime, _calculateAge } from "../../shared/utility";
 
 const useStyles = makeStyles((theme) => ({
   error: {
@@ -88,7 +88,7 @@ const Clinics = (props) => {
     { field: "createdAt", headerName: "CreatedAt" },
     { field: "updatedAt", headerName: "UpdatedAt" },
   ];
-
+  
   let data = null;
   if (props.clinics) {
     data = (
@@ -98,6 +98,9 @@ const Clinics = (props) => {
           return { 
             ...elm, 
             id: elm._id, 
+            dob: formatDate(elm.dob),
+            createdAt: formatDateTime(elm.createdAt),
+            updatedAt: formatDateTime(elm.updatedAt),
             // doctors: elm.doctors.join(", ") 
           };
         })}

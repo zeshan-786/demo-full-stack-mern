@@ -8,7 +8,7 @@ import * as actions from "../../store/actions/index";
 import Notification from "../../components/UI/Notification/Notification";
 import { withRouter } from "react-router";
 import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
-import { _calculateAge } from "../../shared/utility";
+import { formatDate, formatDateTime, _calculateAge } from "../../shared/utility";
 
 const Pets = (props) => {
 
@@ -68,7 +68,7 @@ const Pets = (props) => {
     { field: "createdAt", headerName: "CreatedAt" },
     { field: "updatedAt", headerName: "UpdatedAt" },
   ];
-
+  
   let data = null;
   if (props.pets?.length) {
     data = (
@@ -80,6 +80,9 @@ const Pets = (props) => {
             ...elm,
             id: elm._id,
             owner: elm.owner?.name,
+            dob: formatDate(elm.dob),
+            createdAt: formatDateTime(elm.createdAt),
+            updatedAt: formatDateTime(elm.updatedAt),
             // appointments: elm.appointments.join(", "),
           };
         })}
