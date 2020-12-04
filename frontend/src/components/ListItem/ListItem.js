@@ -9,13 +9,11 @@ import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
 import LayersIcon from "@material-ui/icons/Layers";
 import Pets from "@material-ui/icons/Pets";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 
 import EditIcon from "@material-ui/icons/Edit";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import AlarmOnIcon from '@material-ui/icons/AlarmOn';
 
 import { NavLink } from "react-router-dom";
 

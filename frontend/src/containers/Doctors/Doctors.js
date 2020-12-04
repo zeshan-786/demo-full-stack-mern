@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import { connect } from "react-redux"; 
 import Spinner from "../../components/UI/Spinner/Spinner";
 import DataTable from "../../components/UI/Table/Table";
 
@@ -9,7 +9,7 @@ import * as actions from "../../store/actions/index";
 import { withRouter } from "react-router";
 import ActionButtons from "../../components/UI/ActionButtons/ActionButtons";
 import { Avatar } from "@material-ui/core";
-import { _calculateAge } from "../../shared/utility";
+import { formatDate, formatDateTime, _calculateAge } from "../../shared/utility";
 
 const useStyles = makeStyles((theme) => ({
   error: {
@@ -95,14 +95,21 @@ const Doctors = (props) => {
     { field: "createdAt", headerName: "CreatedAt" },
     { field: "updatedAt", headerName: "UpdatedAt" },
   ];
-
+  
   let data = null;
   if (props.doctors?.length) {
     data = (
       <DataTable
         onRowSelected={getSelectedRow}
         rows={props.doctors.map((elm) => {
-          return { ...elm, id: elm._id, clinic: elm.clinic?.name };
+          return { 
+            ...elm, 
+            id: elm._id, 
+            clinic: elm.clinic?.name,
+            dob: formatDate(elm.dob),
+            createdAt: formatDateTime(elm.createdAt),
+            updatedAt: formatDateTime(elm.updatedAt),
+           };
         })}
         columns={columns}
       />

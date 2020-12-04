@@ -13,10 +13,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import ContentView from "../UI/ContentView/ContentView";
 
-// import IconButton from '@material-ui/core/IconButton';
-// import Visibility from '@material-ui/icons/Visibility';
-// import VisibilityOff from '@material-ui/icons/VisibilityOff';
-// import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -57,6 +57,8 @@ const SetPassword = (props) => {
 
   const [invalid, setInvalid ] = useState(false)
   const [showPassword, setShowPassword ] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword ] = useState(false)
+
 
   const onFieldChange = (event, fieldName) => {
     setInvalid(false)
@@ -84,13 +86,13 @@ const SetPassword = (props) => {
     }
   };
 
-//   const handleClickShowPassword = () => {
-//       setShowPassword(!showPassword)
-//   };
+  const handleClickShowPassword = () => {
+      setShowPassword(!showPassword)
+  };
 
-//   const handleMouseDownPassword = (event) => {
-//     event.preventDefault();
-//   };
+  const handleClickShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword)
+};
 
   let form = (
     <>
@@ -101,22 +103,22 @@ const SetPassword = (props) => {
         fullWidth
         name="password"
         label="Password"
-        type="password"
         id="password"
         value={password.value}
         autoComplete="current-password"
         onChange={(event) => onFieldChange(event, "password")}
         type={showPassword ? 'text' : 'password'}
-        // endAdornment={
-        //     <InputAdornment position="end">
-        //     <IconButton
-        //         aria-label="toggle password visibility"
-        //         onClick={handleClickShowPassword}
-        //         onMouseDown={handleMouseDownPassword}
-        //     >
-        //         {showPassword ? <Visibility /> : <VisibilityOff />}
-        //     </IconButton>
-        //     </InputAdornment>}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+            <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+            >
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+            </IconButton>
+            </InputAdornment>)
+        }}
       />
       <TextField
         variant="outlined"
@@ -125,11 +127,22 @@ const SetPassword = (props) => {
         fullWidth
         name="newPassword"
         label="New Password"
-        type="password"
         id="newPassword"
         value={newPassword.value}
         autoComplete="current-password"
         onChange={(event) => onFieldChange(event, "newPassword")}
+        type={showConfirmPassword ? 'text' : 'password'}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+            <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowConfirmPassword}
+            >
+                {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+            </IconButton>
+            </InputAdornment>)
+        }}
       />
     </>
   );

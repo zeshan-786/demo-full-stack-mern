@@ -10,7 +10,6 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
 import { connect } from "react-redux";
-import { compose } from "redux";
 import * as actions from "../../store/actions";
 
 import Spinner from "../../components/UI/Spinner/Spinner";
