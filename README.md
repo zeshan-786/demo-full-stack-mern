@@ -26,21 +26,8 @@ mongod
 ```bash
 npm start 
 ```
-Backend started at localhost:5000
 
-```bash
-cd frontend
-```
-
-```bash
-npm install | yarn install
-```
-
-```bash
-yarn start 
-```
-
-Frontend will be started at localhost:3000
+Application will be started at localhost:3000
 
 
 
