@@ -23,7 +23,7 @@ app
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json({ limit: "5mb" }))
   .use('/assets/images', express.static(path.join(__dirname, '/assets/images')))
-  .use(express.static(path.join(__dirname, '../frontend/build')))
+  .use(express.static(path.join(__dirname, './frontend/build')))
 
 const authRoutes = require("./routes/Auth");
 const clientRoutes = require("./routes/Client");
@@ -50,7 +50,7 @@ app.use("/appointment", appointmentRoutes);
 app.use(imageUploadRoutes);
 // frontend/build/index.html
 app.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"));
+  res.sendFile(path.resolve(__dirname, "./frontend", "build", "index.html"));
 });
 
 // If something broke in application
