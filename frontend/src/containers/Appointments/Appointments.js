@@ -21,7 +21,6 @@ const Appointments = (props) => {
   };
 
   const handleDelete = (id) => {
-    debugger
     props.onDeleteAppointment(id);
   };
 

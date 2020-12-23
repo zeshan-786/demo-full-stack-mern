@@ -11,6 +11,7 @@ import Pets from "../Pets/Pets";
 import Admins from "./Admins";
 import Appointments from "../Appointments/Appointments";
 import ContentView from "../../components/UI/ContentView/ContentView";
+import UsersGraph from "../../components/UsersGraph/UsersGraph";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -26,11 +27,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = (props) => {
   const classes = useStyles();
-
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
+
     <ContentView>
+      <Grid item xs={12} md={12} lg={12}>
+        <Paper className={fixedHeightPaper}>
+          <UsersGraph />
+        </Paper>
+      </Grid>
       <Grid item xs={12} md={6} lg={6}>
         <Paper className={fixedHeightPaper}>
           <h1>Clients</h1>
